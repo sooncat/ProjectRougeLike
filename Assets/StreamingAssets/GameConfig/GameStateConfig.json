@@ -1,0 +1,31 @@
+{
+	"GameStateDetails": {
+		"LoginState": {
+			"SceneName": "Login",
+			"PreLoadUi": [{
+				"Prefab": "LoginUI",
+				"ClassName": "LoginUI"
+			}],
+			"PreLoadEffect": [],
+			"PreLoadAudio": []
+		},
+		"CityState": {
+			"SceneName": "City",
+			"PreLoadUi": [{
+				"Prefab": "CityUI",
+				"ClassName": "CityUI"
+			}],
+			"PreLoadEffect": [],
+			"PreLoadAudio": []
+		},
+		"FightState": {
+			"SceneName": "Fight",
+			"PreLoadUi": [{
+				"Prefab": "FightUI",
+				"ClassName": "FightUI"
+			}],
+			"PreLoadEffect": [],
+			"PreLoadAudio": []
+		}
+	}
+}
