@@ -10,21 +10,19 @@ public class GameMain : BaseMain {
     {
         
         CatDebug.Enable = true;
-        CatDebug.Enabletype = CatLogType.CatEvent | CatLogType.CatTimer;
+        CatDebug.Enabletype = CatLogType.CatTimer | CatLogType.CatEvent;
         CatDebug.RegistLogTypeLabel(CatLogType.CatEvent, "Event");
         CatDebug.RegistLogTypeLabel(CatLogType.CatTimer, "Timer");
 
-        GameStateSys.Instance.InitState<LoadingState>();
+        InitSys<UISys>();
+        ConfigSys.Instance.InitJsonConfig<GameStateConfig>(Application.streamingAssetsPath + "/GameConfig/GameStateConfig.json");
+
         GameStateSys.Instance.InitState<LoginState>();
         GameStateSys.Instance.InitState<CityState>();
         GameStateSys.Instance.InitState<FightState>();
         GameStateSys.Instance.InitState<StartState>();
 
-        InitSys<UISys>();
-
-        ConfigSys.Instance.InitJsonConfig<GameStateConfig>(Application.streamingAssetsPath + "/GameConfig/GameStateConfig.json");
-
-        //EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(StartState));
+        EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(StartState));
         
     }
 

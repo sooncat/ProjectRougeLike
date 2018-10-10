@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CityState : BaseGameState
-{
-    
+public class EnemyData : CreatureData {
+
+    public int Ai;
+    public int DropId;
+
 }

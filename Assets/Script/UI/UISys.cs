@@ -17,7 +17,7 @@ public class UISys : ISystem {
         Instance = this;
         _allUiClass = new Dictionary<string, BaseUI>();
 
-        EventSys.Instance.AddHander(LogicEvent.UiPreLoadStart, OnUiPreLoad);
+        EventSys.Instance.AddHander(LogicEvent.UiLoadStart, OnUiPreLoad);
     }
 
     Dictionary<string, BaseUI> _allUiClass;
@@ -29,11 +29,10 @@ public class UISys : ISystem {
 
     void OnUiPreLoad(int id, object p1, object p2)
     {
-        string stateName = (string)p1;
-        GameStateConfig gsConfig = ConfigSys.Instance.GetConfig<GameStateConfig>();
-        var preLoadUis = gsConfig.GameStateDetails[stateName].PreLoadUi;
+        var preLoadUis = (List<GameStateConfig.PreLoadResConfig>) p1;
         foreach (GameStateConfig.PreLoadResConfig uiConfig in preLoadUis)
         {
+            CatDebug.LogFunc(uiConfig.Prefab);
             GameObject go = GameObject.Find(uiConfig.Prefab);
             if(!go)
             {
@@ -44,7 +43,7 @@ public class UISys : ISystem {
             baseUi.InitUI(go.GetComponent<UINode>());
         }
 
-        EventSys.Instance.AddEvent(LogicEvent.UiPreLoadEnd);
+        EventSys.Instance.AddEvent(LogicEvent.UiLoadEnd);
     }
 
     public void ClearWindow()

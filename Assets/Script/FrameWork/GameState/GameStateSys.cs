@@ -22,14 +22,14 @@ public class GameStateSys : ISystem {
         Instance = this;
 
         EventSys.Instance.AddHander(LogicEvent.ChangeState, OnChangeState);
-        EventSys.Instance.AddHander(LogicEvent.ChangeToNextState, OnChangeToNextState);
+        EventSys.Instance.AddHander(LogicEvent.LeaveState, OnLeaveState);
         
     }
 
     private List<BaseGameState> _gameStateList;
     private BaseGameState _nowState;
-    private BaseGameState _willState;
-    private BaseGameState _leaveState;
+    private Type _willStateType;
+    private object _willStateParameter;
 
     public void InitState<T>() where T:BaseGameState, new()
     {
@@ -62,69 +62,53 @@ public class GameStateSys : ISystem {
         return null;
     }
 
-    void OnChangeToNextState(int id, object p1, object p2)
-    {
-        ChangeState(_willState.GetType(), true);
-    }
 
     void OnChangeState(int id, object p1, object p2)
     {
         Type t = (Type)p1;
+        _willStateParameter = null;
         if(p2!=null)
         {
-            bool isLoadingDone = (bool)p2;
-            ChangeState(t, isLoadingDone);
-        }
-        else
-        {
-            ChangeState(t);
+            _willStateParameter = p2;
         }
         
+        ChangeState(t);
     }
 
-    void ChangeState(Type type, bool loadingDone = false)
+    void ChangeState(Type type)
     {
-        if (_nowState != null && _nowState.GetType() == type)
-        {
-            return;
-        }
-
-        if (_willState != null && _willState.GetType() == type && !loadingDone)
-        {
-            return;
-        }
-
-        ChangeStateSecond(type);
-    }
-
-    void ChangeStateSecond(Type type)
-    {
-        //CatDebug.Log("GameRoot::ChangeStateForce() 1 Origin = " + state + ", m_curGameState = " + m_curGameState, CatDebug.LogType.PVE_SCENE);
         if (_nowState == null)
         {
             _nowState = GetState(type);
+            _nowState.Enter(_willStateType);
+            _willStateType = null;
+            return;
         }
-        else
+
+        if (_nowState.GetType() == type)
         {
-            if (_nowState.GetType() != type)
-            {
-                _leaveState = _nowState;
-                _leaveState.Leave();
-            }
-            if (_nowState is LoadingState) //out loading
-            {
-                _nowState = _willState;
-            }
-            else            // in loading
-            {
-                _willState = GetState(type);
-                LoadingState loadingState = GetState<LoadingState>();
-                loadingState.SetWillState(_willState.GetName());
-                _nowState = loadingState;
-            }
+            return;
         }
-        //CatDebug.Log("GameRoot::ChangeStateForce() 5 Dest = " + m_curGameState, CatDebug.LogType.PVE_SCENE);
-        _nowState.Enter();
+
+        if (_willStateType != null && _willStateType == type)
+        {
+            return;
+        }
+
+        _willStateType = type;
+        _nowState.Leave();
+    }
+
+    void OnLeaveState(int id, object p1, object p2)
+    {
+        Type t = (Type)p1;
+        Debug.Log("OnLeaveState" + t.Name + ", will = " + _willStateType.Name);
+        if(_nowState.GetType() == t)
+        {
+            _nowState = GetState(_willStateType);
+            _nowState.Enter(_willStateParameter);
+            _willStateType = null;
+        }
     }
 
     public override void SysUpdate()

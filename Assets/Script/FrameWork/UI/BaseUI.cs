@@ -1,8 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BaseUI : MonoBehaviour {
+
+    static int IdIndex;
 
     public int Id
     {
@@ -18,13 +21,13 @@ public class BaseUI : MonoBehaviour {
 
     public virtual void InitUI(UINode rootNode)
     {
-        
+        Init(IdIndex++);
     }
 
-    public void Init(int id)
+    public virtual void Init(int id)
     {
         Id = id;
-        //Name = uiEnum.ToString();
+        Name = GetType().Name;
     }
 
     public bool Equals(BaseUI cwindow)
@@ -45,6 +48,11 @@ public class BaseUI : MonoBehaviour {
             return false;
         }
         return Equals(idObj);
+    }
+
+    void OnDestroy()
+    {
+        EventSys.Instance.RemoveHander(this);
     }
     
 }

@@ -6,16 +6,15 @@ public class StartState : BaseGameState {
 
     bool _isNeedUpdate = false;
 
-    public override void Enter()
+    protected override void OnAllPreLoaded()
     {
-        base.Enter();
+        base.OnAllPreLoaded();
         if(_isNeedUpdate)
         {
-            EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(UpdateState));
+            
         }
-        else
-        {
-            EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(LoginState));
-        }
+        EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(LoginState));
     }
+
+    
 }

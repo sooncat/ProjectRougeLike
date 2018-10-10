@@ -135,7 +135,8 @@ public class EventSys : ISystem
     {
         lock (Lock)
         {
-            CatDebug.Log("AddEvent = " + eventId, CatLogType.CatEvent);
+            if(eventId == LogicEvent.SceneLoadEnd)
+                CatDebug.Log("AddEvent = SceneLoadEnd", CatLogType.CatEvent);
             string stackMsg = string.Empty;
             if (_recordStackList.Contains(eventId) || _isRecordAll)
             {

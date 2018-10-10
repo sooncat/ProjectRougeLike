@@ -13,7 +13,7 @@ public class Util {
         if (Application.platform == RuntimePlatform.Android && path.Contains(Application.streamingAssetsPath))
         {
             WWW www = new WWW(path);
-            while (!www.isDone) ;
+            while (!www.isDone)
             if (string.IsNullOrEmpty(www.error))
             {
                 b = www.bytes;
@@ -46,7 +46,10 @@ public class Util {
         string folder = Path.GetDirectoryName(path);
 		Directory.CreateDirectory(folder);
 
-        StreamWriter write = new StreamWriter(path, false, System.Text.Encoding.UTF8); // Unity's TextAsset.text borks when encoding used is UTF8 :(
+
+        var utf8WithoutBom = new System.Text.UTF8Encoding(false);
+
+        StreamWriter write = new StreamWriter(path, false, utf8WithoutBom); // Unity's TextAsset.text borks when encoding used is UTF8 :(
         write.Write(content);
 		write.Flush();
 		write.Close();

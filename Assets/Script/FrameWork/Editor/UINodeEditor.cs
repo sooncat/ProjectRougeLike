@@ -63,7 +63,7 @@ public class UINodeEditor : Editor {
             {
                 return uiNode;
             }
-            t = uiTrans.parent;
+            t = t.parent;
         };
         return null;
     }

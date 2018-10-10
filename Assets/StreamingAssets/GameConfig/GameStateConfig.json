@@ -1,5 +1,11 @@
 {
 	"GameStateDetails": {
+		"StartState": {
+			"SceneName": "",
+			"PreLoadUi": [],
+			"PreLoadEffect": [],
+			"PreLoadAudio": []
+		},
 		"LoginState": {
 			"SceneName": "Login",
 			"PreLoadUi": [{

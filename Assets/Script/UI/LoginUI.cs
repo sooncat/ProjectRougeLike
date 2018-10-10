@@ -7,6 +7,8 @@ public class LoginUI : BaseUI
 {
     public override void InitUI(UINode rootNode)
     {
+        base.InitUI(rootNode);
+
         Button btnLogin = rootNode.GetRef("ButtonLogin").GetComponent<Button>();
         btnLogin.onClick.AddListener(OnBtnLoginClicked);
     }

@@ -5,27 +5,26 @@ using UnityEngine;
 
 public partial class LogicEvent {
 
-    public const int StartSceneLoad = 5000;
+    public const int SceneLoadStart = 5000;
     public const int SceneLoadProgressChanged = 5010;
-    public const int EndSceneLoad = 5020;
+    public const int SceneLoadEnd = 5020;
 
-    public const int UiPreLoadStart = 5050;
-    public const int UiPreLoadProgressChanged = 5060;
-    public const int UiPreLoadEnd = 5070;
-
+    public const int UiLoadStart = 5050;
+    public const int UiLoadProgressChanged = 5060;
+    public const int UiLoadEnd = 5070;
+    
     public const int AllPreLoadEnd = 6000;
 
+
+    public const int UiLoadingStart = 7000;
+    public const int UiLoadingUpdate = 7001;
+    public const int UiLoadingEnd = 7002;
+    
+
     public const int ChangeState = 10000;
-    public const int ChangeToNextState = 10001;
+    public const int LeaveState = 10010;
+    public const int EnterState = 10020;
 
-    public const int EnterLoginState = 10010;
-    public const int LeaveLoginState = 10020;
-    public const int EnterCityState = 10030;
-    public const int LeaveCityState = 10040;
-    public const int EnterFightState = 10050;
-    public const int LeaveFightState = 10060;
-    public const int EnterLoadingState = 10070;
-    public const int LeaveLoadingState = 10080;
-
+    public const int DrawFightUi = 20000;
         
 }

@@ -7,6 +7,7 @@ public class CityUI : BaseUI {
 
     public override void InitUI(UINode rootNode)
     {
+        base.InitUI(rootNode);
         Button btnLogin = rootNode.GetRef("ButtonFight").GetComponent<Button>();
         btnLogin.onClick.AddListener(OnBtnFightClicked);
 
@@ -16,7 +17,7 @@ public class CityUI : BaseUI {
 
     void OnBtnFightClicked()
     {
-        EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(FightState));
+        EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(FightState), "stage1");
     }
 
     void OnBtnExitClicked()

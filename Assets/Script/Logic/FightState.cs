@@ -1,24 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class FightState : BaseGameState {
 
-    public override void Init()
+    string _stageName;
+    StageConfig _stageConfig;
+
+    public override void Enter(object parameter)
     {
-        base.Init();
+        base.Enter(parameter);
+        _stageName = parameter.ToString();
     }
 
-    public override void Enter()
+    protected override void OnUiLoaded(int id, object p1, object p2)
     {
-        base.Enter();
-        EventSys.Instance.AddEvent(LogicEvent.EnterFightState);
-    }
+        base.OnUiLoaded(id, p1, p2);
 
-    public override void Leave()
-    {
-        base.Leave();
-        EventSys.Instance.AddEvent(LogicEvent.LeaveFightState);
-    }
+        JsonSerializerSettings settings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.All
+        };
+        byte[] b = Util.ReadFile("Assets/StreamingAssets/StageConfig/" + _stageName + ".json");
+        string str = System.Text.Encoding.UTF8.GetString(b);
+        _stageConfig = JsonConvert.DeserializeObject<StageConfig>(str, settings);
 
+        EventSys.Instance.AddEvent(LogicEvent.DrawFightUi, _stageConfig);
+
+        OnAllPreLoaded();
+    }
 }

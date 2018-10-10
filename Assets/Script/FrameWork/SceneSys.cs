@@ -17,7 +17,7 @@ public class SceneSys : ISystem {
         _isInited = true;
         Instance = this;
 
-        EventSys.Instance.AddHander(LogicEvent.StartSceneLoad, OnLoadSceneStart);
+        EventSys.Instance.AddHander(LogicEvent.SceneLoadStart, OnLoadSceneStart);
     }
 
     void OnLoadSceneStart(int id, object p1, object p2)
@@ -57,7 +57,7 @@ public class SceneSys : ISystem {
             yield return new WaitForEndOfFrame();
         }
 
-        EventSys.Instance.AddEvent(LogicEvent.EndSceneLoad);
+        EventSys.Instance.AddEvent(LogicEvent.SceneLoadEnd);
         //EventSys.Instance.AddEvent(EEventType.SDK_Bugly_Record, "Scene", m_loadSceneName);
         //CSceneRessLoadSys.Instance.UnloadSceneAB(false);
 

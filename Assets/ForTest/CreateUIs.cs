@@ -169,7 +169,7 @@ public class CreateUIs : MonoBehaviour {
         mySlider.transform.position = new Vector3(centerX, centerY, 0);
         mySlider.transform.localEulerAngles = new Vector3(0, 0, (float)angle);
         mySlider.GetComponent<RectTransform>().sizeDelta = new Vector2(distance, 20);
-        mySlider.GetComponent<Slider>().value = 0f;
+        mySlider.GetComponent<Slider>().value = 0.3f;
     }
 
     void OnNodeClicked(int id)
