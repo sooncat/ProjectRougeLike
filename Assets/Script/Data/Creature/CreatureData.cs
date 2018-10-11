@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using com.initialworld.framework;
 using UnityEngine;
 
 public class CreatureData {
@@ -9,22 +10,27 @@ public class CreatureData {
     public string Description;
 
     //base property
-    public int Lv;
-    public int Sex;
-    public int Hp;
-    public int Mp;
-    public int Def;
-    public int Att;
+    public ENum<int> Lv;
+    public ENum<int> Sex;
+    public ENum<int> Hp;
+    public ENum<int> Mp;
+    public ENum<int> Def;
+    public ENum<int> Att;
 
     //advanced property
-    public int HpMax;
+    public ENum<int> HpMax;
     public float HpPercent
     {
-        get { return (float)Hp / HpMax; }
+        get { return (float)Hp.Value / HpMax.Value; }
     }
-    public int MpMax;
+    public ENum<int> MpMax;
     public float MpPercent
     {
-        get { return (float)Mp / MpMax; }
+        get { return (float)Mp.Value / MpMax.Value; }
     }
+
+
+
+    public CreatureData()
+    {}
 }

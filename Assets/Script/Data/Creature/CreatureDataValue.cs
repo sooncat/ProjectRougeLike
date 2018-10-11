@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using com.initialworld.framework;
 
 public enum CreatureAttributeType
 {
@@ -29,128 +29,111 @@ public enum CreatureAttributeValueType
 {
     Original,
     Debug,
-    BuffEffect,
-    WeaponValue,
-    Equip,
+    Scale,
     Total,
-    TotalScale,
 }
 
 public class CreatureDataValue<T>
 {
 
-        //public string Name;
-		
-        //public T TotalValue 
-        //{
-        //    get
-        //    {
-        //        return GetValue(CreatureAttributeValueType.Total).Value;
-        //    }
-        //}
-        
-        //Dictionary<int, ENumber.ENum<T>> _datas;
+    const int scaleType = -999;
 
-        //public CreatureDataValue(T originalValue)
-        //{
-        //    SetValue(CreatureAttributeValueType.Original, originalValue);
-        //    RefreshValue();
-        //    Init();
-        //}
+    public string Name;
 
-        //public CreatureDataValue(string name)
-        //{
-        //    Name = name;
-        //    Init();
-        //}
-        
-        //public void Init()
-        //{
-        //    _datas = new Dictionary<int, EvalueData<T>>();
-        //    _datas.Add((int)CreatureAttributeValueType.Original, new EvalueData<T>());
-        //    _datas.Add((int)CreatureAttributeValueType.Debug, new EvalueData<T>());
-        //    _datas.Add((int)CreatureAttributeValueType.BuffEffect, new EvalueData<T>());
-        //    _datas.Add((int)CreatureAttributeValueType.WeaponValue, new EvalueData<T>());
-        //    _datas.Add((int)CreatureAttributeValueType.Equip, new EvalueData<T>());
-        //    _datas.Add((int)CreatureAttributeValueType.Total, new EvalueData<T>());
-        //    _datas.Add((int)CreatureAttributeValueType.TotalScale, new EvalueData<T>());
-        //}
+    public T TotalValue
+    {
+        get
+        {
+            return _total.Value;
+        }
+    }
 
-        //public void SetValue(CreatureAttributeValueType type, T value)
-        //{
-        //    var v = new EZFunNumber<T>(value);
-        //    SetValue(type, v);
-        //}
+    Dictionary<int, ENum<T>> _data;
+    ENum<T> _total;
+    ENum<float> _scale; 
 
-        //public void SetValue(CreatureAttributeValueType type, EvalueData<T> value)
-        //{
-        //    SetValue(type, value.m_value);
-        //}
+    public CreatureDataValue(T originalValue) : 
+        this(0, originalValue, string.Empty)
+    {}
 
-        //public void SetValue(CreatureAttributeValueType type, EZFunNumber<T> value)
-        //{
-        //    if (type == CreatureAttributeValueType.Total)
-        //    {
-        //        throw new ArgumentException("Don't Support Set TotalValue");
-        //    }
-        //    //double beforeValue = _datas[(int)type].m_value.ToDouble();
-        //    _datas[(int)type].m_value = value;
-        //    //double curValue = _datas[(int)type].m_value.ToDouble();
-        //    RefreshValue();
-        //}
+    public CreatureDataValue(T originalValue, string name):
+        this(0, originalValue, string.Empty)
+    {}
 
-        //public EZFunNumber<T> GetValue(CreatureAttributeValueType type)
-        //{
-        //    return _datas[(int)type].m_value;
-        //}
+    public CreatureDataValue(int type, T originalValue, string name)
+    {
+        Name = name;
+        Init();
+        SetValue(type, originalValue);
+        RefreshValue();
+    }
 
-        //public void AddValue(CreatureAttributeValueType type, T value)
-        //{
-        //    if (type == CreatureAttributeValueType.Total)
-        //    {
-        //        throw new ArgumentException("Don't Support Add TotalValue");
-        //    }
-        //    //double beforeValue = _datas[(int)type].m_value.ToDouble();
-        //    var v = new EZFunNumber<T>(value);
-        //    _datas[(int)type].m_value += v;
-        //    //double curvalue = _datas[(int)type].m_value.ToDouble();
-            
-        //    RefreshValue();
-            
-        //}
+    public void Init()
+    {
+        _data = new Dictionary<int, ENum<T>>();
+        _data.Add((int)CreatureAttributeValueType.Original, new ENum<T>());
+        _data.Add((int)CreatureAttributeValueType.Total, new ENum<T>());
+        _scale = new ENum<float>(1);
+    }
 
-        //public void MinusValue(CreatureAttributeValueType type, T value)
-        //{
-        //    if (type == CreatureAttributeValueType.Total)
-        //    {
-        //        throw new ArgumentException("Don't Support Add TotalValue");
-        //    }
-        //    //double beforeValue = _datas[(int)type].m_value.ToDouble();
-        //    var v = new EZFunNumber<T>(value);
-        //    _datas[(int)type].m_value -= v;
-        //    //double curvalue = _datas[(int)type].m_value.ToDouble();
-            
-        //    RefreshValue();
-            
-        //}
+    public void SetValue(int type, T value)
+    {
+        SetValue(type, new ENum<T>(value));
+    }
 
-        //public EvalueData<T> GetCValue(CreatureAttributeValueType type)
-        //{
-        //    return _datas[(int)type];
-        //}
+    public void SetValue(int type, ENum<T> value)
+    {
+        //double beforeValue = _datas[(int)type].m_value.ToDouble();
+        if(!_data.ContainsKey(type))
+        {
+            _data.Add(type, value);
+        }
+        else
+        {
+            _data[type] = value;    
+        }
+        //double curValue = _datas[(int)type].m_value.ToDouble();
+        RefreshValue();
+    }
 
-        //public void RefreshValue()
-        //{
-        //    var v =
-        //        (
-        //        GetValue(CreatureAttributeValueType.Original) +
-        //        GetValue(CreatureAttributeValueType.Equip) +
-        //        GetValue(CreatureAttributeValueType.WeaponValue) +
-        //        GetValue(CreatureAttributeValueType.BuffEffect) +
-        //        GetValue(CreatureAttributeValueType.Debug)
-        //        ) *
-        //        GetValue(CreatureAttributeValueType.TotalScale);
-            
-        //    SetValue(CreatureAttributeValueType.Total, v);   
-        //}
+    public ENum<T> GetValue(int type)
+    {
+        if(_data.ContainsKey(type))
+            return _data[type];
+        return new ENum<T>();
+    }
+
+    public void AddValue(int type, T value)
+    {
+        //double beforeValue = _datas[(int)type].m_value.ToDouble();
+        var v = new ENum<T>(value);
+        _data[type].Value += v.Value;
+        //double curvalue = _datas[(int)type].m_value.ToDouble();
+        RefreshValue();
+
+    }
+
+    public void MinusValue(int type, T value)
+    {
+        //double beforeValue = _datas[(int)type].m_value.ToDouble();
+        var v = new ENum<T>(value);
+        _data[type].Value -= v.Value;
+        //double curvalue = _datas[(int)type].m_value.ToDouble();
+        RefreshValue();
+    }
+
+    public void RefreshValue()
+    {
+        var v =
+            (
+            GetValue(CreatureAttributeValueType.Original) +
+            GetValue(CreatureAttributeValueType.Equip) +
+            GetValue(CreatureAttributeValueType.WeaponValue) +
+            GetValue(CreatureAttributeValueType.BuffEffect) +
+            GetValue(CreatureAttributeValueType.Debug)
+            ) *
+            _scale.Value;
+
+        _total.Value = v;
+    }
 }

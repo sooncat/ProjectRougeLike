@@ -2,15 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemDataConfig : MonoBehaviour {
+public class ItemDataConfig {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public int Id;
+    public string Name;
+    public string Description;
+
+    public int Lv;
+    public string Icon;
+    public int Price;
+    
 }

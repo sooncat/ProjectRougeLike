@@ -68,7 +68,7 @@ namespace com.initialworld.framework
     /// 加密数据
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public struct ENum<T> where T : struct
+    public struct ENum<T>
     {
         private byte[] _val;
         private int _intKey;
