@@ -1,0 +1,26 @@
+{
+	"Data": [{
+		"Id": 1,
+		"Name": "M1",
+		"Description": "this is M1",
+		"Lv": 1,
+		"Sex": 1,
+		"Hp": 1000,
+		"Mp": 500,
+		"Def": 50,
+		"Att": 100,
+		"Ai": 1
+	},
+	{
+		"Id": 2,
+		"Name": "M2",
+		"Description": "this is M2",
+		"Lv": 2,
+		"Sex": 0,
+		"Hp": 2000,
+		"Mp": 1000,
+		"Def": 100,
+		"Att": 200,
+		"Ai": 2
+	}]
+}

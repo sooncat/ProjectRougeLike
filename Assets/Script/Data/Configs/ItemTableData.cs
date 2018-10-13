@@ -2,9 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemDataConfig {
 
-    public int Id;
+public class ItemTableData : IDataConfig
+{
+    public List<ItemDataInfo> Data;
+
+    public IList GetDataInfoList()
+    {
+        return Data;
+    }
+}
+public class ItemDataInfo : BaseDataInfo
+{
+
     public string Name;
     public string Description;
 

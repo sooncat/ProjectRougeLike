@@ -1,0 +1,18 @@
+{
+	"Data": [{
+		"Id": 1,
+		"Name": "Item1",
+		"Description": "this is Item1",
+		"Lv": 1,
+		"Icon": "icon1",
+		"Price": 100
+	},
+	{
+		"Id": 2,
+		"Name": "Item2",
+		"Description": "this is Item2",
+		"Lv": 2,
+		"Icon": "icon2",
+		"Price": 200
+	}]
+}

@@ -22,8 +22,8 @@ public class FightState : BaseGameState {
         {
             TypeNameHandling = TypeNameHandling.All
         };
-        byte[] b = Util.ReadFile("Assets/StreamingAssets/StageConfig/" + _stageName + ".json");
-        string str = System.Text.Encoding.UTF8.GetString(b);
+        
+        string str = IOUtils.ReadFileString("Assets/StreamingAssets/StageConfig/" + _stageName + ".json");
         _stageConfig = JsonConvert.DeserializeObject<StageConfig>(str, settings);
 
         EventSys.Instance.AddEvent(LogicEvent.DrawFightUi, _stageConfig);

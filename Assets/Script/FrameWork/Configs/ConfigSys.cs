@@ -24,7 +24,7 @@ public class ConfigSys : ISystem {
 
     public void InitJsonConfig<T>(string filePath)
     {
-        byte[] b = Util.ReadFile(filePath);
+        byte[] b = IOUtils.ReadFile(filePath);
         string str = System.Text.Encoding.UTF8.GetString(b);
         T result = JsonMapper.ToObject<T>(str);
         _configs.Add(typeof(T), result);

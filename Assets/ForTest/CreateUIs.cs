@@ -182,7 +182,7 @@ public class CreateUIs : MonoBehaviour {
                 TypeNameHandling = TypeNameHandling.All
             };
             string temp = JsonConvert.SerializeObject(stageConfig, settings);
-            Util.SaveFile(temp, "Assets/sc10.json");
+            IOUtils.SaveFile(temp, "Assets/sc10.json");
         }
         else if(id == 2)
         {
@@ -190,7 +190,7 @@ public class CreateUIs : MonoBehaviour {
             {
                 TypeNameHandling = TypeNameHandling.All
             };
-            byte[] b = Util.ReadFile("Assets/sc10.json");
+            byte[] b = IOUtils.ReadFile("Assets/sc10.json");
             string str = System.Text.Encoding.UTF8.GetString(b);
             StageConfig sc = JsonConvert.DeserializeObject<StageConfig>(str, settings);
         }

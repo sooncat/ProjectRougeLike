@@ -2,9 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HeroDataConfig {
+public class MonsterTableData : IDataConfig
+{
+    public List<MonsterDataInfo> Data;
 
-    public int Id;
+    public IList GetDataInfoList()
+    {
+        return Data;
+    }
+}
+
+public class MonsterDataInfo : BaseDataInfo
+{
+
     public string Name;
     public string Description;
 
@@ -15,4 +25,6 @@ public class HeroDataConfig {
     public int Mp;
     public int Def;
     public int Att;
+
+    public int Ai;
 }

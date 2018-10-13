@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-public class Util {
+public class IOUtils {
 
     // 读取streamassets目录中的文件
     public static byte[] ReadFile(string path)
@@ -26,6 +26,12 @@ public class Util {
         }
 
         return b;
+    }
+
+    public static string ReadFileString(string path)
+    {
+        byte[] data = ReadFile(path);
+        return System.Text.Encoding.UTF8.GetString(data);
     }
 
     public static byte[] ReadFileStream(string path)

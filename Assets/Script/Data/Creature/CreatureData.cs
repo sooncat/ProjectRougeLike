@@ -12,25 +12,25 @@ public class CreatureData {
     //base property
     public ENum<int> Lv;
     public ENum<int> Sex;
-    public ENum<int> Hp;
-    public ENum<int> Mp;
-    public ENum<int> Def;
-    public ENum<int> Att;
+    public CENum<int> Hp;
+    public CENum<int> Mp;
+    public CENum<int> Def;
+    public CENum<int> Att;
 
     //advanced property
-    public ENum<int> HpMax;
+    public CENum<int> HpMax;
     public float HpPercent
     {
         get { return (float)Hp.Value / HpMax.Value; }
     }
-    public ENum<int> MpMax;
+    public CENum<int> MpMax;
     public float MpPercent
     {
         get { return (float)Mp.Value / MpMax.Value; }
     }
 
-
-
     public CreatureData()
-    {}
+    {
+        
+    }
 }

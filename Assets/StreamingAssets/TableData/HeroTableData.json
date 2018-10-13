@@ -1,0 +1,24 @@
+{
+	"Data": [{
+		"Id": 1,
+		"Name": "Hero1",
+		"Description": "this is Hero1",
+		"Lv": 1,
+		"Sex": 1,
+		"Hp": 1000,
+		"Mp": 500,
+		"Def": 50,
+		"Att": 100
+	},
+	{
+		"Id": 2,
+		"Name": "Hero2",
+		"Description": "this is Hero2",
+		"Lv": 2,
+		"Sex": 0,
+		"Hp": 2000,
+		"Mp": 1000,
+		"Def": 100,
+		"Att": 200
+	}]
+}
