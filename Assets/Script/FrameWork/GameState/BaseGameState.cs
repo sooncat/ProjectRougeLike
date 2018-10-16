@@ -38,7 +38,7 @@ public class BaseGameState {
     }
     public void BaseReset() { Reset(); }
     public virtual void Reset() { }
-    public virtual void Enter(object parameter)
+    public virtual void Enter(GameStateParameter parameter)
     {
         CatDebug.LogFunc(1);
 

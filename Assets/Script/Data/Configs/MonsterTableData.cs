@@ -19,12 +19,11 @@ public class MonsterDataInfo : BaseDataInfo
     public string Description;
 
     //fight property
-    public int Lv;
     public int Sex;
     public int Hp;
     public int Mp;
     public int Def;
     public int Att;
 
-    public int Ai;
+    public List<int> DropIds;
 }

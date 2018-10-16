@@ -1,18 +1,34 @@
 {
 	"Data": [{
 		"Id": 1,
-		"Name": "Item1",
-		"Description": "this is Item1",
+		"Name": "止血草",
+		"Description": "常见草药，恢复少量HP",
 		"Lv": 1,
 		"Icon": "icon1",
 		"Price": 100
 	},
 	{
 		"Id": 2,
-		"Name": "Item2",
-		"Description": "this is Item2",
+		"Name": "薄荷草",
+		"Description": "帮助提神，恢复少量MP",
 		"Lv": 2,
 		"Icon": "icon2",
+		"Price": 200
+	},
+	{
+		"Id": 3,
+		"Name": "武功秘籍残页",
+		"Description": "收集一定数量可以分析该武功的弱点",
+		"Lv": 3,
+		"Icon": "icon3",
+		"Price": 1
+	},
+	{
+		"Id": 4,
+		"Name": "袖箭",
+		"Description": "任何人都可以使用的暗器，固定100点伤害",
+		"Lv": 3,
+		"Icon": "icon4",
 		"Price": 200
 	}]
 }

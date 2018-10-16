@@ -8,10 +8,21 @@ public class FightState : BaseGameState {
     string _stageName;
     StageConfig _stageConfig;
 
-    public override void Enter(object parameter)
+    Dictionary<int, Hero> _heros;
+    Dictionary<int, Enemy> _enemies;
+
+    public override void Enter(GameStateParameter parameter)
     {
         base.Enter(parameter);
-        _stageName = parameter.ToString();
+
+        FightStateParameter fsParameter = (FightStateParameter)parameter;
+
+        _stageName = fsParameter.nextType.ToString();
+        _heros = new Dictionary<int, Hero>();
+        foreach (Hero hero in fsParameter.heros)
+        {
+            _heros.Add(hero.Id, hero);
+        }
     }
 
     protected override void OnUiLoaded(int id, object p1, object p2)
@@ -28,6 +39,26 @@ public class FightState : BaseGameState {
 
         EventSys.Instance.AddEvent(LogicEvent.DrawFightUi, _stageConfig);
 
+        CreateCreatures();
+
         OnAllPreLoaded();
+    }
+
+    void CreateCreatures()
+    {
+        _enemies = new Dictionary<int, Enemy>();
+        foreach (StageLayer sl in _stageConfig.Layers)
+        {
+            foreach (BaseStageNode node in sl.Nodes)
+            {
+                if(node is StageNodeFight)
+                {
+                    StageNodeFight nodeF = (StageNodeFight)node;
+                    Enemy enemy = new Enemy(nodeF.EnemyId, nodeF.EnemyLv, nodeF.EnemyAi);
+                    _enemies.Add(nodeF.Id, enemy);
+                    Debug.Log("enemy.name = " + enemy.CreatureData.Name);
+                }
+            }
+        }
     }
 }

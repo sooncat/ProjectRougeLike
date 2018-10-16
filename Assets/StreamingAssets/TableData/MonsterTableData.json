@@ -1,26 +1,27 @@
 {
 	"Data": [{
-		"Id": 1,
+		"Id": 100,
 		"Name": "M1",
 		"Description": "this is M1",
-		"Lv": 1,
+		"Icon":"ico_head_anduxie",
 		"Sex": 1,
 		"Hp": 1000,
 		"Mp": 500,
 		"Def": 50,
 		"Att": 100,
-		"Ai": 1
+		"Ai": 1,
+		"DropIds":[1,2,3]
 	},
 	{
-		"Id": 2,
+		"Id": 200,
 		"Name": "M2",
-		"Description": "this is M2",
-		"Lv": 2,
+		"Description": "icon_head_guidiao",
+		"Icon":"",
 		"Sex": 0,
 		"Hp": 2000,
 		"Mp": 1000,
 		"Def": 100,
 		"Att": 200,
-		"Ai": 2
+		"DropIds":[2,3,4]
 	}]
 }

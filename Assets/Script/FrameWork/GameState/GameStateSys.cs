@@ -29,7 +29,7 @@ public class GameStateSys : ISystem {
     private List<BaseGameState> _gameStateList;
     private BaseGameState _nowState;
     private Type _willStateType;
-    private object _willStateParameter;
+    private GameStateParameter _willStateParameter;
 
     public void InitState<T>() where T:BaseGameState, new()
     {
@@ -69,7 +69,7 @@ public class GameStateSys : ISystem {
         _willStateParameter = null;
         if(p2!=null)
         {
-            _willStateParameter = p2;
+            _willStateParameter = (GameStateParameter)p2;
         }
         
         ChangeState(t);
@@ -80,7 +80,7 @@ public class GameStateSys : ISystem {
         if (_nowState == null)
         {
             _nowState = GetState(type);
-            _nowState.Enter(_willStateType);
+            _nowState.Enter(null);
             _willStateType = null;
             return;
         }

@@ -22,12 +22,12 @@ public class GameMain : BaseMain {
         ConfigDataMgr.Instance.Load<ItemTableData>();
 
         //test
-        HeroDataInfo hero1 = (HeroDataInfo)ConfigDataMgr.Instance.GetDataInfo<HeroTableData>(1);
-        Debug.Log("hero1 = " + hero1.Name);
-        MonsterDataInfo monster1 = (MonsterDataInfo)ConfigDataMgr.Instance.GetDataInfo<MonsterTableData>(1);
-        Debug.Log("monster1 = " + monster1.Name);
-        ItemDataInfo item1 = (ItemDataInfo)ConfigDataMgr.Instance.GetDataInfo<ItemTableData>(1);
-        Debug.Log("item1 = " + item1.Name);
+        //HeroDataInfo hero1 = (HeroDataInfo)ConfigDataMgr.Instance.GetDataInfo<HeroTableData>(1);
+        //Debug.Log("hero1 = " + hero1.Name);
+        //MonsterDataInfo monster1 = (MonsterDataInfo)ConfigDataMgr.Instance.GetDataInfo<MonsterTableData>(1);
+        //Debug.Log("monster1 = " + monster1.Name);
+        //ItemDataInfo item1 = (ItemDataInfo)ConfigDataMgr.Instance.GetDataInfo<ItemTableData>(1);
+        //Debug.Log("item1 = " + item1.Name);
         //test end
 
         GameStateSys.Instance.InitState<LoginState>();

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : Person {
-
-    public int Ai;
-    public int DropId;
+public class GameStateParameter {
 
 }

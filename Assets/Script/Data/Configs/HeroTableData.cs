@@ -18,10 +18,10 @@ public class HeroDataInfo : BaseDataInfo {
     public string Description;
 
     //fight property
-    public int Lv;
     public int Sex;
     public int Hp;
     public int Mp;
     public int Def;
     public int Att;
+
 }

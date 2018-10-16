@@ -29,8 +29,17 @@ public class CreatureData {
         get { return (float)Mp.Value / MpMax.Value; }
     }
 
-    public CreatureData()
+    /// <summary>
+    /// 会增加属性值的类型
+    /// </summary>
+    public enum PropertyType : int
     {
-        
+        Origin,
+        Debug,
+        Buff,
+        Equip,
+        Weapon,
+        Pet,
+        Gem
     }
 }

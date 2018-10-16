@@ -1,24 +1,35 @@
 {
 	"Data": [{
 		"Id": 1,
-		"Name": "Hero1",
-		"Description": "this is Hero1",
-		"Lv": 1,
+		"Name": "墨香",
+		"Description": "墨门大弟子，善使剑",
+		"Job": 1,
 		"Sex": 1,
 		"Hp": 1000,
 		"Mp": 500,
-		"Def": 50,
+		"Def": 100,
 		"Att": 100
 	},
 	{
 		"Id": 2,
-		"Name": "Hero2",
-		"Description": "this is Hero2",
-		"Lv": 2,
+		"Name": "香香",
+		"Description": "墨门情报人员，善于打探情报",
+		"Job": 2,
 		"Sex": 0,
-		"Hp": 2000,
+		"Hp": 500,
+		"Mp": 500,
+		"Def": 50,
+		"Att": 50
+	},
+	{
+		"Id": 3,
+		"Name": "唐栯独",
+		"Description": "墨门技术人员，善于机关之术",
+		"Job": 3,
+		"Sex": 1,
+		"Hp": 500,
 		"Mp": 1000,
-		"Def": 100,
-		"Att": 200
+		"Def": 50,
+		"Att": 100
 	}]
 }
