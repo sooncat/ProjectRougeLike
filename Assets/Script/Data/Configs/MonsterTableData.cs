@@ -24,6 +24,7 @@ public class MonsterDataInfo : BaseDataInfo
     public int Mp;
     public int Def;
     public int Att;
+    public string Icon;
 
     public List<int> DropIds;
 }

@@ -20,6 +20,7 @@ public class EnemyData : CreatureData {
         Mp = new CENum<int>((int)PropertyType.Origin, dataInfo.Mp);
         Def = new CENum<int>((int)PropertyType.Origin, dataInfo.Def);
         Att = new CENum<int>((int)PropertyType.Origin, dataInfo.Att);
+        Icon = dataInfo.Icon;
 
         Ai = new ENum<int>(ai);
         DropIds = new List<ENum<int>>();

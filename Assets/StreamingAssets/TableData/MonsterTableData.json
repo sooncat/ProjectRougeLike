@@ -1,9 +1,9 @@
 {
 	"Data": [{
 		"Id": 100,
-		"Name": "M1",
-		"Description": "this is M1",
-		"Icon":"ico_head_anduxie",
+		"Name": "暗毒蝎",
+		"Description": "艾吉奥饲养的异物，体型非常庞大的蝎子。非常残暴好战，有时甚至会违抗艾吉奥。",
+		"Icon":"Assets/Res/Icon/cards/ico_head_anduxie",
 		"Sex": 1,
 		"Hp": 1000,
 		"Mp": 500,
@@ -14,9 +14,9 @@
 	},
 	{
 		"Id": 200,
-		"Name": "M2",
-		"Description": "icon_head_guidiao",
-		"Icon":"",
+		"Name": "艾吉奥",
+		"Description": "闻名西域的大盗，常年流窜在中原和西域的盗匪头目，其情报网十分发达，得知玉玺被盗之后，打算趁火打劫。",
+		"Icon":"Assets/Res/Icon/cards/ico_head_feitianshadao",
 		"Sex": 0,
 		"Hp": 2000,
 		"Mp": 1000,

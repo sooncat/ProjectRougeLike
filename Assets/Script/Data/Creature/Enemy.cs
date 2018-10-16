@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class Enemy : Creature, ICreature
 {
     
-    public EnemyData Data;
+    EnemyData Data;
 
     public CreatureData CreatureData
     {
@@ -18,4 +20,7 @@ public class Enemy : Creature, ICreature
         MonsterDataInfo monsterTableDataInfo = (MonsterDataInfo)ConfigDataMgr.Instance.GetDataInfo<MonsterTableData>(Id);
         Data = new EnemyData(monsterTableDataInfo, lv, ai);
     }
+
+    
+
 }

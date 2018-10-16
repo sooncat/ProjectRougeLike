@@ -160,7 +160,7 @@
 					"Index": 0,
 					"Name": "FighBoss",
 					"Description": "",
-					"Icon": "Assets/Res/Icon/cards/ico_head_baoshi",
+					"Icon": "Assets/Res/Icon/cards/ico_head_feitianshadao",
 					"NodeType": "StageNodeFight",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
