@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FightStateParameter : GameStateParameter {
+public enum ViewEvent : int {
 
-    public string nextType;
+    ChangeState = 30000,
+    
 }

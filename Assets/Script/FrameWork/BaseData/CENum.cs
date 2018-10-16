@@ -63,6 +63,7 @@ public class CENum<T>
         _scaleData = new Dictionary<int, ENum<float>>();
         _scaleTotal = new ENum<float>(1); //默认值
         _dataTotal = new ENum<T>();
+        _total = new ENum<T>();
     }
 
     public void SetValue(int type, T value)

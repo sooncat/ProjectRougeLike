@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FightStateParameter : GameStateParameter {
+public class FightHero {
 
-    public string nextType;
+	
 }

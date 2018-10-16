@@ -5,6 +5,13 @@ using UnityEngine;
 public class NetMessages {
 
 	
+    public class PlayerData
+    {
+        public List<HeroServerData> Heros;
+        public List<ItemServerData> Items;
+        
+    }
+
     public class HeroServerData
     {
         public int Id;
@@ -16,4 +23,9 @@ public class NetMessages {
         public int EquipLv;
     }
 
+    public class ItemServerData
+    {
+        public int Id;
+        public int Count;
+    }
 }

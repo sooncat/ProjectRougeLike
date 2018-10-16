@@ -1,10 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 
-public class UIEvent {
+public enum DataEvent {
 
-    public const int LoadingPercentChanged = 20000;
-
-    
+	None = 20000,
 }

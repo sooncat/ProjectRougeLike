@@ -118,6 +118,12 @@ public class EventSys : ISystem
         }
     }
 
+    public void AddHander(Enum e, EventSysCallBack callBack)
+    {
+        int eId = Convert.ToInt32(e);
+        AddHander(eId, callBack);
+    }
+
     /// <summary>
     /// 注意大多数系统 *State 都没有RemoveHander
     /// 这意味着在使用事件时要区分清楚，不同系统之间最好不要共用同一个事件，否则会有混乱的调用
@@ -131,12 +137,16 @@ public class EventSys : ISystem
         }
     }
 
+    public void AddEvent(Enum e, object param1 = null, object param2 = null)
+    {
+        int eId = Convert.ToInt32(e);
+        AddEvent( eId , param1, param2);
+    }
+
     public void AddEvent(int eventId, object param1 = null, object param2 = null)
     {
         lock (Lock)
         {
-            if(eventId == LogicEvent.SceneLoadEnd)
-                CatDebug.Log("AddEvent = SceneLoadEnd", CatLogType.CatEvent);
             string stackMsg = string.Empty;
             if (_recordStackList.Contains(eventId) || _isRecordAll)
             {

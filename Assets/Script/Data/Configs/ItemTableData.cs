@@ -21,5 +21,7 @@ public class ItemDataInfo : BaseDataInfo
     public int Lv;
     public string Icon;
     public int Price;
+    public int Type;
+    public string Command;
     
 }

@@ -19,28 +19,12 @@ public class CityUI : BaseUI {
     {
         FightStateParameter fsParameter = new FightStateParameter();
         fsParameter.nextType = "stage1";
-        fsParameter.heros = new List<Hero>();
-
-        for (int i = 1; i <= 3;i++ )
-        {
-            NetMessages.HeroServerData hsData = new NetMessages.HeroServerData();
-            hsData.Id = i;
-            hsData.Lv = 1;
-            hsData.EquipId = 1;
-            hsData.EquipLv = 1;
-            hsData.PetId = 1;
-            hsData.WeaponId = 1;
-            hsData.WeaponLv = 1;
-
-            Hero h = new Hero(hsData);
-            fsParameter.heros.Add(h);
-        }
-
-        EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(FightState), fsParameter);
+        
+        EventSys.Instance.AddEvent(ViewEvent.ChangeState, typeof(FightState), fsParameter);
     }
 
     void OnBtnExitClicked()
     {
-        EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(LoginState));
+        EventSys.Instance.AddEvent(ViewEvent.ChangeState, typeof(LoginState));
     }
 }

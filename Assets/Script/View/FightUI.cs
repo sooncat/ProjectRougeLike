@@ -37,12 +37,12 @@ public class FightUI : BaseUI
         _lineModel = _stageDetail.GetRef("Slider_model").gameObject;
         _layerNameModel = _stageDetail.GetRef("LayerName_model").gameObject;
 
-        EventSys.Instance.AddHander(LogicEvent.DrawFightUi, OnDrawFightUi);
+        EventSys.Instance.AddHander(LogicEvent.DrawFightStageUi, OnDrawFightUi);
     }
 
     void OnBtnExitClicked()
     {
-        EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(CityState));
+        EventSys.Instance.AddEvent(ViewEvent.ChangeState, typeof(CityState));
     }
 
     void OnDrawFightUi(int id, object p1, object p2)

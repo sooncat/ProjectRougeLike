@@ -51,10 +51,10 @@ public class CreateUIs : MonoBehaviour {
         nodeFightBoss.SetData(200, 1, 1);
 
         StageNodeReward nodeReward1 = new StageNodeReward(11, 1, "Reward", "", "Assets/Res/Icon/cards/ico_head_guidiao");
-        nodeReward1.SetData(10000, 1);
+        nodeReward1.SetData(new [] { 10000, 10001 }, new []{ 10, 20 });
         nodeReward1.NextNodes.Add(20); nodeReward1.NextNodes.Add(21);
         StageNodeReward nodeReward2 = new StageNodeReward(21, 0, "Reward", "", "Assets/Res/Icon/cards/ico_head_guidiao");
-        nodeReward2.SetData(10001, 1);
+        nodeReward2.SetData(new [] { 10000, 10001 }, new [] { 20, 10 });
         nodeReward2.NextNodes.Add(30);
 
         StageLayer layer0 = new StageLayer(0, "Start", "");
@@ -184,7 +184,7 @@ public class CreateUIs : MonoBehaviour {
             string temp = JsonConvert.SerializeObject(stageConfig, settings);
             IOUtils.SaveFile(temp, "Assets/sc10.json");
         }
-        else if(id == 2)
+        else if (id == 2)
         {
             JsonSerializerSettings settings = new JsonSerializerSettings
             {
@@ -194,12 +194,12 @@ public class CreateUIs : MonoBehaviour {
             string str = System.Text.Encoding.UTF8.GetString(b);
             StageConfig sc = JsonConvert.DeserializeObject<StageConfig>(str, settings);
         }
-        else if(id ==10)
+        else if (id == 10)
         {
-            
 
-            
-            
+
+
+
         }
     }
 

@@ -15,6 +15,6 @@ public class LoginUI : BaseUI
 
     void OnBtnLoginClicked()
     {
-        EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(CityState));
+        EventSys.Instance.AddEvent(ViewEvent.ChangeState, typeof(CityState));
     }
 }

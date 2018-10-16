@@ -8,21 +8,12 @@ public class FightState : BaseGameState {
     string _stageName;
     StageConfig _stageConfig;
 
-    Dictionary<int, Hero> _heros;
-    Dictionary<int, Enemy> _enemies;
-
     public override void Enter(GameStateParameter parameter)
     {
         base.Enter(parameter);
 
         FightStateParameter fsParameter = (FightStateParameter)parameter;
-
-        _stageName = fsParameter.nextType.ToString();
-        _heros = new Dictionary<int, Hero>();
-        foreach (Hero hero in fsParameter.heros)
-        {
-            _heros.Add(hero.Id, hero);
-        }
+        _stageName = fsParameter.nextType;
     }
 
     protected override void OnUiLoaded(int id, object p1, object p2)
@@ -34,31 +25,14 @@ public class FightState : BaseGameState {
             TypeNameHandling = TypeNameHandling.All
         };
         
-        string str = IOUtils.ReadFileString("Assets/StreamingAssets/StageConfig/" + _stageName + ".json");
+        string str = IOUtils.ReadFileString(GameConstants.StageConfigPath + _stageName + GameConstants.StageConfigTail);
         _stageConfig = JsonConvert.DeserializeObject<StageConfig>(str, settings);
 
-        EventSys.Instance.AddEvent(LogicEvent.DrawFightUi, _stageConfig);
-
-        CreateCreatures();
-
+        EventSys.Instance.AddEvent(LogicEvent.CreateFightStageData, _stageConfig);
+        EventSys.Instance.AddEvent(LogicEvent.DrawFightStageUi, _stageConfig);
+        
         OnAllPreLoaded();
     }
 
-    void CreateCreatures()
-    {
-        _enemies = new Dictionary<int, Enemy>();
-        foreach (StageLayer sl in _stageConfig.Layers)
-        {
-            foreach (BaseStageNode node in sl.Nodes)
-            {
-                if(node is StageNodeFight)
-                {
-                    StageNodeFight nodeF = (StageNodeFight)node;
-                    Enemy enemy = new Enemy(nodeF.EnemyId, nodeF.EnemyLv, nodeF.EnemyAi);
-                    _enemies.Add(nodeF.Id, enemy);
-                    Debug.Log("enemy.name = " + enemy.CreatureData.Name);
-                }
-            }
-        }
-    }
+    
 }
