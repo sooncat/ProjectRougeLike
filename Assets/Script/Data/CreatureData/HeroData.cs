@@ -14,7 +14,7 @@ public class HeroData : CreatureData {
     public ENum<int> EquipLv { private set; get; }
 
     public List<ENum<int>> Items;
-
+    
     public HeroData(HeroDataInfo dataInfo, int lv)
     {
         Id = dataInfo.Id;
@@ -34,7 +34,7 @@ public class HeroData : CreatureData {
 
         //EquipId = new ENum<int>(dataInfo.Equip);
         //EquipLv = new ENum<int>(1);
-
+        Cg = dataInfo.Cg;
 
     }
 

@@ -17,6 +17,7 @@ public class CreatureData {
     public CENum<int> Def;
     public CENum<int> Att;
     public string Icon;
+    public string Cg;
 
     //advanced property
     public CENum<int> HpMax;

@@ -21,6 +21,7 @@ public class EnemyData : CreatureData {
         Def = new CENum<int>((int)PropertyType.Origin, dataInfo.Def);
         Att = new CENum<int>((int)PropertyType.Origin, dataInfo.Att);
         Icon = dataInfo.Icon;
+        Cg = dataInfo.Cg;
 
         Ai = new ENum<int>(ai);
         DropIds = new List<ENum<int>>();
