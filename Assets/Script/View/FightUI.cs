@@ -25,6 +25,8 @@ public class FightUI : BaseUI
     Dictionary<int, Transform> _nodeUIs;
     Dictionary<int, Transform> _nodeLines;
 
+    Canvas _stageCanvas;
+
     private const int LayerGap = 150;
     private const int LayerNameWidth = 200;
     int _layerHeight;
@@ -44,6 +46,7 @@ public class FightUI : BaseUI
     {
 
         UINode sRoot = rootNode.GetNode("Stage");
+        _stageCanvas = sRoot.GetComponent<Canvas>();
 
         Button btnExit = sRoot.GetRef("ButtonExit").GetComponent<Button>();
         btnExit.onClick.AddListener(OnBtnExitClicked);
@@ -149,6 +152,21 @@ public class FightUI : BaseUI
         Sprite newSprite = ResourceSys.Instance.GetSprite(stageNode.Icon);
         nodeImage.sprite = newSprite;
 
+        if(stageNode.NodeType.Equals(typeof(StageNodeStart).Name))
+        {
+            Dragable drag = go.AddComponent<Dragable>();
+            drag.ActionId = stageNode.Id;
+            drag.OnDragStart = OnDrag;
+            drag.Canv = _stageCanvas;
+            //drag.DragIcon = ResourceSys.Instance.GetSprite();
+        }
+        else
+        {
+            Dropable drop = go.AddComponent<Dropable>();
+            drop.ActionId = stageNode.Id;
+            drop.OnDroped = OnDrop;
+        }
+        
         _nodeUIs.Add(stageNode.Id, go.transform);
     }
 
@@ -281,6 +299,16 @@ public class FightUI : BaseUI
         }
 
         _rewardNode.gameObject.SetActive(false);
+    }
+
+    void OnDrag(int nodeID)
+    {
+        Debug.Log("OnDrag = " + nodeID);
+    }
+
+    void OnDrop(int nodeID)
+    {
+        Debug.Log("OnDrop = " + nodeID);
     }
 
 
