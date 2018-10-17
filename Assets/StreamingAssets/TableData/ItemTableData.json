@@ -4,7 +4,7 @@
 		"Name": "止血草",
 		"Description": "常见草药，恢复少量HP",
 		"Lv": 1,
-		"Icon": "icon1",
+		"Icon": "Assets/Res/Icon/Item/icon_material_upgrade81002",
 		"Price": 100,
 		"Type":1,
 		"Command":""
@@ -14,7 +14,7 @@
 		"Name": "薄荷草",
 		"Description": "帮助提神，恢复少量MP",
 		"Lv": 2,
-		"Icon": "icon2",
+		"Icon": "Assets/Res/Icon/Item/icon_material_upgrade80101",
 		"Price": 200,
 		"Type":1,
 		"Command":""
@@ -24,7 +24,7 @@
 		"Name": "武功秘籍残页",
 		"Description": "收集一定数量可以分析该武功的弱点",
 		"Lv": 3,
-		"Icon": "icon3",
+		"Icon": "Assets/Res/Icon/Item/icon_material_upgrade11003",
 		"Price": 1,
 		"Type": 0,
 		"Command":""
@@ -44,7 +44,7 @@
 		"Name": "铜钱",
 		"Description": "基本货币",
 		"Lv": 3,
-		"Icon": "icon10000",
+		"Icon": "Assets/Res/Icon/Item/goldqian",
 		"Price": 1,
 		"Type": 100,
 		"Command":""

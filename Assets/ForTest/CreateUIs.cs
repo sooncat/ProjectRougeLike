@@ -138,7 +138,7 @@ public class CreateUIs : MonoBehaviour {
         go.transform.localPosition = new Vector3(posX, posY, 0);
 
         Image nodeImage = go.GetComponent<Image>();
-        Sprite newSprite = ResourceSys.Instance.GetIcon(stageNode.Icon);
+        Sprite newSprite = ResourceSys.Instance.GetSprite(stageNode.Icon);
         nodeImage.sprite = newSprite;
 
         nodeUIs.Add(stageNode.Id, go.transform);

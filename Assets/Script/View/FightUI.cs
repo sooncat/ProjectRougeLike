@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Experimental.UIElements;
 using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
+using Slider = UnityEngine.UI.Slider;
 
 public class FightUI : BaseUI
 {
@@ -16,6 +20,7 @@ public class FightUI : BaseUI
     GameObject _layerNameModel;
 
     UINode _fightNode;
+    UINode _rewardNode;
     
     Dictionary<int, Transform> _nodeUIs;
     Dictionary<int, Transform> _nodeLines;
@@ -56,7 +61,7 @@ public class FightUI : BaseUI
     {
         _fightNode = rootNode.GetNode("FightNodeDetail");
         Button fightBtn = _fightNode.GetRef("Fight").GetComponent<Button>();
-        fightBtn.onClick.AddListener(()=>{});
+        fightBtn.onClick.AddListener(()=> { });
         Button exitBtn = _fightNode.GetRef("Exit").GetComponent<Button>();
         exitBtn.onClick.AddListener(() => { _fightNode.gameObject.SetActive(false); });
 
@@ -65,7 +70,13 @@ public class FightUI : BaseUI
 
     void InitRewardNodeUi(UINode rootNode)
     {
-        
+        _rewardNode = rootNode.GetNode("RewardNodeDetail");
+        Button fightBtn = _rewardNode.GetRef("Go").GetComponent<Button>();
+        fightBtn.onClick.AddListener(() => { });
+        Button exitBtn = _rewardNode.GetRef("Exit").GetComponent<Button>();
+        exitBtn.onClick.AddListener(HideRewardView);
+
+        _rewardNode.gameObject.SetActive(false);
     }
 
     void OnBtnExitClicked()
@@ -135,7 +146,7 @@ public class FightUI : BaseUI
         go.transform.localPosition = new Vector3(posX, posY, 0);
 
         Image nodeImage = go.GetComponent<Image>();
-        Sprite newSprite = ResourceSys.Instance.GetIcon(stageNode.Icon);
+        Sprite newSprite = ResourceSys.Instance.GetSprite(stageNode.Icon);
         nodeImage.sprite = newSprite;
 
         _nodeUIs.Add(stageNode.Id, go.transform);
@@ -199,7 +210,7 @@ public class FightUI : BaseUI
     {
         Enemy enemy = FightDataMgr.Instance.GetEnemy(id);
         Image icon = _fightNode.GetRef("Icon").GetComponent<Image>();
-        icon.sprite = ResourceSys.Instance.GetIcon(enemy.CreatureData.Icon);
+        icon.sprite = ResourceSys.Instance.GetSprite(enemy.CreatureData.Icon);
 
         Text detail = _fightNode.GetRef("Info").GetComponent<Text>();
         detail.text = GetPropertyDescription(enemy);
@@ -215,9 +226,62 @@ public class FightUI : BaseUI
 
     void ShowNodeReward(int id)
     {
+        Reward reward = FightDataMgr.Instance.GetReward(id);
+
+        UINode itemNode = _rewardNode.GetNode("Item_model");
+        Transform scTrans = _rewardNode.GetRef("Content");
+        foreach (Item item in reward.Data)
+        {
+            GameObject newNodeObj = GameObject.Instantiate(itemNode.gameObject, scTrans);
+            //newNodeObj.transform.SetParent(scTrans);
+            
+            UINode newNode = newNodeObj.GetComponent<UINode>();
+            Image bg = newNode.GetRef("Bg").GetComponent<Image>();
+            bg.sprite = ResourceSys.Instance.GetFrame(item.Lv.Value);
+            Image icon = newNode.GetRef("Icon").GetComponent<Image>();
+            icon.sprite = ResourceSys.Instance.GetSprite(item.Icon);
+            Text itemName = newNode.GetRef("Name").GetComponent<Text>();
+            itemName.text = item.Name;
+            if(item.Count.Value > 1)
+            {
+                itemName.text = item.Name + " * " + item.Count.Value;
+            }
+            Text itemDes = newNode.GetRef("Des").GetComponent<Text>();
+            itemDes.text = item.Description;
+
+            newNodeObj.SetActive(true);
+        }
         
+        //set scroll view height
+        //float itemHeight = itemNode.gameObject.GetComponent<RectTransform>().sizeDelta.y;
+        //float height = reward.Data.Count * itemHeight;
+        //Transform scrollViewRef = _rewardNode.GetRef("Scroll View");
+        //RectTransform rt = scrollViewRef.GetComponent<RectTransform>();
+        //rt.sizeDelta = new Vector2(rt.sizeDelta.x, height);
+
+        itemNode.gameObject.SetActive(false);
+        _rewardNode.gameObject.SetActive(true);
     }
 
+    void HideRewardView()
+    {
+        Transform scTrans = _rewardNode.GetRef("Content");
+        List<Transform> tobeDel = new List<Transform>();
+        foreach (Transform subTrans in scTrans)
+        {
+            if(subTrans.name.Equals("Item_model"))
+            {
+                continue;
+            }
+            tobeDel.Add(subTrans);
+        }
+        for (int i = 0; i < tobeDel.Count;i++ )
+        {
+            Destroy(tobeDel[i].gameObject);
+        }
+
+        _rewardNode.gameObject.SetActive(false);
+    }
 
 
 }

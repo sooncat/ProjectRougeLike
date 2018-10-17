@@ -33,7 +33,7 @@ public class ResourceSys : ISystem
         return null;
     }
     
-    public Sprite GetIcon(string iconPath)
+    public Sprite GetSprite(string iconPath)
     {
         if(!iconPath.EndsWith(".png"))
         {
@@ -46,6 +46,11 @@ public class ResourceSys : ISystem
         }
         return result;
     }
-    
+
+    public Sprite GetFrame(int lv)
+    {
+        string framePath = GameConstants.FramePath + lv;
+        return GetSprite(framePath);
+    }
     
 }

@@ -16,7 +16,8 @@ public class Item {
     public ENum<int> Count;
     public string Command;
     public string Icon;
-    public ENum<int> Price; 
+    public ENum<int> Price;
+    public ENum<int> Lv; 
 
     public Item(int id, int count)
     {
@@ -30,5 +31,6 @@ public class Item {
         Command = dataInfo.Command;
         Icon = dataInfo.Icon;
         Price.Value = dataInfo.Price;
+        Lv.Value = dataInfo.Lv;
     }
 }
