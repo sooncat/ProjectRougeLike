@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UIUtils {
+public static class UIUtils {
 
     public static Vector3 GetEulerAngle(Vector3 p1, Vector3 p2)
     {
@@ -21,4 +22,14 @@ public class UIUtils {
         Vector3 result = new Vector3(0, 0, (float)angle);
         return result;
     }
+
+    public static void ScrollToTop(this ScrollRect scrollRect)
+    {
+        scrollRect.normalizedPosition = new Vector2(0, 1);
+    }
+    public static void ScrollToBottom(this ScrollRect scrollRect)
+    {
+        scrollRect.normalizedPosition = new Vector2(0, 0);
+    }
+    
 }

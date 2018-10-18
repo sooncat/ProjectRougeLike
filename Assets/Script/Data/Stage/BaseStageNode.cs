@@ -17,6 +17,11 @@ public class BaseStageNode {
     public string NodeType;
     public List<int> NextNodes;
 
+    /// <summary>
+    /// 是否已经被攻略
+    /// </summary>
+    public bool IsPassed;
+
     public BaseStageNode()
     {}
 

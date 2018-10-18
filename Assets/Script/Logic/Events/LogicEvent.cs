@@ -25,7 +25,7 @@ public enum LogicEvent : int
     LeaveState,
     EnterState,
 
-    DrawFightStageUi,//绘制战斗关卡
+    CreateStageView,//绘制战斗关卡
     
     CreateFightStageData,//进入关卡时创建战斗数据
     CreateFightHeroData,//进入关卡时创建英雄数据

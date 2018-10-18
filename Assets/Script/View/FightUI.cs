@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
@@ -11,7 +12,7 @@ using Slider = UnityEngine.UI.Slider;
 public class FightUI : BaseUI
 {
 
-    UINode _stageDetail;
+    //UINode _stageDetail;
     Transform _stageNodeTrans;
     Transform _stageLineTrans;
     Transform _stageLayerTrans;
@@ -19,6 +20,9 @@ public class FightUI : BaseUI
     GameObject _lineModel;
     GameObject _layerNameModel;
 
+    UINode _stageScrollContent;
+
+    UINode _stageNode;
     UINode _fightNode;
     UINode _rewardNode;
     
@@ -27,9 +31,9 @@ public class FightUI : BaseUI
 
     Canvas _stageCanvas;
 
-    private const int LayerGap = 150;
+    private const int BottomGap = 50;
     private const int LayerNameWidth = 200;
-    int _layerHeight;
+    int LayerHeight = 150;
 
     public override void InitUI(UINode rootNode)
     {
@@ -39,25 +43,27 @@ public class FightUI : BaseUI
         InitFightNodeUi(rootNode);
         InitRewardNodeUi(rootNode);
 
-        EventSys.Instance.AddHander(LogicEvent.DrawFightStageUi, OnDrawFightUi);
+        EventSys.Instance.AddHander(LogicEvent.CreateStageView, OnCreatStageView);
     }
 
     void InitStageUi(UINode rootNode)
     {
 
-        UINode sRoot = rootNode.GetNode("Stage");
-        _stageCanvas = sRoot.GetComponent<Canvas>();
+        _stageNode = rootNode.GetNode("Stage");
+        _stageCanvas = _stageNode.GetComponent<Canvas>();
 
-        Button btnExit = sRoot.GetRef("ButtonExit").GetComponent<Button>();
+        Button btnExit = _stageNode.GetRef("ButtonExit").GetComponent<Button>();
         btnExit.onClick.AddListener(OnBtnExitClicked);
 
-        _stageDetail = sRoot.GetNode("StageDetail");
-        _stageNodeTrans = _stageDetail.GetRef("Stage").transform;
-        _stageLineTrans = _stageDetail.GetRef("Line").transform;
-        _stageLayerTrans = _stageDetail.GetRef("LayerNames").transform;
-        _nodeModel = _stageDetail.GetRef("Node_model").gameObject;
-        _lineModel = _stageDetail.GetRef("Slider_model").gameObject;
-        _layerNameModel = _stageDetail.GetRef("LayerName_model").gameObject;
+        UINode stageDetail = _stageNode.GetNode("StageDetail");
+        _nodeModel = stageDetail.GetRef("Node_model").gameObject;
+        _lineModel = stageDetail.GetRef("Slider_model").gameObject;
+        _layerNameModel = stageDetail.GetRef("LayerName_model").gameObject;
+
+        _stageScrollContent = _stageNode.GetNode("Content");
+        _stageNodeTrans = _stageScrollContent.GetRef("Stage").transform;
+        _stageLineTrans = _stageScrollContent.GetRef("Line").transform;
+        _stageLayerTrans = _stageScrollContent.GetRef("LayerNames").transform;
     }
 
     void InitFightNodeUi(UINode rootNode)
@@ -87,14 +93,14 @@ public class FightUI : BaseUI
         EventSys.Instance.AddEvent(ViewEvent.ChangeState, typeof(CityState));
     }
 
-    void OnDrawFightUi(int id, object p1, object p2)
+    void OnCreatStageView(int id, object p1, object p2)
     {
         StageConfig stageConfig = (StageConfig)p1;
 
         _nodeUIs = new Dictionary<int, Transform>();
         _nodeLines = new Dictionary<int, Transform>();
 
-        _layerHeight = (Screen.height - LayerGap * 2) / stageConfig.Layers.Count;
+        //_layerHeight = (Screen.height - LayerGap * 2) / stageConfig.Layers.Count;
 
         foreach (StageLayer stageLayer in stageConfig.Layers)
         {
@@ -116,22 +122,30 @@ public class FightUI : BaseUI
                 }
             }
         }
+
+        //set scroll view Height
+        float AllHeight = LayerHeight * stageConfig.Layers.Count + BottomGap;
+        RectTransform scrollRect = _stageScrollContent.GetComponent<RectTransform>();
+        scrollRect.sizeDelta = new Vector2(scrollRect.sizeDelta.x, BottomGap);
+        //scroll to bottom
+        Transform scrollView = _stageNode.GetRef("Scroll View");
+        scrollView.GetComponent<ScrollRect>().ScrollToBottom();
     }
 
     void CreateLayer(StageLayer stageLayer)
     {
         CatDebug.LogFunc(GetHashCode());
-        float fullWidth = Screen.width - LayerNameWidth;
-        float nodeFullWidth = fullWidth / stageLayer.Nodes.Count;
-        Vector2 nodeSize = _nodeModel.GetComponent<RectTransform>().sizeDelta;
-        float nodeXLeft = LayerNameWidth + (nodeFullWidth - nodeSize.x) / 2;
+        float allNodeWidth = _stageScrollContent.GetComponent<RectTransform>().sizeDelta.x - LayerNameWidth;
+        float singleNodeWidth = allNodeWidth / stageLayer.Nodes.Count;
+        Vector2 modelNodeSize = _nodeModel.GetComponent<RectTransform>().sizeDelta;
+        float nodeXLeft = LayerNameWidth + (singleNodeWidth - modelNodeSize.x) / 2;
 
-        float posY = stageLayer.Layer * _layerHeight + LayerGap;
-        posY += (_layerHeight - nodeSize.y) / 2.0f;
+        float posY = stageLayer.Layer * LayerHeight + BottomGap;
+        posY += (LayerHeight - modelNodeSize.y) / 2.0f;
 
         foreach (BaseStageNode stageNode in stageLayer.Nodes)
         {
-            float posX = nodeXLeft + nodeFullWidth * stageNode.Index;
+            float posX = nodeXLeft + singleNodeWidth * stageNode.Index;
             CreateNode(stageNode, posX, posY);
         }
 

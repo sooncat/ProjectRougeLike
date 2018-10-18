@@ -132,7 +132,6 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             if(HasTail && _tailObj != null)
             {
                 float distance = Vector3.Distance(transform.position, _dragObj.transform.position);
-                Debug.Log("dis = " + distance);
                 RectTransform tailRect = _tailObj.GetComponent<RectTransform>();
                 tailRect.sizeDelta = new Vector2(distance, 20);
                 tailRect.localEulerAngles = UIUtils.GetEulerAngle(transform.position, _dragObj.transform.position);
