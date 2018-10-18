@@ -29,6 +29,7 @@ public class FightState : BaseGameState {
         _stageConfig = JsonConvert.DeserializeObject<StageConfig>(str, settings);
 
         EventSys.Instance.AddEvent(LogicEvent.CreateFightStageData, _stageConfig);
+        EventSys.Instance.AddEvent(LogicEvent.CreateFightHeroData);
         EventSys.Instance.AddEvent(LogicEvent.CreateStageView, _stageConfig);
         
         OnAllPreLoaded();

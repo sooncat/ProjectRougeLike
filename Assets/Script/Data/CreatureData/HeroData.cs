@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using com.initialworld.framework;
 
-public class HeroData : CreatureData {
+public class HeroData : CreatureData, ICloneable {
 
     public ENum<int> PetId { private set; get; }
 
@@ -13,11 +14,14 @@ public class HeroData : CreatureData {
     public ENum<int> EquipId { private set; get; }
     public ENum<int> EquipLv { private set; get; }
 
-    public List<ENum<int>> Items;
+    //public List<ENum<int>> Items;
 
     public string FightIcon;
     public Color TheColor;
-    
+
+    protected HeroData()
+    {}
+
     public HeroData(HeroDataInfo dataInfo, int lv)
     {
         Id = dataInfo.Id;
@@ -43,4 +47,24 @@ public class HeroData : CreatureData {
 
     }
 
+    public object Clone()
+    {
+        HeroData result = new HeroData();
+        result.Id = Id;
+        result.Name = Name;
+        result.Description = Description;
+
+        result.Lv = new ENum<int>(Lv.Value);
+        result.Sex = new ENum<int>(Sex.Value);
+        result.Hp = new CENum<int>((int)PropertyType.Origin, Hp.Value);
+        result.Mp = new CENum<int>((int)PropertyType.Origin, Mp.Value);
+        result.Def = new CENum<int>((int)PropertyType.Origin, Def.Value);
+        result.Att = new CENum<int>((int)PropertyType.Origin, Att.Value);
+        
+        result.Cg = Cg;
+        result.FightIcon = FightIcon;
+        result.TheColor = new Color(TheColor.r, TheColor.g, TheColor.b, TheColor.a);
+        
+        return result;
+    }
 }

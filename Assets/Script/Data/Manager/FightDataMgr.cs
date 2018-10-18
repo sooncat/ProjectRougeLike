@@ -19,9 +19,7 @@ public class FightDataMgr {
     }
 
     Dictionary<int, FightHero> _heros;
-
     Dictionary<int, Enemy> _enemies;
-
     Dictionary<int, Reward> _rewards;
     
     private FightDataMgr()
@@ -41,7 +39,7 @@ public class FightDataMgr {
     {
         _heros.Clear();
         _enemies.Clear();
-        
+        _rewards.Clear();
         Init();
     }
 
@@ -73,7 +71,12 @@ public class FightDataMgr {
 
     void CreateFightHeros(int id, object p1, object p2)
     {
-        
+        _heros = new Dictionary<int, FightHero>();
+        foreach (Hero hero in PlayerDataMgr.Instance.Heros)
+        {
+            FightHero fHero = new FightHero(hero);
+            _heros.Add(fHero.Id, fHero);
+        }
     }
 
     public FightHero GetHero(int heroId)

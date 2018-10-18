@@ -5,17 +5,15 @@ using com.initialworld.framework;
 
 public class Hero : Creature, ICreature {
 
-    /// <summary>
-    /// 身上携带的道具
-    /// </summary>
-    public List<ENum<int>> Items;
-
-    HeroData Data;
+    protected HeroData Data;
 
     public CreatureData CreatureData
     {
         get { return Data; }
     }
+
+    protected Hero()
+    {}
 
     public Hero(NetMessages.HeroServerData hsData)
     {
