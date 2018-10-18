@@ -212,15 +212,21 @@ public class FightUI : BaseUI
         }
     }
 
-    public string GetPropertyDescription(Enemy enemy)
+    public string GetPropertyDescription1(Enemy enemy)
     {
         StringBuilder sb = new StringBuilder();
-        sb.Append("级 - ").Append(enemy.CreatureData.Lv.Value.ToString()).Append("\t\t");
         sb.Append("精 - ").AppendLine(enemy.CreatureData.Hp.Value.ToString());
-        sb.Append("攻 - ").Append(enemy.CreatureData.Att.Value.ToString()).Append("\t\t");
         sb.Append("气 - ").AppendLine(enemy.CreatureData.Mp.Value.ToString());
-        sb.Append("防 - ").Append(enemy.CreatureData.Def.Value.ToString()).Append("\t\t");
         sb.Append("神 - ").AppendLine(enemy.CreatureData.Mp.Value.ToString());
+        
+        return sb.ToString();
+    }
+
+    public string GetPropertyDescription2(Enemy enemy)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("攻 - ").AppendLine(enemy.CreatureData.Att.Value.ToString());
+        sb.Append("防 - ").AppendLine(enemy.CreatureData.Def.Value.ToString());
         
         return sb.ToString();
     }
@@ -231,11 +237,14 @@ public class FightUI : BaseUI
         Image icon = _fightNode.GetRef("Icon").GetComponent<Image>();
         icon.sprite = ResourceSys.Instance.GetSprite(enemy.CreatureData.Cg);
 
-        Text detail = _fightNode.GetRef("Info").GetComponent<Text>();
-        detail.text = GetPropertyDescription(enemy);
+        Text detail1 = _fightNode.GetRef("Info1").GetComponent<Text>();
+        detail1.text = GetPropertyDescription1(enemy);
+        Text detail2 = _fightNode.GetRef("Info2").GetComponent<Text>();
+        detail2.text = GetPropertyDescription2(enemy);
+
 
         Text enemyName = _fightNode.GetRef("Name").GetComponent<Text>();
-        enemyName.text = enemy.CreatureData.Name;
+        enemyName.text = enemy.CreatureData.Name + " Lv" + enemy.CreatureData.Lv.Value;
 
         Text des = _fightNode.GetRef("Des").GetComponent<Text>();
         des.text = enemy.CreatureData.Description;
