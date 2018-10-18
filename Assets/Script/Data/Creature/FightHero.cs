@@ -10,6 +10,8 @@ public class FightHero : Hero{
     /// </summary>
     public List<Item> Items;
 
+    public int NowNodeId;
+
     public FightHero(Hero hero)
     {
         Data = ((HeroData)hero.CreatureData).Clone() as HeroData;

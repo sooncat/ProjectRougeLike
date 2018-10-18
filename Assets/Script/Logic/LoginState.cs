@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,11 @@ public class LoginState : BaseGameState {
     {
         base.Enter(parameter);
 
+        EventSys.Instance.AddHander(InputEvent.LoginLogin, OnLoginEvent);
+    }
 
+    private void OnLoginEvent(int eventId, object param1, object param2)
+    {
         //此处数据从网络得到或者从本地读取
         NetMessages.PlayerData pd = new NetMessages.PlayerData();
         pd.Heros = new List<NetMessages.HeroServerData>();
@@ -26,5 +31,7 @@ public class LoginState : BaseGameState {
         }
 
         EventSys.Instance.AddEvent(NetEvent.CreatePlayerDatas, pd);
+
+        EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(CityState));
     }
 }

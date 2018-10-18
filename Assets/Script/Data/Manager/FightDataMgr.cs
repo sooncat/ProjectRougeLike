@@ -71,11 +71,16 @@ public class FightDataMgr {
 
     void CreateFightHeros(int id, object p1, object p2)
     {
+        Dictionary<int, int> selectedHeros = (Dictionary<int, int>)p1;
         _heros = new Dictionary<int, FightHero>();
-        foreach (Hero hero in PlayerDataMgr.Instance.Heros)
+        
+        foreach (KeyValuePair<int,int> pair in selectedHeros)
         {
+            Hero hero = PlayerDataMgr.Instance.GetHero(pair.Value);
             FightHero fHero = new FightHero(hero);
+            fHero.NowNodeId = pair.Key;
             _heros.Add(fHero.Id, fHero);
+
         }
     }
 

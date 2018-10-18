@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LoginUI : BaseUI
+public class LoginView : BaseView
 {
     public override void InitUI(UINode rootNode)
     {
@@ -15,6 +15,6 @@ public class LoginUI : BaseUI
 
     void OnBtnLoginClicked()
     {
-        EventSys.Instance.AddEvent(ViewEvent.ChangeState, typeof(CityState));
+        EventSys.Instance.AddEvent(InputEvent.LoginLogin, typeof(CityState));
     }
 }

@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using NUnit.Framework.Constraints;
 using UnityEngine;
 
+/// <summary>
+/// 逻辑事件
+/// 一般是Logic发出，Logic接收
+/// </summary>
 public enum LogicEvent : int
 {
     None = 0,
@@ -25,10 +29,12 @@ public enum LogicEvent : int
     LeaveState,
     EnterState,
 
-    CreateStageView,//绘制战斗关卡
     
     CreateFightStageData,//进入关卡时创建战斗数据
     CreateFightHeroData,//进入关卡时创建英雄数据
+
+    
+
 }
 
 public enum NetEvent:int

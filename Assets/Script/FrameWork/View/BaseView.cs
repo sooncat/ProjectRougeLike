@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseUI : MonoBehaviour {
+public class BaseView : MonoBehaviour {
 
     static int IdIndex;
 
@@ -30,7 +30,7 @@ public class BaseUI : MonoBehaviour {
         Name = GetType().Name;
     }
 
-    public bool Equals(BaseUI cwindow)
+    public bool Equals(BaseView cwindow)
     {
         return Id == cwindow.Id;
     }
@@ -42,7 +42,7 @@ public class BaseUI : MonoBehaviour {
 
     public override bool Equals(object obj)
     {
-        BaseUI idObj = obj as BaseUI;
+        BaseView idObj = obj as BaseView;
         if (idObj == null)
         {
             return false;

@@ -913,6 +913,7 @@ MonoBehaviour:
   TailSprite: {fileID: 21300000, guid: 4c45445ed34fd9645bb299e86ffbaad4, type: 3}
   TailColor: {r: 0.13083912, g: 0.8897059, b: 0.63849485, a: 1}
   TailWidth: 20
+  IsEnableGray: 0
 --- !u!114 &1520799521
 MonoBehaviour:
   m_ObjectHideFlags: 0

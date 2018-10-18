@@ -9,13 +9,13 @@ using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
 using Slider = UnityEngine.UI.Slider;
 
-public class FightUI : BaseUI
+public class FightView : BaseView
 {
 
     //UINode _stageDetail;
-    Transform _stageNodeTrans;
-    Transform _stageLineTrans;
-    Transform _stageLayerTrans;
+    Transform _stageNodeRootTrans;
+    Transform _stageLineRootTrans;
+    Transform _stageLayerRootTrans;
     GameObject _nodeModel;
     GameObject _lineModel;
     GameObject _layerNameModel;
@@ -29,7 +29,11 @@ public class FightUI : BaseUI
     Dictionary<int, Transform> _nodeUIs;
     Dictionary<int, Transform> _nodeLines;
 
+    Dictionary<int, Transform> _heroSelectNodes;
+    Dictionary<int, Transform> _fightHeroNodes;
     Canvas _stageCanvas;
+
+    int dragId;
 
     private const int BottomGap = 50;
     private const int LayerNameWidth = 200;
@@ -43,7 +47,11 @@ public class FightUI : BaseUI
         InitFightNodeUi(rootNode);
         InitRewardNodeUi(rootNode);
 
-        EventSys.Instance.AddHander(LogicEvent.CreateStageView, OnCreatStageView);
+        EventSys.Instance.AddHander(ViewEvent.CreateStageView, OnCreatStageView);
+        EventSys.Instance.AddHander(ViewEvent.FightSubStateMapping, OnFightStateMapping);
+        EventSys.Instance.AddHander(ViewEvent.CreateHeroStartNode, OnCreateHeroStartNode);
+        EventSys.Instance.AddHander(ViewEvent.ReplaceHeroStartNode, OnReplaceHeroStartNode);
+        EventSys.Instance.AddHander(ViewEvent.RemoveHeroStartNode, OnRemoveHeroStartNode);
     }
 
     void InitStageUi(UINode rootNode)
@@ -61,9 +69,12 @@ public class FightUI : BaseUI
         _layerNameModel = stageDetail.GetRef("LayerName_model").gameObject;
 
         _stageScrollContent = _stageNode.GetNode("Content");
-        _stageNodeTrans = _stageScrollContent.GetRef("Stage").transform;
-        _stageLineTrans = _stageScrollContent.GetRef("Line").transform;
-        _stageLayerTrans = _stageScrollContent.GetRef("LayerNames").transform;
+        _stageNodeRootTrans = _stageScrollContent.GetRef("Stage").transform;
+        _stageLineRootTrans = _stageScrollContent.GetRef("Line").transform;
+        _stageLayerRootTrans = _stageScrollContent.GetRef("LayerNames").transform;
+
+        Button btnReady = _stageNode.GetRef("ButtonReady").GetComponent<Button>();
+        btnReady.onClick.AddListener(OnBtnReadyClicked);
     }
 
     void InitFightNodeUi(UINode rootNode)
@@ -81,7 +92,7 @@ public class FightUI : BaseUI
     {
         _rewardNode = rootNode.GetNode("RewardNodeDetail");
         Button fightBtn = _rewardNode.GetRef("Go").GetComponent<Button>();
-        fightBtn.onClick.AddListener(() => { });
+        fightBtn.onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightReady); });
         Button exitBtn = _rewardNode.GetRef("Exit").GetComponent<Button>();
         exitBtn.onClick.AddListener(HideRewardView);
 
@@ -90,7 +101,23 @@ public class FightUI : BaseUI
 
     void OnBtnExitClicked()
     {
-        EventSys.Instance.AddEvent(ViewEvent.ChangeState, typeof(CityState));
+        EventSys.Instance.AddEvent(InputEvent.FightExit);
+    }
+
+    void OnBtnReadyClicked()
+    {
+        EventSys.Instance.AddEvent(InputEvent.FightReady);
+    }
+
+    void OnFightStateMapping(int id, object p1, object p2)
+    {
+        Transform hsl = _stageNode.GetRef("HeroSelectList");
+        hsl.gameObject.SetActive(false);
+
+        Transform readyBtn = _stageNode.GetRef("ButtonReady");
+        readyBtn.gameObject.SetActive(false);
+
+        //create hero show list
     }
 
     void OnCreatStageView(int id, object p1, object p2)
@@ -116,7 +143,7 @@ public class FightUI : BaseUI
                 {
                     Transform nextT = _nodeUIs[nextNode];
                     GameObject lineModel = Instantiate(_lineModel);
-                    lineModel.transform.SetParent(_stageLineTrans);
+                    lineModel.transform.SetParent(_stageLineRootTrans);
                     SetLineUI(t.position, nextT.position, lineModel.GetComponent<Slider>());
                     _nodeLines.Add(node.Id * 100 + nextNode, lineModel.transform);
                 }
@@ -128,8 +155,36 @@ public class FightUI : BaseUI
         RectTransform scrollRect = _stageScrollContent.GetComponent<RectTransform>();
         scrollRect.sizeDelta = new Vector2(scrollRect.sizeDelta.x, BottomGap);
         //scroll to bottom
-        Transform scrollView = _stageNode.GetRef("Scroll View");
+        Transform scrollView = _stageNode.GetRef("StageScrollView");
         scrollView.GetComponent<ScrollRect>().ScrollToBottom();
+
+        //CreateHeroSelectView
+        CreateHeroSelectView();
+    }
+
+    /// <summary>
+    /// 选择英雄UI
+    /// </summary>
+    void CreateHeroSelectView()
+    {
+        _heroSelectNodes = new Dictionary<int, Transform>();
+        _fightHeroNodes = new Dictionary<int, Transform>();
+
+        Transform heroSelectList = _stageNode.GetRef("HeroSelectList");
+        Transform heroSelectListContent = _stageNode.GetRef("HeroSelectListContent");
+
+        foreach (Hero hero in PlayerDataMgr.Instance.Heros)
+        {
+            HeroData hd = (HeroData)hero.CreatureData;
+
+            GameObject go = InsHeroNode(hd, false);
+            go.transform.SetParent(heroSelectListContent);
+            go.GetComponent<Button>().onClick.AddListener(() => {  });
+            
+            _heroSelectNodes.Add(hd.Id, go.transform);
+        }
+
+        heroSelectList.gameObject.SetActive(true);
     }
 
     void CreateLayer(StageLayer stageLayer)
@@ -151,14 +206,14 @@ public class FightUI : BaseUI
 
         GameObject layerNameObj = Instantiate(_layerNameModel);
         layerNameObj.GetComponent<Text>().text = stageLayer.Name;
-        layerNameObj.transform.SetParent(_stageLayerTrans);
+        layerNameObj.transform.SetParent(_stageLayerRootTrans);
         layerNameObj.transform.localPosition = new Vector3(50, posY, 0);
     }
 
     void CreateNode(BaseStageNode stageNode, float posX, float posY)
     {
         GameObject go = Instantiate(_nodeModel);
-        go.transform.SetParent(_stageNodeTrans);
+        go.transform.SetParent(_stageNodeRootTrans);
         go.GetComponent<Button>().onClick.AddListener(() => { OnNodeClicked(stageNode.Id, stageNode.GetType()); });
         go.transform.localPosition = new Vector3(posX, posY, 0);
 
@@ -166,25 +221,9 @@ public class FightUI : BaseUI
         Sprite newSprite = ResourceSys.Instance.GetSprite(stageNode.Icon);
         nodeImage.sprite = newSprite;
 
-        if(stageNode.NodeType.Equals(typeof(StageNodeStart).Name))
-        {
-            
-            Dragable drag = go.AddComponent<Dragable>();
-            drag.ActionId = stageNode.Id;
-            drag.OnDragStart = OnDrag;
-            drag.Canv = _stageCanvas;
-            //drag.DragIcon = ResourceSys.Instance.GetSprite();
-            //drag.HasTail = true;
-            //drag.TailSprite = ResourceSys.Instance.GetSprite();
-            //drag.TailColor = ;
-            //drag.TailWidth = 20;
-        }
-        else
-        {
-            Dropable drop = go.AddComponent<Dropable>();
-            drop.ActionId = stageNode.Id;
-            drop.OnDroped = OnDrop;
-        }
+        Dropable drop = go.AddComponent<Dropable>();
+        drop.ActionId = stageNode.Id;
+        drop.OnDroped = OnDrop;
         
         _nodeUIs.Add(stageNode.Id, go.transform);
     }
@@ -323,13 +362,72 @@ public class FightUI : BaseUI
 
     void OnDrag(int nodeID)
     {
-        Debug.Log("OnDrag = " + nodeID);
+        CatDebug.LogFunc();
+        dragId = nodeID;
     }
 
     void OnDrop(int nodeID)
     {
-        Debug.Log("OnDrop = " + nodeID);
+        CatDebug.LogFunc();
+        EventSys.Instance.AddEvent(InputEvent.FightDrag, dragId, nodeID);
     }
 
+    void OnCreateHeroStartNode(int id, object p1, object p2)
+    {
+        CatDebug.LogFunc();
 
+        HeroData heroData = (HeroData)p1;
+        int targetNodeId = (int)p2;
+
+        if(_heroSelectNodes.ContainsKey(heroData.Id))
+        {
+            Dragable d = _heroSelectNodes[heroData.Id].GetComponent<Dragable>();
+            d.IsEnableDrag = false;
+        }
+
+        GameObject go = InsHeroNode(heroData, true);
+        go.transform.SetParent(_stageNodeRootTrans);
+        go.GetComponent<Button>().onClick.AddListener(() => { });
+
+        Transform target = _nodeUIs[targetNodeId];
+        go.transform.position = target.position;
+
+        _fightHeroNodes.Add(heroData.Id, go.transform);
+    }
+
+    void OnReplaceHeroStartNode(int id, object p1, object p2)
+    {
+        HeroData heroData = (HeroData)p1;
+        int targetNodeId = (int)p2;
+
+    }
+
+    void OnRemoveHeroStartNode(int id, object p1, object p2)
+    {
+        HeroData heroData = (HeroData)p1;
+        int targetNodeId = (int)p2;
+    }
+
+    GameObject InsHeroNode(HeroData heroData, bool setDragIcon)
+    {
+        GameObject go = Instantiate(_nodeModel);
+        Image nodeImage = go.GetComponent<Image>();
+        nodeImage.sprite = ResourceSys.Instance.GetSprite(heroData.Icon);
+
+        Dragable drag = go.AddComponent<Dragable>();
+        drag.ActionId = heroData.Id;
+        drag.OnDragStart = OnDrag;
+        drag.Canv = _stageCanvas;
+        if (setDragIcon)
+        {
+            drag.DragIcon = ResourceSys.Instance.GetSprite(heroData.FightIcon);
+        }
+        drag.HasTail = true;
+        drag.TailSprite = ResourceSys.Instance.GetSprite(GameConstants.CommonDragTail);
+        drag.TailColor = heroData.TheColor;
+        drag.TailWidth = 20;
+        drag.IsEnableDrag = true;
+        drag.IsEnableGray = true;
+        return go;
+    }
 }

@@ -22,7 +22,6 @@ public class GameStateSys : ISystem {
         Instance = this;
 
         EventSys.Instance.AddHander(LogicEvent.ChangeState, OnChangeState);
-        EventSys.Instance.AddHander(ViewEvent.ChangeState, OnChangeState);
         EventSys.Instance.AddHander(LogicEvent.LeaveState, OnLeaveState);
         
     }

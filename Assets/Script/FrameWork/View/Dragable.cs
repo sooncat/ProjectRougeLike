@@ -41,6 +41,32 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public Color TailColor;
     public float TailWidth;
 
+    private bool _isEnableDrag;
+    /// <summary>
+    /// 用于代码控制不可拖拽
+    /// </summary>
+    public bool IsEnableDrag
+    {
+        get{return _isEnableDrag;}
+        set
+        {
+            if(_isEnableDrag != value)
+            {
+                _isEnableDrag = value;
+                if (IsEnableGray)
+                {
+                    TurnGray(!IsEnableDrag);
+                }    
+            }
+            
+        }
+    }
+
+    /// <summary>
+    /// 是否在不可拖拽时变灰
+    /// </summary>
+    public bool IsEnableGray;
+
     void Start()
     {
         _dragObjRect = Canv.transform as RectTransform;
@@ -52,6 +78,10 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)//
     {
+        if(!IsEnableDrag)
+        {
+            return;
+        }
         if (HasTail)
         {
             _tailObj = new GameObject("DragTail");
@@ -99,6 +129,10 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
+        if (!IsEnableDrag)
+        {
+            return;
+        }
         ObjFollowMouse(eventData);//让生成的物体跟随鼠标
     }
 
@@ -108,6 +142,10 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (!IsEnableDrag)
+        {
+            return;
+        }
         if (_dragObj != null)
         {
             Destroy(_dragObj);//拖拽结束后销毁生成的物体
@@ -138,5 +176,14 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             }
         }
         
+    }
+
+    /// <summary>
+    /// 变成灰色表示不可拖拽
+    /// </summary>
+    private void TurnGray(bool isGray)
+    {
+        Shader s = Shader.Find(isGray ? "UI/Gray" : "UI/Default");
+        GetComponent<Image>().material = new Material(s);
     }
 }

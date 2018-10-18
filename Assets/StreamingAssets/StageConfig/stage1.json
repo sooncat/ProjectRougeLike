@@ -19,7 +19,7 @@
 					"Index": 0,
 					"Name": "P1",
 					"Description": "",
-					"Icon": "Assets/Res/Icon/cards/ico_head_aoyou",
+					"Icon": "Assets/Res/Icon/cards/blankplus",
 					"NodeType": "StageNodeStart",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
@@ -33,7 +33,7 @@
 					"Index": 1,
 					"Name": "P2",
 					"Description": "",
-					"Icon": "Assets/Res/Icon/cards/ico_head_aoyou",
+					"Icon": "Assets/Res/Icon/cards/blankplus",
 					"NodeType": "StageNodeStart",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",

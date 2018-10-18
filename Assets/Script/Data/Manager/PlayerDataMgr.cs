@@ -58,4 +58,14 @@ public class PlayerDataMgr {
             Heros.Add(h);
         }
     }
+
+    public Hero GetHero(int id)
+    {
+        foreach (Hero hero in Heros)
+        {
+            if (hero.Id == id)
+                return hero;
+        }
+        return null;
+    }
 }

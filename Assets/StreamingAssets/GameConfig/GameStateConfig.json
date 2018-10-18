@@ -10,7 +10,7 @@
 			"SceneName": "Login",
 			"PreLoadUi": [{
 				"Prefab": "LoginUI",
-				"ClassName": "LoginUI"
+				"ClassName": "LoginView"
 			}],
 			"PreLoadEffect": [],
 			"PreLoadAudio": []
@@ -19,7 +19,7 @@
 			"SceneName": "City",
 			"PreLoadUi": [{
 				"Prefab": "CityUI",
-				"ClassName": "CityUI"
+				"ClassName": "CityView"
 			}],
 			"PreLoadEffect": [],
 			"PreLoadAudio": []
@@ -28,7 +28,7 @@
 			"SceneName": "Fight",
 			"PreLoadUi": [{
 				"Prefab": "FightUI",
-				"ClassName": "FightUI"
+				"ClassName": "FightView"
 			}],
 			"PreLoadEffect": [],
 			"PreLoadAudio": []

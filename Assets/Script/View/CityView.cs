@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CityUI : BaseUI {
+public class CityView : BaseView {
 
     public override void InitUI(UINode rootNode)
     {
@@ -20,11 +20,11 @@ public class CityUI : BaseUI {
         FightStateParameter fsParameter = new FightStateParameter();
         fsParameter.nextType = "stage1";
         
-        EventSys.Instance.AddEvent(ViewEvent.ChangeState, typeof(FightState), fsParameter);
+        EventSys.Instance.AddEvent(InputEvent.CityStartFight, fsParameter);
     }
 
     void OnBtnExitClicked()
     {
-        EventSys.Instance.AddEvent(ViewEvent.ChangeState, typeof(LoginState));
+        EventSys.Instance.AddEvent(InputEvent.CityExit);
     }
 }

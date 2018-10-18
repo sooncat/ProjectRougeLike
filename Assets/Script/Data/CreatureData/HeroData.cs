@@ -41,6 +41,7 @@ public class HeroData : CreatureData, ICloneable {
 
         //EquipId = new ENum<int>(dataInfo.Equip);
         //EquipLv = new ENum<int>(1);
+        Icon = dataInfo.Icon;
         Cg = dataInfo.Cg;
         FightIcon = dataInfo.FightIcon;
         ColorUtility.TryParseHtmlString(dataInfo.Color, out TheColor);

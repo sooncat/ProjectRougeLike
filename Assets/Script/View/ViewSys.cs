@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UISys : ISystem {
+public class ViewSys : ISystem {
 
-    public static UISys Instance = null;
+    public static ViewSys Instance = null;
     private bool _isInited = false;
     public override void Init()
     {
@@ -15,14 +15,14 @@ public class UISys : ISystem {
         }
         _isInited = true;
         Instance = this;
-        _allUiClass = new Dictionary<string, BaseUI>();
+        _allUiClass = new Dictionary<string, BaseView>();
 
         EventSys.Instance.AddHander(LogicEvent.UiLoadStart, OnUiPreLoad);
     }
 
-    Dictionary<string, BaseUI> _allUiClass;
+    Dictionary<string, BaseView> _allUiClass;
 
-    public void RegistUiClass<T>() where T : BaseUI,new()
+    public void RegistUiClass<T>() where T : BaseView,new()
     {
         _allUiClass.Add(typeof(T).Name, new T());
     }
@@ -39,8 +39,8 @@ public class UISys : ISystem {
                 go = ResourceSys.Instance.CreateUI(uiConfig.Prefab);
             }
             Type t = Type.GetType(uiConfig.ClassName);
-            BaseUI baseUi = (BaseUI)go.AddComponent(t);
-            baseUi.InitUI(go.GetComponent<UINode>());
+            BaseView baseView = (BaseView)go.AddComponent(t);
+            baseView.InitUI(go.GetComponent<UINode>());
         }
 
         EventSys.Instance.AddEvent(LogicEvent.UiLoadEnd);
