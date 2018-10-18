@@ -3,6 +3,7 @@
 */
 
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;//要想用拖拽事件必须导入EventSystems
 using UnityEngine.UI;
@@ -34,6 +35,12 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public int ActionId;
     public Action<int> OnDragStart;
 
+    public bool HasTail;
+    public Sprite TailSprite;
+    private GameObject _tailObj;
+    public Color TailColor;
+    public float TailWidth;
+
     void Start()
     {
         _dragObjRect = Canv.transform as RectTransform;
@@ -45,22 +52,46 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)//
     {
-        _dragObj = new GameObject("icon");
+        if (HasTail)
+        {
+            _tailObj = new GameObject("DragTail");
+            _tailObj.transform.SetParent(Canv.transform, false);
+            _tailObj.transform.SetAsLastSibling();//为了能遮盖住其他UI
+            Image tailImg = _tailObj.AddComponent<Image>();
+            tailImg.sprite = TailSprite;
+            tailImg.color = TailColor;
+
+            RectTransform tailRect = _tailObj.GetComponent<RectTransform>();
+            //tailRect.anchorMin = new Vector2(0, 0.5f);
+            //tailRect.anchorMax = new Vector2(1, 0.5f);
+            tailRect.pivot = new Vector2(0, 0.5f);
+            tailRect.position = transform.position;
+            tailRect.sizeDelta = new Vector2(10, TailWidth);
+        }
+
+        _dragObj = new GameObject("DragIcon");
         _dragObj.transform.SetParent(Canv.transform, false);//让这个物体在canvas上，此时物品在屏幕中心
         _dragObj.transform.SetAsLastSibling();//将生成的物体设为canvas的最后一个子物体，一般来说最后一个子物体是可操作的
         Image img = _dragObj.AddComponent<Image>();//给生成的拖拽物体添加一个Image组件并获得Image组件的控制权
         img.raycastTarget = false;//让该物体不接受鼠标的照射，目的是底下的物品也能操作
         img.sprite = DragIcon ?? GetComponent<Image>().sprite;
-        //_dragObj.GetComponent<RectTransform>().sizeDelta =
-        //    new Vector2(Screen.height * 0.1f, Screen.height * 0.1f);//设置新生成物品的尺寸
         img.SetNativeSize();
+
         ObjFollowMouse(eventData);//让生成的物体跟随鼠标
 
         if(OnDragStart!=null)
         {
             OnDragStart(ActionId);
         }
+
+        //StartCoroutine(WaitForPause());
     }
+
+    //IEnumerator WaitForPause()
+    //{
+    //    yield return new WaitForSeconds(2);
+    //    Debug.Break();
+    //}
 
     /// <summary>
     /// 拖拽中
@@ -80,6 +111,7 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (_dragObj != null)
         {
             Destroy(_dragObj);//拖拽结束后销毁生成的物体
+            Destroy(_tailObj);
         }
     }
 
@@ -95,6 +127,17 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 rc.position = globalMousePos;
                 rc.rotation = _dragObjRect.rotation;
             }
+
+            //tail
+            if(HasTail && _tailObj != null)
+            {
+                float distance = Vector3.Distance(transform.position, _dragObj.transform.position);
+                Debug.Log("dis = " + distance);
+                RectTransform tailRect = _tailObj.GetComponent<RectTransform>();
+                tailRect.sizeDelta = new Vector2(distance, 20);
+                tailRect.localEulerAngles = UIUtils.GetEulerAngle(transform.position, _dragObj.transform.position);
+            }
         }
+        
     }
 }

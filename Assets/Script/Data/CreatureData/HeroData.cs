@@ -14,6 +14,9 @@ public class HeroData : CreatureData {
     public ENum<int> EquipLv { private set; get; }
 
     public List<ENum<int>> Items;
+
+    public string FightIcon;
+    public Color TheColor;
     
     public HeroData(HeroDataInfo dataInfo, int lv)
     {
@@ -35,6 +38,8 @@ public class HeroData : CreatureData {
         //EquipId = new ENum<int>(dataInfo.Equip);
         //EquipLv = new ENum<int>(1);
         Cg = dataInfo.Cg;
+        FightIcon = dataInfo.FightIcon;
+        ColorUtility.TryParseHtmlString(dataInfo.Color, out TheColor);
 
     }
 

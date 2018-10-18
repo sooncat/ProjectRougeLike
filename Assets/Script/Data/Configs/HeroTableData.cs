@@ -26,5 +26,7 @@ public class HeroDataInfo : BaseDataInfo {
 
     public string Icon;
     public string Cg;
+    public string Color;
+    public string FightIcon;
 
 }

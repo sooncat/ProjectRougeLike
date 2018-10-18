@@ -154,11 +154,16 @@ public class FightUI : BaseUI
 
         if(stageNode.NodeType.Equals(typeof(StageNodeStart).Name))
         {
+            
             Dragable drag = go.AddComponent<Dragable>();
             drag.ActionId = stageNode.Id;
             drag.OnDragStart = OnDrag;
             drag.Canv = _stageCanvas;
             //drag.DragIcon = ResourceSys.Instance.GetSprite();
+            //drag.HasTail = true;
+            //drag.TailSprite = ResourceSys.Instance.GetSprite();
+            //drag.TailColor = ;
+            //drag.TailWidth = 20;
         }
         else
         {
@@ -181,19 +186,10 @@ public class FightUI : BaseUI
         float centerX = (p1.x + p2.x) / 2;
         float centerY = (p1.y + p2.y) / 2;
 
-        float deltaY = p2.y - p1.y;
-        float deltaX = p2.x - p1.x;
-        double arc = System.Math.Atan(deltaY / deltaX);
-        double angle = (180 / Mathf.PI) * arc;
-        if (deltaX < 0)
-        {
-            angle += 180;
-        }
-
         float distance = Vector3.Distance(p1, p2);
 
         mySlider.transform.position = new Vector3(centerX, centerY, 0);
-        mySlider.transform.localEulerAngles = new Vector3(0, 0, (float)angle);
+        mySlider.transform.localEulerAngles = UIUtils.GetEulerAngle(p1, p2);
         mySlider.GetComponent<RectTransform>().sizeDelta = new Vector2(distance, 20);
         mySlider.GetComponent<Slider>().value = 0.3f;
     }

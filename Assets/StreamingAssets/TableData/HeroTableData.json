@@ -12,7 +12,7 @@
 		"FightIcon": "Assets/Res/Icon/button/fight1",
 		"Icon": "Assets/Res/Icon/cards/ico_head_moxiang",
 		"Cg":"Assets/Res/Cg/2d_140",
-		"Color":"0000ff"
+		"Color":"#0000ff"
 	},
 	{
 		"Id": 2,
@@ -27,7 +27,7 @@
 		"FightIcon": "Assets/Res/Icon/button/fight1",
 		"Icon": "Assets/Res/Icon/cards/ico_head_moxiang",
 		"Cg":"Assets/Res/Cg/2d_140",
-		"Color":"ff0000"
+		"Color":"#ff0000"
 	},
 	{
 		"Id": 3,
@@ -42,6 +42,6 @@
 		"FightIcon": "Assets/Res/Icon/button/fight1",
 		"Icon": "Assets/Res/Icon/cards/ico_head_tangyoudu",
 		"Cg":"Assets/Res/Cg/2d_134",
-		"Color":"00ff00"
+		"Color":"#00ff00"
 	}]
 }
