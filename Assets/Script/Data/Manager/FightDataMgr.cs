@@ -97,6 +97,11 @@ public class FightDataMgr {
         return _heros;
     }
 
+    public Dictionary<int, Enemy> GetEnemies()
+    {
+        return _enemies;
+    }
+
     public List<FightHero> GetHeroList()
     {
         List<FightHero> result = new List<FightHero>();

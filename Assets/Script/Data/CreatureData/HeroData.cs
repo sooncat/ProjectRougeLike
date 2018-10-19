@@ -30,10 +30,10 @@ public class HeroData : CreatureData, ICloneable {
 
         Lv = new ENum<int>(lv);
         Sex = new ENum<int>(dataInfo.Sex);
-        Hp = new CENum<int>((int)PropertyType.Origin, dataInfo.Hp);
-        Mp = new CENum<int>((int)PropertyType.Origin, dataInfo.Mp);
-        Def = new CENum<int>((int)PropertyType.Origin, dataInfo.Def);
-        Att = new CENum<int>((int)PropertyType.Origin, dataInfo.Att);
+        Hp = new ENum<int>(dataInfo.Hp);
+        Mp = new ENum<int>(dataInfo.Mp);
+        Def = new ENum<int>(dataInfo.Def);
+        Att = new ENum<int>(dataInfo.Att);
 
         //PetId = new ENum<int>(dataInfo.Pet);
         //WeaponId = new ENum<int>(dataInfo.Weapon);
@@ -57,10 +57,10 @@ public class HeroData : CreatureData, ICloneable {
 
         result.Lv = new ENum<int>(Lv.Value);
         result.Sex = new ENum<int>(Sex.Value);
-        result.Hp = new CENum<int>((int)PropertyType.Origin, Hp.Value);
-        result.Mp = new CENum<int>((int)PropertyType.Origin, Mp.Value);
-        result.Def = new CENum<int>((int)PropertyType.Origin, Def.Value);
-        result.Att = new CENum<int>((int)PropertyType.Origin, Att.Value);
+        result.Hp = new ENum<int>(Hp.Value);
+        result.Mp = new ENum<int>(Mp.Value);
+        result.Def = new ENum<int>(Def.Value);
+        result.Att = new ENum<int>(Att.Value);
 
         result.Icon = Icon;
         result.Cg = Cg;

@@ -64,7 +64,7 @@ public class UINodeEditor : Editor {
                 return uiNode;
             }
             t = t.parent;
-        };
+        }
         return null;
     }
 }

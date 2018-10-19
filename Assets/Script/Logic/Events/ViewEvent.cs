@@ -20,4 +20,7 @@ public enum ViewEvent : int {
 
     FightSubStateMapping,   //战斗准备完毕，进入地图阶段
 
+    CreateFightView,        //进入战斗，创建战斗界面
+    SetSelectedHero,        //切换选中的英雄
+
 }

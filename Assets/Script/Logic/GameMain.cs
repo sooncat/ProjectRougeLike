@@ -24,11 +24,11 @@ public class GameMain : BaseMain {
         PlayerDataMgr.Instance.Init();
         FightDataMgr.Instance.Init();
 
+        GameStateSys.Instance.InitState<StartState>();
         GameStateSys.Instance.InitState<LoginState>();
         GameStateSys.Instance.InitState<CityState>();
         GameStateSys.Instance.InitState<FightState>();
-        GameStateSys.Instance.InitState<StartState>();
-
+        
         EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(StartState));
     }
 

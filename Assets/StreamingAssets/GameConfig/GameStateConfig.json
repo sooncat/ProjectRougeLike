@@ -27,6 +27,10 @@
 		"FightState": {
 			"SceneName": "Fight",
 			"PreLoadUi": [{
+				"Prefab": "StageUI",
+				"ClassName": "StageView"
+			},
+			{
 				"Prefab": "FightUI",
 				"ClassName": "FightView"
 			}],

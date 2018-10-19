@@ -12,12 +12,17 @@ public class FightHero : Hero{
 
     public int NowNodeId;
 
+    /// <summary>
+    /// 是否行动过
+    /// </summary>
+    public bool IsActioned;
+
     public FightHero(Hero hero)
     {
         Data = ((HeroData)hero.CreatureData).Clone() as HeroData;
         Id = hero.Id;
         Items = new List<Item>();
-        Data.HpMax = new CENum<int>((int)CreatureData.PropertyType.Origin, Data.Hp.Value);
-        Data.MpMax = new CENum<int>((int)CreatureData.PropertyType.Origin, Data.Mp.Value);
+        Data.HpMax = new ENum<int>(Data.Hp.Value);
+        Data.MpMax = new ENum<int>(Data.Mp.Value);
     }
 }

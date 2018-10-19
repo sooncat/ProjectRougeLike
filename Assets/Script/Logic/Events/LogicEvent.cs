@@ -33,6 +33,8 @@ public enum LogicEvent : int
     CreateFightStageData,//进入关卡时创建战斗数据
     CreateFightHeroData,//进入关卡时创建英雄数据
 
+    StartFightRound,    //进入回合战斗
+
     
 
 }

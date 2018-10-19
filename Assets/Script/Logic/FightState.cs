@@ -25,9 +25,13 @@ public class FightState : BaseGameState {
     /// </summary>
     Dictionary<int, int> _selectedHeros;
 
+    FightProgress _fightProgress;
+
     public override void Enter(GameStateParameter parameter)
     {
         base.Enter(parameter);
+
+        _fightProgress = new FightProgress();
 
         _fState = FSubState.SelectHero;
         _selectedHeros = new Dictionary<int, int>();
@@ -105,7 +109,8 @@ public class FightState : BaseGameState {
                 }
                 break;
             case FSubState.Mapping:
-
+                EventSys.Instance.AddEvent(LogicEvent.StartFightRound);
+                
                 break;
         }
     }

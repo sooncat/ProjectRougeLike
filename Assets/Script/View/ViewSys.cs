@@ -32,7 +32,7 @@ public class ViewSys : ISystem {
         var preLoadUis = (List<GameStateConfig.PreLoadResConfig>) p1;
         foreach (GameStateConfig.PreLoadResConfig uiConfig in preLoadUis)
         {
-            CatDebug.LogFunc(uiConfig.Prefab);
+            //CatDebug.LogFunc(uiConfig.Prefab);
             GameObject go = GameObject.Find(uiConfig.Prefab);
             if(!go)
             {

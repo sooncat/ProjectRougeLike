@@ -18,10 +18,12 @@ public enum InputEvent : int
     CityExit,
 
     FightNodeClicked,   //点击战斗地图中的节点
-    FightReady,         //战斗界面，Ready按钮
-    FightExit,          //战斗界面，返回按钮
-    FightDragOnNode,          //战斗界面，拖拽到普通节点上
-    FightDragOnHero,          //战斗界面，拖拽到英雄节点上
-    
+    FightReady,         //战斗地图界面，Ready按钮
+    FightExit,          //战斗地图界面，返回按钮
+    FightDragOnNode,    //战斗地图界面，拖拽到普通节点上
+    FightDragOnHero,    //战斗地图界面，拖拽到英雄节点上
 
+    FightAttack,        //战斗中，普通攻击（英雄只能对敌人攻击）
+    FightItem,          //战斗中，使用道具（可以对任何人使用道具）
+    FightSelectHero,    //战斗中，选择英雄
 }

@@ -9,6 +9,11 @@ public class Enemy : Creature, ICreature
     
     EnemyData Data;
 
+    /// <summary>
+    /// 是否行动过
+    /// </summary>
+    public bool IsActioned;
+
     public CreatureData CreatureData
     {
         get { return Data; }
