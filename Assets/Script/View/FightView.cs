@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using UnityEngine.Experimental.UIElements;
-using UnityEngine.Playables;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
 using Image = UnityEngine.UI.Image;
@@ -19,6 +17,7 @@ public class FightView : BaseView
     GameObject _nodeModel;
     GameObject _lineModel;
     GameObject _layerNameModel;
+    GameObject _heroShowModel;
 
     UINode _stageScrollContent;
 
@@ -31,20 +30,22 @@ public class FightView : BaseView
 
     /// <summary>
     /// 选择英雄出战时，界面最下方横排的NodeList
+    /// { Key:heroId, Value:nodeTransform }
     /// </summary>
     Dictionary<int, Transform> _heroSelectNodes;
 
     /// <summary>
-    /// 被选中出战的英雄对应的Node
+    /// 被选中出战的英雄对应的Node.
+    /// { Key:heroId, Value:nodeTransform }
     /// </summary>
     Dictionary<int, Transform> _fightHeroNodes;
     Canvas _stageCanvas;
 
-    int dragId;
+    int _dragId;
 
     private const int BottomGap = 50;
     private const int LayerNameWidth = 200;
-    int LayerHeight = 150;
+    readonly int _layerHeight = 150;
 
     public override void InitUI(UINode rootNode)
     {
@@ -62,7 +63,6 @@ public class FightView : BaseView
         EventSys.Instance.AddHander(ViewEvent.ResetHeroStartNode, OnResetHeroStartNode);
         EventSys.Instance.AddHander(ViewEvent.ExchangeHeroStartNode, OnExchangeHeroStartNode);
         
-        
     }
 
     void InitStageUi(UINode rootNode)
@@ -74,10 +74,11 @@ public class FightView : BaseView
         Button btnExit = _stageNode.GetRef("ButtonExit").GetComponent<Button>();
         btnExit.onClick.AddListener(OnBtnExitClicked);
 
-        UINode stageDetail = _stageNode.GetNode("StageDetail");
-        _nodeModel = stageDetail.GetRef("Node_model").gameObject;
-        _lineModel = stageDetail.GetRef("Slider_model").gameObject;
-        _layerNameModel = stageDetail.GetRef("LayerName_model").gameObject;
+        UINode modelNode = _stageNode.GetNode("Models");
+        _nodeModel = modelNode.GetRef("Node_model").gameObject;
+        _lineModel = modelNode.GetRef("Slider_model").gameObject;
+        _layerNameModel = modelNode.GetRef("LayerName_model").gameObject;
+        _heroShowModel = modelNode.GetNode("HeroShow_model").gameObject;
 
         _stageScrollContent = _stageNode.GetNode("Content");
         _stageNodeRootTrans = _stageScrollContent.GetRef("Stage").transform;
@@ -86,6 +87,10 @@ public class FightView : BaseView
 
         Button btnReady = _stageNode.GetRef("ButtonReady").GetComponent<Button>();
         btnReady.onClick.AddListener(OnBtnReadyClicked);
+
+
+        _stageNode.GetRef("HeroShowtList").gameObject.SetActive(true);
+        _stageNode.GetRef("HeroShowtList").gameObject.SetActive(false);
     }
 
     void InitFightNodeUi(UINode rootNode)
@@ -122,13 +127,50 @@ public class FightView : BaseView
 
     void OnFightStateMapping(int id, object p1, object p2)
     {
+        CatDebug.LogFunc();
+
         Transform hsl = _stageNode.GetRef("HeroSelectList");
         hsl.gameObject.SetActive(false);
 
         Transform readyBtn = _stageNode.GetRef("ButtonReady");
         readyBtn.gameObject.SetActive(false);
 
+        foreach (KeyValuePair<int, Transform> pair in _nodeUIs)
+        {
+            Dropable dropable = pair.Value.GetComponent<Dropable>();
+            dropable.enabled = true;
+        }
+
+        Dictionary<int, FightHero> heroes = (Dictionary<int, FightHero>)p1;
+
+        foreach (KeyValuePair<int, Transform> pair in _fightHeroNodes)
+        {
+            Dragable dragable = pair.Value.GetComponent<Dragable>();
+            HeroData hd = (HeroData)heroes[pair.Key].CreatureData;
+            dragable.DragIcon = ResourceSys.Instance.GetSprite(hd.FightIcon);
+        }
+
         //create hero show list
+        CreateHeroShowList(heroes);
+    }
+
+    void CreateHeroShowList(Dictionary<int, FightHero> heros)
+    {
+        foreach (KeyValuePair<int, FightHero> pair in heros)
+        {
+            FightHero fightHero = pair.Value;
+            GameObject go = Instantiate(_heroShowModel);
+            UINode node = go.GetComponent<UINode>();
+            node.GetRef("Icon").GetComponent<Image>().sprite = ResourceSys.Instance.GetSprite(fightHero.CreatureData.Icon);
+            node.GetRef("Name").GetComponent<Text>().text = fightHero.CreatureData.Name;
+            node.GetRef("Hp").GetComponent<Text>().text = "血";
+            node.GetRef("HpSlider").GetComponent<Slider>().value = fightHero.CreatureData.HpPercent;
+            node.GetRef("Mp").GetComponent<Text>().text = "气";
+            node.GetRef("MpSlider").GetComponent<Slider>().value = fightHero.CreatureData.MpPercent;
+            go.transform.SetParent(_stageNode.GetRef("HeroShowListContent"));
+        }
+
+        _stageNode.GetRef("HeroShowtList").gameObject.SetActive(true);
     }
 
     void OnCreatStageView(int id, object p1, object p2)
@@ -162,7 +204,7 @@ public class FightView : BaseView
         }
 
         //set scroll view Height
-        float AllHeight = LayerHeight * stageConfig.Layers.Count + BottomGap;
+        //float AllHeight = LayerHeight * stageConfig.Layers.Count + BottomGap;
         RectTransform scrollRect = _stageScrollContent.GetComponent<RectTransform>();
         scrollRect.sizeDelta = new Vector2(scrollRect.sizeDelta.x, BottomGap);
         //scroll to bottom
@@ -206,8 +248,8 @@ public class FightView : BaseView
         Vector2 modelNodeSize = _nodeModel.GetComponent<RectTransform>().sizeDelta;
         float nodeXLeft = LayerNameWidth + (singleNodeWidth - modelNodeSize.x) / 2;
 
-        float posY = stageLayer.Layer * LayerHeight + BottomGap;
-        posY += (LayerHeight - modelNodeSize.y) / 2.0f;
+        float posY = stageLayer.Layer * _layerHeight + BottomGap;
+        posY += (_layerHeight - modelNodeSize.y) / 2.0f;
 
         foreach (BaseStageNode stageNode in stageLayer.Nodes)
         {
@@ -264,7 +306,7 @@ public class FightView : BaseView
 
     void OnNodeClicked(int id, System.Type type)
     {
-        Debug.Log("OnNodeClicked " + id);
+        //Debug.Log("OnNodeClicked " + id);
         //EventSys.Instance.AddEvent(ViewEvent.ClickFightNode, id);
         if (type == typeof(StageNodeFight))
         {
@@ -279,9 +321,8 @@ public class FightView : BaseView
     public string GetPropertyDescription1(Enemy enemy)
     {
         StringBuilder sb = new StringBuilder();
-        sb.Append("精 - ").AppendLine(enemy.CreatureData.Hp.Value.ToString());
+        sb.Append("血 - ").AppendLine(enemy.CreatureData.Hp.Value.ToString());
         sb.Append("气 - ").AppendLine(enemy.CreatureData.Mp.Value.ToString());
-        sb.Append("神 - ").AppendLine(enemy.CreatureData.Mp.Value.ToString());
         
         return sb.ToString();
     }
@@ -324,7 +365,7 @@ public class FightView : BaseView
         Transform scTrans = _rewardNode.GetRef("Content");
         foreach (Item item in reward.Data)
         {
-            GameObject newNodeObj = GameObject.Instantiate(itemNode.gameObject, scTrans);
+            GameObject newNodeObj = Instantiate(itemNode.gameObject, scTrans);
             //newNodeObj.transform.SetParent(scTrans);
             
             UINode newNode = newNodeObj.GetComponent<UINode>();
@@ -378,18 +419,18 @@ public class FightView : BaseView
     void OnDrag(int nodeId)
     {
         //CatDebug.LogFunc(nodeId.ToString());
-        dragId = nodeId;
+        _dragId = nodeId;
     }
 
     void DropOnNode(int nodeId)
     {
         //CatDebug.LogFunc(nodeId.ToString());
-        EventSys.Instance.AddEvent(InputEvent.FightDragOnNode, dragId, nodeId);
+        EventSys.Instance.AddEvent(InputEvent.FightDragOnNode, _dragId, nodeId);
     }
 
     void DropOnHero(int heroId)
     {
-        EventSys.Instance.AddEvent(InputEvent.FightDragOnHero, dragId, heroId);
+        EventSys.Instance.AddEvent(InputEvent.FightDragOnHero, _dragId, heroId);
     }
 
     void OnCreateHeroStartNode(int id, object p1, object p2)
@@ -439,8 +480,7 @@ public class FightView : BaseView
 
     void OnRemoveHeroStartNode(int id, object p1, object p2)
     {
-        HeroData heroData = (HeroData)p1;
-        int targetNodeId = (int)p2;
+        
     }
 
     void OnResetHeroStartNode(int id, object p1, object p2)

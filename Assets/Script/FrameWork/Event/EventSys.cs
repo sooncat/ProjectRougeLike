@@ -178,6 +178,13 @@ public class EventSys : ISystem
         SendEvent(eventId, param1, param2);
     }
 
+    public void AddEventNow(Enum e, object param1 = null, object param2 = null)
+    {
+        int eventId = Convert.ToInt32(e);
+        //Debug.Log("AddEventNow = " + eventId);
+        SendEvent(eventId, param1, param2);
+    }
+
     private void SendEvent(int eventId, object param1, object param2, string msg = "")
     {
         foreach (EventSysCallBack callBack in _allHander)

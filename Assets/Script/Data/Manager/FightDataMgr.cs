@@ -76,18 +76,34 @@ public class FightDataMgr {
         
         foreach (KeyValuePair<int,int> pair in selectedHeros)
         {
-            Hero hero = PlayerDataMgr.Instance.GetHero(pair.Value);
+            Hero hero = PlayerDataMgr.Instance.GetHero(pair.Key);
             FightHero fHero = new FightHero(hero);
-            fHero.NowNodeId = pair.Key;
+            fHero.NowNodeId = pair.Value;
             _heros.Add(fHero.Id, fHero);
-
         }
+
+        CatDebug.LogFunc();
     }
 
     public FightHero GetHero(int heroId)
     {
         FightHero result;
         _heros.TryGetValue(heroId, out result);
+        return result;
+    }
+
+    public Dictionary<int, FightHero> GetHeros()
+    {
+        return _heros;
+    }
+
+    public List<FightHero> GetHeroList()
+    {
+        List<FightHero> result = new List<FightHero>();
+        foreach (KeyValuePair<int, FightHero> pair in _heros)
+        {
+            result.Add(pair.Value);
+        }
         return result;
     }
 

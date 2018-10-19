@@ -17,7 +17,9 @@ public class EnemyData : CreatureData {
         Lv = new ENum<int>(lv);
         Sex = new ENum<int>(dataInfo.Sex);
         Hp = new CENum<int>((int)PropertyType.Origin, dataInfo.Hp);
+        HpMax = new CENum<int>((int)PropertyType.Origin, dataInfo.Hp);
         Mp = new CENum<int>((int)PropertyType.Origin, dataInfo.Mp);
+        MpMax = new CENum<int>((int)PropertyType.Origin, dataInfo.Mp);
         Def = new CENum<int>((int)PropertyType.Origin, dataInfo.Def);
         Att = new CENum<int>((int)PropertyType.Origin, dataInfo.Att);
         Icon = dataInfo.Icon;

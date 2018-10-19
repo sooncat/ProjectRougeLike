@@ -61,7 +61,8 @@ public class HeroData : CreatureData, ICloneable {
         result.Mp = new CENum<int>((int)PropertyType.Origin, Mp.Value);
         result.Def = new CENum<int>((int)PropertyType.Origin, Def.Value);
         result.Att = new CENum<int>((int)PropertyType.Origin, Att.Value);
-        
+
+        result.Icon = Icon;
         result.Cg = Cg;
         result.FightIcon = FightIcon;
         result.TheColor = new Color(TheColor.r, TheColor.g, TheColor.b, TheColor.a);

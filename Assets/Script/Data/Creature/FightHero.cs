@@ -17,5 +17,7 @@ public class FightHero : Hero{
         Data = ((HeroData)hero.CreatureData).Clone() as HeroData;
         Id = hero.Id;
         Items = new List<Item>();
+        Data.HpMax = new CENum<int>((int)CreatureData.PropertyType.Origin, Data.Hp.Value);
+        Data.MpMax = new CENum<int>((int)CreatureData.PropertyType.Origin, Data.Mp.Value);
     }
 }

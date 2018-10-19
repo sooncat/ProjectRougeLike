@@ -21,8 +21,7 @@ public class FightState : BaseGameState {
 
     /// <summary>
     /// 被选中准备出战的英雄
-    /// Key：HeroId
-    /// Value：NodeId
+    /// { Key：HeroId, Value：NodeId }
     /// </summary>
     Dictionary<int, int> _selectedHeros;
 
@@ -51,8 +50,8 @@ public class FightState : BaseGameState {
     void OnFightReadyEvent(int id, object p1, object p2)
     {
         _fState = FSubState.Mapping;
-        EventSys.Instance.AddEvent(ViewEvent.FightSubStateMapping);
-        EventSys.Instance.AddEvent(LogicEvent.CreateFightHeroData, _selectedHeros);
+        EventSys.Instance.AddEventNow(LogicEvent.CreateFightHeroData, _selectedHeros);
+        EventSys.Instance.AddEvent(ViewEvent.FightSubStateMapping, FightDataMgr.Instance.GetHeros());
     }
 
     void OnClickFightNodeEvent(int id, object p1, object p2)

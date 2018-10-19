@@ -46,6 +46,11 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     /// </summary>
     public bool IsDisableGray;
 
+    /// <summary>
+    /// 这个标志存在的原因是：IDropable是可以单独工作的：
+    /// 在IDragHandler设为disable的情况下，IDropHandler仍然会调用OnDrop
+    /// 这是一个没有意义的操作。
+    /// </summary>
     public static bool StartDrag;
 
     void Start()
