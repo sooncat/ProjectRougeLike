@@ -14,6 +14,8 @@ public enum ViewEvent : int {
     
     CreateHeroStartNode,    //战斗前选择英雄，选择了一个英雄出击，在地图上创建此英雄
     ReplaceHeroStartNode,    //战斗前选择英雄，选择了另一个英雄将上一个英雄覆盖
+    ResetHeroStartNode,     //战斗前选择英雄，修改一个英雄的出战位置
+    ExchangeHeroStartNode,  //战斗前选择英雄，交换两个英雄的出战位置
     RemoveHeroStartNode,    //战斗前选择英雄，将选中英雄下架
 
     FightSubStateMapping,   //战斗准备完毕，进入地图阶段

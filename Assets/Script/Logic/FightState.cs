@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -18,6 +19,11 @@ public class FightState : BaseGameState {
     }
     FSubState _fState;
 
+    /// <summary>
+    /// 被选中准备出战的英雄
+    /// Key：HeroId
+    /// Value：NodeId
+    /// </summary>
     Dictionary<int, int> _selectedHeros;
 
     public override void Enter(GameStateParameter parameter)
@@ -33,7 +39,8 @@ public class FightState : BaseGameState {
         EventSys.Instance.AddHander(InputEvent.FightExit, OnExitEvent);
         EventSys.Instance.AddHander(InputEvent.FightReady, OnFightReadyEvent);
         EventSys.Instance.AddHander(InputEvent.FightNodeClicked, OnClickFightNodeEvent);
-        EventSys.Instance.AddHander(InputEvent.FightDrag, OnFightDrag);
+        EventSys.Instance.AddHander(InputEvent.FightDragOnNode, OnFightDragOnNode);
+        EventSys.Instance.AddHander(InputEvent.FightDragOnHero, OnFightDragOnHero);
     }
 
     void OnExitEvent(int id, object p1, object p2)
@@ -72,7 +79,7 @@ public class FightState : BaseGameState {
         OnAllPreLoaded();
     }
 
-    void OnFightDrag(int id, object p1, object p2)
+    void OnFightDragOnNode(int id, object p1, object p2)
     {
         int heroId = (int)p1;
         int targetNodeId = (int)p2;
@@ -82,24 +89,61 @@ public class FightState : BaseGameState {
         switch (_fState)
         {
             case FSubState.SelectHero:
+                //拖拽一个英雄到一个无人的起始节点上
                 Hero h = PlayerDataMgr.Instance.GetHero(heroId);
                 if(h != null)
                 {
-                    if(_selectedHeros.ContainsKey(targetNodeId))
+                    if(_selectedHeros.ContainsKey(h.Id))    //从另一个起始节点拖拽到新起始节点，即替换英雄起始位置
                     {
-                        _selectedHeros[targetNodeId] = h.Id;
-                        EventSys.Instance.AddEvent(ViewEvent.ReplaceHeroStartNode, h.CreatureData, targetNodeId);
+                        _selectedHeros[h.Id] = targetNodeId;
+                        EventSys.Instance.AddEvent(ViewEvent.ResetHeroStartNode, heroId, targetNodeId);
                     }
-                    else
+                    else       //从英雄列表中拖拽到起始节点
                     {
-                        _selectedHeros.Add(targetNodeId, h.Id);
-                        EventSys.Instance.AddEvent(ViewEvent.CreateHeroStartNode, h.CreatureData, targetNodeId);        
+                        _selectedHeros.Add(h.Id, targetNodeId);
+                        EventSys.Instance.AddEvent(ViewEvent.CreateHeroStartNode, h.CreatureData, targetNodeId);       
                     }
                 }
-                
                 break;
             case FSubState.Mapping:
 
+                break;
+        }
+    }
+
+    void OnFightDragOnHero(int id, object p1, object p2)
+    {
+        int dragHeroId = (int)p1;       //
+        int targetHeroId = (int)p2; //
+        switch (_fState)
+        {
+            case FSubState.SelectHero:
+                if (_selectedHeros.ContainsKey(dragHeroId))
+                {
+                    //交换两个英雄的起始节点
+                    int nodeId = _selectedHeros[dragHeroId];
+                    _selectedHeros[dragHeroId] = _selectedHeros[targetHeroId];
+                    _selectedHeros[targetHeroId] = nodeId;
+
+                    int[] param1 = new[] { dragHeroId, _selectedHeros[dragHeroId] };
+                    int[] param2 = new[] { targetHeroId, _selectedHeros[targetHeroId] };
+                    EventSys.Instance.AddEvent(ViewEvent.ExchangeHeroStartNode, param1, param2);
+                }
+                else
+                {   
+                    //拖拽一个英雄到有已有英雄存在的起始节点上（替换出战英雄）
+                    //p1 = 新选中的出战英雄
+                    //p2 = 已经在节点上，需要被替换的英雄
+                    Hero newHero = PlayerDataMgr.Instance.GetHero(dragHeroId);
+                    //Hero targetHero = PlayerDataMgr.Instance.GetHero(targetHeroId);
+                    int nodeId = _selectedHeros[targetHeroId];
+                    _selectedHeros.Remove(targetHeroId);
+                    _selectedHeros[dragHeroId] = nodeId;
+                    EventSys.Instance.AddEvent(ViewEvent.ReplaceHeroStartNode, newHero.CreatureData, new int[] { targetHeroId, nodeId });
+                }
+                break;
+            case FSubState.Mapping:
+                
                 break;
         }
     }

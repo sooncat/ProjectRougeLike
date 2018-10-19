@@ -20,7 +20,8 @@ public enum InputEvent : int
     FightNodeClicked,   //点击战斗地图中的节点
     FightReady,         //战斗界面，Ready按钮
     FightExit,          //战斗界面，返回按钮
-    FightDrag,          //战斗界面，拖拽操作
-
+    FightDragOnNode,          //战斗界面，拖拽到普通节点上
+    FightDragOnHero,          //战斗界面，拖拽到英雄节点上
+    
 
 }

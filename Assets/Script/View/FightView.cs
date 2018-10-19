@@ -29,7 +29,14 @@ public class FightView : BaseView
     Dictionary<int, Transform> _nodeUIs;
     Dictionary<int, Transform> _nodeLines;
 
+    /// <summary>
+    /// 选择英雄出战时，界面最下方横排的NodeList
+    /// </summary>
     Dictionary<int, Transform> _heroSelectNodes;
+
+    /// <summary>
+    /// 被选中出战的英雄对应的Node
+    /// </summary>
     Dictionary<int, Transform> _fightHeroNodes;
     Canvas _stageCanvas;
 
@@ -52,6 +59,10 @@ public class FightView : BaseView
         EventSys.Instance.AddHander(ViewEvent.CreateHeroStartNode, OnCreateHeroStartNode);
         EventSys.Instance.AddHander(ViewEvent.ReplaceHeroStartNode, OnReplaceHeroStartNode);
         EventSys.Instance.AddHander(ViewEvent.RemoveHeroStartNode, OnRemoveHeroStartNode);
+        EventSys.Instance.AddHander(ViewEvent.ResetHeroStartNode, OnResetHeroStartNode);
+        EventSys.Instance.AddHander(ViewEvent.ExchangeHeroStartNode, OnExchangeHeroStartNode);
+        
+        
     }
 
     void InitStageUi(UINode rootNode)
@@ -223,7 +234,11 @@ public class FightView : BaseView
 
         Dropable drop = go.AddComponent<Dropable>();
         drop.ActionId = stageNode.Id;
-        drop.OnDroped = OnDrop;
+        drop.OnDroped = DropOnNode;
+        if(!stageNode.NodeType.Equals(typeof(StageNodeStart).Name))
+        {
+            drop.enabled = false;
+        }
         
         _nodeUIs.Add(stageNode.Id, go.transform);
     }
@@ -360,16 +375,21 @@ public class FightView : BaseView
         _rewardNode.gameObject.SetActive(false);
     }
 
-    void OnDrag(int nodeID)
+    void OnDrag(int nodeId)
     {
-        CatDebug.LogFunc();
-        dragId = nodeID;
+        //CatDebug.LogFunc(nodeId.ToString());
+        dragId = nodeId;
     }
 
-    void OnDrop(int nodeID)
+    void DropOnNode(int nodeId)
     {
-        CatDebug.LogFunc();
-        EventSys.Instance.AddEvent(InputEvent.FightDrag, dragId, nodeID);
+        //CatDebug.LogFunc(nodeId.ToString());
+        EventSys.Instance.AddEvent(InputEvent.FightDragOnNode, dragId, nodeId);
+    }
+
+    void DropOnHero(int heroId)
+    {
+        EventSys.Instance.AddEvent(InputEvent.FightDragOnHero, dragId, heroId);
     }
 
     void OnCreateHeroStartNode(int id, object p1, object p2)
@@ -382,12 +402,16 @@ public class FightView : BaseView
         if(_heroSelectNodes.ContainsKey(heroData.Id))
         {
             Dragable d = _heroSelectNodes[heroData.Id].GetComponent<Dragable>();
-            d.IsEnableDrag = false;
+            d.SetEnable(false);
         }
 
-        GameObject go = InsHeroNode(heroData, true);
+        GameObject go = InsHeroNode(heroData, false);//这里的英雄还可能与其他英雄交换，故不添加特殊dragicon
         go.transform.SetParent(_stageNodeRootTrans);
         go.GetComponent<Button>().onClick.AddListener(() => { });
+
+        Dropable drop = go.AddComponent<Dropable>();
+        drop.ActionId = heroData.Id;
+        drop.OnDroped = DropOnHero;
 
         Transform target = _nodeUIs[targetNodeId];
         go.transform.position = target.position;
@@ -397,15 +421,52 @@ public class FightView : BaseView
 
     void OnReplaceHeroStartNode(int id, object p1, object p2)
     {
-        HeroData heroData = (HeroData)p1;
-        int targetNodeId = (int)p2;
+        HeroData newHeroData = (HeroData)p1;
+        int targetHeroId = ((int[])p2)[0];
+        int targetNodeId = ((int[])p2)[1];
 
+        Transform node = _fightHeroNodes[targetHeroId];
+        Destroy(node.gameObject);
+        _fightHeroNodes.Remove(targetHeroId);
+        if (_heroSelectNodes.ContainsKey(targetHeroId))
+        {
+            Dragable d = _heroSelectNodes[targetHeroId].GetComponent<Dragable>();
+            d.SetEnable(true);
+        }
+
+        OnCreateHeroStartNode(0, newHeroData, targetNodeId);
     }
 
     void OnRemoveHeroStartNode(int id, object p1, object p2)
     {
         HeroData heroData = (HeroData)p1;
         int targetNodeId = (int)p2;
+    }
+
+    void OnResetHeroStartNode(int id, object p1, object p2)
+    {
+        int heroId = (int)p1;
+        int targetNodeId = (int)p2;
+
+        Transform node = _fightHeroNodes[heroId];
+        Transform target = _nodeUIs[targetNodeId];
+        node.transform.position = target.position;
+    }
+
+    void OnExchangeHeroStartNode(int id, object p1, object p2)
+    {
+        int hero1Id = ((int[])p1)[0];
+        int node1Id = ((int[])p1)[1];
+        int hero2Id = ((int[])p2)[0];
+        int node2Id = ((int[])p2)[1];
+
+        Transform heroNode1 = _fightHeroNodes[hero1Id];
+        Transform target1 = _nodeUIs[node1Id];
+        Transform heroNode2 = _fightHeroNodes[hero2Id];
+        Transform target2 = _nodeUIs[node2Id];
+
+        heroNode1.transform.position = target1.position;
+        heroNode2.transform.position = target2.position;
     }
 
     GameObject InsHeroNode(HeroData heroData, bool setDragIcon)
@@ -426,8 +487,7 @@ public class FightView : BaseView
         drag.TailSprite = ResourceSys.Instance.GetSprite(GameConstants.CommonDragTail);
         drag.TailColor = heroData.TheColor;
         drag.TailWidth = 20;
-        drag.IsEnableDrag = true;
-        drag.IsEnableGray = true;
+        drag.IsDisableGray = true;
         return go;
     }
 }

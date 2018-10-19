@@ -24,7 +24,7 @@
 		"Mp": 500,
 		"Def": 50,
 		"Att": 50,
-		"FightIcon": "Assets/Res/Icon/Item/ico_cardeqiupment_11001",
+		"FightIcon": "Assets/Res/Icon/Item/ico_cardeqiupment_11005",
 		"Icon": "Assets/Res/Icon/cards/ico_head_qufeiyan",
 		"Cg":"Assets/Res/Cg/2d_140",
 		"Color":"#ff0000"
@@ -39,7 +39,7 @@
 		"Mp": 1000,
 		"Def": 50,
 		"Att": 100,
-		"FightIcon": "Assets/Res/Icon/Item/ico_cardeqiupment_11001",
+		"FightIcon": "Assets/Res/Icon/Item/jiguan",
 		"Icon": "Assets/Res/Icon/cards/ico_head_tangyoudu",
 		"Cg":"Assets/Res/Cg/2d_134",
 		"Color":"#00ff00"

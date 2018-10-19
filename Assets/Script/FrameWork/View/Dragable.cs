@@ -41,31 +41,12 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public Color TailColor;
     public float TailWidth;
 
-    private bool _isEnableDrag;
-    /// <summary>
-    /// 用于代码控制不可拖拽
-    /// </summary>
-    public bool IsEnableDrag
-    {
-        get{return _isEnableDrag;}
-        set
-        {
-            if(_isEnableDrag != value)
-            {
-                _isEnableDrag = value;
-                if (IsEnableGray)
-                {
-                    TurnGray(!IsEnableDrag);
-                }    
-            }
-            
-        }
-    }
-
     /// <summary>
     /// 是否在不可拖拽时变灰
     /// </summary>
-    public bool IsEnableGray;
+    public bool IsDisableGray;
+
+    public static bool StartDrag;
 
     void Start()
     {
@@ -78,10 +59,8 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     /// <param name="eventData"></param>
     public void OnBeginDrag(PointerEventData eventData)//
     {
-        if(!IsEnableDrag)
-        {
-            return;
-        }
+        StartDrag = true;
+
         if (HasTail)
         {
             _tailObj = new GameObject("DragTail");
@@ -90,6 +69,7 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             Image tailImg = _tailObj.AddComponent<Image>();
             tailImg.sprite = TailSprite;
             tailImg.color = TailColor;
+            tailImg.raycastTarget = false;
 
             RectTransform tailRect = _tailObj.GetComponent<RectTransform>();
             //tailRect.anchorMin = new Vector2(0, 0.5f);
@@ -115,6 +95,8 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         }
 
         //StartCoroutine(WaitForPause());
+
+        //GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
     //IEnumerator WaitForPause()
@@ -129,10 +111,6 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     /// <param name="eventData"></param>
     public void OnDrag(PointerEventData eventData)
     {
-        if (!IsEnableDrag)
-        {
-            return;
-        }
         ObjFollowMouse(eventData);//让生成的物体跟随鼠标
     }
 
@@ -142,15 +120,13 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     /// <param name="eventData"></param>
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (!IsEnableDrag)
-        {
-            return;
-        }
         if (_dragObj != null)
         {
             Destroy(_dragObj);//拖拽结束后销毁生成的物体
             Destroy(_tailObj);
         }
+
+        //GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
     private void ObjFollowMouse(PointerEventData eventData)
@@ -181,9 +157,12 @@ public class Dragable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     /// <summary>
     /// 变成灰色表示不可拖拽
     /// </summary>
-    private void TurnGray(bool isGray)
+    public void SetEnable(bool isEnable)
     {
+        this.enabled = isEnable;
+        bool isGray = (!isEnable && IsDisableGray);
         Shader s = Shader.Find(isGray ? "UI/Gray" : "UI/Default");
         GetComponent<Image>().material = new Material(s);
     }
+
 }

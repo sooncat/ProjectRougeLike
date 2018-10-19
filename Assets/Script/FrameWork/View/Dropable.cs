@@ -25,10 +25,16 @@ public class Dropable : MonoBehaviour, IDropHandler
             //    GetComponent<Image>().color = new Color(1, 1, 1, 1);//我刚开始把图片设为了透明
             //}
         //}
-
-        if(OnDroped!=null)
+        
+        CatDebug.LogFunc(eventData.pointerDrag.name);
+        if (Dragable.StartDrag)
         {
-            OnDroped(ActionId);
+            if (OnDroped != null)
+            {
+                OnDroped(ActionId);
+            }
+
+            Dragable.StartDrag = false;
         }
     }
 }
