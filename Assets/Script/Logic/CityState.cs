@@ -13,12 +13,12 @@ public class CityState : BaseGameState
         EventSys.Instance.AddHander(InputEvent.CityStartFight, OnCityStartFightEvent);
     }
 
-    private void OnCityExitEvent(int eventId, object param1, object param2)
+    private void OnCityExitEvent(object param1, object param2)
     {
         EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(LoginState));
     }
 
-    private void OnCityStartFightEvent(int eventId, object param1, object param2)
+    private void OnCityStartFightEvent(object param1, object param2)
     {
         EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(FightState), param1);
     }

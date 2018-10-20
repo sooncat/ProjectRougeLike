@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
-public delegate void EventSysCallBack(int eventId, object param1, object param2);
+public delegate void EventSysCallBack(object param1, object param2);
 //public delegate void EventSysCallBack_(uint eventId, object param1, object param2);
 
 // event parameter data define
@@ -189,7 +189,7 @@ public class EventSys : ISystem
     {
         foreach (EventSysCallBack callBack in _allHander)
         {
-            callBack(eventId, param1, param2);
+            callBack(param1, param2);
         }
 
         var list = _mapDealer.GetDealer(eventId);
@@ -202,7 +202,7 @@ public class EventSys : ISystem
                 {
                     Debug.Log("stack = " + msg);
                 }
-                if (cb != null) cb(eventId, param1, param2);
+                if (cb != null) cb(param1, param2);
             }
         }
     }

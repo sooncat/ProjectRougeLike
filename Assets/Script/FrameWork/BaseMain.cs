@@ -21,6 +21,8 @@ public class BaseMain : MonoBehaviour {
         InitSys<SceneSys>();
         InitSys<ConfigSys>();
 
+        gameObject.AddComponent<TimerUtils>();
+
         GameStart();
 	}
 	

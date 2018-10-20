@@ -48,7 +48,7 @@ public class PlayerDataMgr {
         EventSys.Instance.AddHander(NetEvent.CreatePlayerDatas, OnCreatePlayerDatas);
     }
 
-    void OnCreatePlayerDatas(int eventId, object p1, object p2)
+    void OnCreatePlayerDatas(object p1, object p2)
     {
         NetMessages.PlayerData pd = (NetMessages.PlayerData)p1;
 

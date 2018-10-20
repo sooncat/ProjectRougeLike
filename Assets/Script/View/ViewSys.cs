@@ -27,7 +27,7 @@ public class ViewSys : ISystem {
         _allUiClass.Add(typeof(T).Name, new T());
     }
 
-    void OnUiPreLoad(int id, object p1, object p2)
+    void OnUiPreLoad(object p1, object p2)
     {
         var preLoadUis = (List<GameStateConfig.PreLoadResConfig>) p1;
         foreach (GameStateConfig.PreLoadResConfig uiConfig in preLoadUis)

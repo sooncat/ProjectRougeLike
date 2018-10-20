@@ -65,7 +65,6 @@ public class CatDebug {
         if (stackFrames != null && stackFrames.Length > stackLayer)
         {
             string fullName = "null";
-
             StackFrame stackFrame = stackFrames[stackLayer];
             Type declaringType = stackFrame.GetMethod().DeclaringType;
             if (declaringType != null)
@@ -87,9 +86,13 @@ public class CatDebug {
     {
         LogFunction(String.Empty, 2);
     }
-    public static void LogFunc(int stackLayer)
+    public static void LogFuncInStack(int stackLayer)
     {
         LogFunction(String.Empty, 2 + stackLayer);
+    }
+    public static void LogFunc(int msg)
+    {
+        LogFunc(msg.ToString());
     }
     public static void LogFunc(string msg)
     {

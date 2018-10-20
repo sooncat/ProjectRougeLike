@@ -22,5 +22,13 @@ public enum ViewEvent : int {
 
     CreateFightView,        //进入战斗，创建战斗界面
     SetSelectedHero,        //切换选中的英雄
+    FightUpdateRound,       //进入战斗，下一回合
+    FightEnemyHurt,         //战斗中敌人受伤
+    FightUpdateEnemyState,  //战斗中更新敌人状态
+    FightShowWin,           //战斗胜利界面
+    FightShowLose,           //战斗失败界面
+    FightReturnToStage,     //从战斗界面返回地图界面
 
+    ShowTipNodePassed,      //地图界面，提示此点已经被攻略
+    ShowTipNotNextNode,      //地图界面，提示此点不是当前节点的子节点
 }

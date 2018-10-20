@@ -32,4 +32,16 @@ public static class UIUtils {
         scrollRect.normalizedPosition = new Vector2(0, 0);
     }
     
+    public static void DestroyChildren(this Transform trans)
+    {
+        List<Transform> result = new List<Transform>();
+        foreach(Transform t in trans)
+        {
+            result.Add(t);
+        }
+        for (int i = 0; i < result.Count;i++ )
+        {
+            Object.Destroy(result[i].gameObject);
+        }
+    }
 }

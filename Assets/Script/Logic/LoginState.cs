@@ -12,7 +12,7 @@ public class LoginState : BaseGameState {
         EventSys.Instance.AddHander(InputEvent.LoginLogin, OnLoginEvent);
     }
 
-    private void OnLoginEvent(int eventId, object param1, object param2)
+    private void OnLoginEvent(object param1, object param2)
     {
         //此处数据从网络得到或者从本地读取
         NetMessages.PlayerData pd = new NetMessages.PlayerData();

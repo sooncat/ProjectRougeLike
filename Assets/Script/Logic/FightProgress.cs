@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary>
 /// 回合战斗类
@@ -17,51 +16,97 @@ public class FightProgress {
     /// </summary>
     int _nowHeroId;
 
-    //Dictionary<int, FightHero> _heros;
+    /// <summary>
+    /// 当前进行战斗的英雄
+    /// </summary>
+    Dictionary<int, FightHero> _heros;
 
+    /// <summary>
+    /// 当前进行战斗的敌人
+    /// </summary>
+    List<Enemy> _enemies;
 
-	public FightProgress()
+    /// <summary>
+    /// 当前节点ID
+    /// </summary>
+    int _nowNodeId;
+
+    StageConfig _stageConfig;
+    
+    public FightProgress(StageConfig stageConfig)
 	{
-        EventSys.Instance.AddEvent(LogicEvent.StartFightRound, StartRound);
+        _stageConfig = stageConfig;
 
-	    EventSys.Instance.AddHander(InputEvent.FightAttack, OnUseAttack);
-        EventSys.Instance.AddHander(InputEvent.FightItem, OnUseItem);
+        EventSys.Instance.AddHander(LogicEvent.StartFightRound, StartRound);
+        EventSys.Instance.AddHander(InputEvent.FightAttack, OnHeroAttack);
+        EventSys.Instance.AddHander(InputEvent.FightItem, OnHeroUseItem);
         EventSys.Instance.AddHander(InputEvent.FightSelectHero, OnSelectHero);
 	}
 
-    void OnUseAttack(int id, object p1, object p2)
+    /// <summary>
+    /// 当前选中英雄的普通攻击
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
+    void OnHeroAttack(object p1, object p2)
     {
-        int heroId = (int)p1;
-        int enemyId = (int)p2;
-        FightHero hero = FightDataMgr.Instance.GetHero(heroId);
-        Enemy enemy = FightDataMgr.Instance.GetEnemy(enemyId);
+        FightHero hero = _heros[_nowHeroId];
+        Enemy enemy = _enemies[0];
 
         int damage = hero.CreatureData.Att.Value - enemy.CreatureData.Def.Value;
+        damage = System.Math.Max(1, damage);
         enemy.CreatureData.Hp.Value -= damage;
 
-        if(enemy.CreatureData.Hp.Value <= 0)
+        if(damage > 0)
         {
-            
+            EventSys.Instance.AddEvent(ViewEvent.FightEnemyHurt, damage);
+            EventSys.Instance.AddEvent(ViewEvent.FightUpdateEnemyState, enemy);
+        }
+
+        if (enemy.CreatureData.Hp.Value <= 0)
+        {
+            EventSys.Instance.AddEvent(ViewEvent.FightShowWin);
+            _stageConfig.GetNode(_nowNodeId).IsPassed = true;
+            foreach (KeyValuePair<int, FightHero> pair in _heros)
+            {
+                pair.Value.NowNodeId = _nowNodeId;
+            }
+            TimerUtils.Instance.StartTimer(1, () =>
+            {
+                EventSys.Instance.AddEvent(ViewEvent.FightReturnToStage, _heros, _nowNodeId);
+            });
         }
     }
 
-    void OnUseItem(int id, object p1, object p2)
+    void OnHeroUseItem( object p1, object p2)
     {
         
     }
 
-    void OnSelectHero(int id, object p1, object p2)
+    void OnSelectHero( object p1, object p2)
     {
-        int heroId = (int)p1;
+        _nowHeroId = (int)p1;
+        EventSys.Instance.AddEvent(ViewEvent.SetSelectedHero, FightDataMgr.Instance.GetHero(_nowHeroId));
     }
 
-    void StartRound(int id, object p1, object p2)
+    void StartRound(object p1, object p2)
     {
+        int[] heroIds = (int[])p1;
+        _heros = new Dictionary<int, FightHero>();
+        foreach (int heroId in heroIds)
+        {
+            _heros.Add(heroId, FightDataMgr.Instance.GetHero(heroId));    
+        }
+
+        _nowNodeId = (int)p2;
+        _enemies = new List<Enemy>();
+        _enemies.Add(FightDataMgr.Instance.GetEnemy(_nowNodeId));
+
+        EventSys.Instance.AddEvent(ViewEvent.CreateFightView, _heros, _enemies);
+        
         _round = 0;
         NextRound();
-
-        EventSys.Instance.AddEvent(ViewEvent.CreateFightView, FightDataMgr.Instance.GetHeros(), FightDataMgr.Instance.GetEnemies());
-        EventSys.Instance.AddEvent(ViewEvent.SetSelectedHero, FightDataMgr.Instance.GetHero(_nowHeroId));
     }
 
     /// <summary>
@@ -70,8 +115,8 @@ public class FightProgress {
     void NextRound()
     {
         bool isFirst = true;
-        Dictionary<int, FightHero> heros = FightDataMgr.Instance.GetHeros();
-        foreach (KeyValuePair<int, FightHero> pair in heros)
+        
+        foreach (KeyValuePair<int, FightHero> pair in _heros)
         {
             if(isFirst)
             {
@@ -80,11 +125,13 @@ public class FightProgress {
             }
             pair.Value.IsActioned = false;
         }
-        Dictionary<int, Enemy> enemies = FightDataMgr.Instance.GetEnemies();
-        foreach (KeyValuePair<int, Enemy> pair in enemies)
+        
+        foreach (Enemy e in _enemies)
         {
-            pair.Value.IsActioned = false;
+            e.IsActioned = false;
         }
         _round++;
+
+        EventSys.Instance.AddEvent(ViewEvent.FightUpdateRound, _round, _heros[_nowHeroId]);
     }
 }

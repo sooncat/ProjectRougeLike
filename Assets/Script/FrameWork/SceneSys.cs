@@ -20,7 +20,7 @@ public class SceneSys : ISystem {
         EventSys.Instance.AddHander(LogicEvent.SceneLoadStart, OnLoadSceneStart);
     }
 
-    void OnLoadSceneStart(int id, object p1, object p2)
+    void OnLoadSceneStart(object p1, object p2)
     {
         string sceneName = (string)p1;
         bool isAdditive = (bool)p2;

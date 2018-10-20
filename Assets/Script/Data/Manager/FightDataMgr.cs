@@ -43,7 +43,7 @@ public class FightDataMgr {
         Init();
     }
 
-    void CreateNodes(int eventId, object p1, object p2)
+    void CreateNodes(object p1, object p2)
     {
         _enemies = new Dictionary<int, Enemy>();
         _rewards = new Dictionary<int, Reward>();
@@ -69,7 +69,7 @@ public class FightDataMgr {
         }
     }
 
-    void CreateFightHeros(int id, object p1, object p2)
+    void CreateFightHeros(object p1, object p2)
     {
         Dictionary<int, int> selectedHeros = (Dictionary<int, int>)p1;
         _heros = new Dictionary<int, FightHero>();
@@ -97,10 +97,10 @@ public class FightDataMgr {
         return _heros;
     }
 
-    public Dictionary<int, Enemy> GetEnemies()
-    {
-        return _enemies;
-    }
+    //public Dictionary<int, Enemy> GetEnemies()
+    //{
+    //    return _enemies;
+    //}
 
     public List<FightHero> GetHeroList()
     {

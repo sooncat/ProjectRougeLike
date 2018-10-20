@@ -31,8 +31,6 @@ public class FightState : BaseGameState {
     {
         base.Enter(parameter);
 
-        _fightProgress = new FightProgress();
-
         _fState = FSubState.SelectHero;
         _selectedHeros = new Dictionary<int, int>();
 
@@ -46,26 +44,26 @@ public class FightState : BaseGameState {
         EventSys.Instance.AddHander(InputEvent.FightDragOnHero, OnFightDragOnHero);
     }
 
-    void OnExitEvent(int id, object p1, object p2)
+    void OnExitEvent(object p1, object p2)
     {
         EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(CityState));
     }
 
-    void OnFightReadyEvent(int id, object p1, object p2)
+    void OnFightReadyEvent(object p1, object p2)
     {
         _fState = FSubState.Mapping;
         EventSys.Instance.AddEventNow(LogicEvent.CreateFightHeroData, _selectedHeros);
         EventSys.Instance.AddEvent(ViewEvent.FightSubStateMapping, FightDataMgr.Instance.GetHeros());
     }
 
-    void OnClickFightNodeEvent(int id, object p1, object p2)
+    void OnClickFightNodeEvent(object p1, object p2)
     {
         
     }
 
-    protected override void OnUiLoaded(int id, object p1, object p2)
+    protected override void OnUiLoaded(object p1, object p2)
     {
-        base.OnUiLoaded(id, p1, p2);
+        base.OnUiLoaded(p1, p2);
 
         JsonSerializerSettings settings = new JsonSerializerSettings
         {
@@ -78,15 +76,17 @@ public class FightState : BaseGameState {
         EventSys.Instance.AddEvent(LogicEvent.CreateFightStageData, _stageConfig);
         //EventSys.Instance.AddEvent(LogicEvent.CreateFightHeroData);
         EventSys.Instance.AddEvent(ViewEvent.CreateStageView, _stageConfig);
-        
+
+        _fightProgress = new FightProgress(_stageConfig);
+
         OnAllPreLoaded();
     }
 
-    void OnFightDragOnNode(int id, object p1, object p2)
+    void OnFightDragOnNode(object p1, object p2)
     {
         int heroId = (int)p1;
         int targetNodeId = (int)p2;
-
+        
         CatDebug.LogFunc(" p1 = " + heroId + ", p2 = " + targetNodeId);
 
         switch (_fState)
@@ -109,13 +109,40 @@ public class FightState : BaseGameState {
                 }
                 break;
             case FSubState.Mapping:
-                EventSys.Instance.AddEvent(LogicEvent.StartFightRound);
+
+                BaseStageNode node = _stageConfig.GetNode(targetNodeId);
+
+                if(node.IsPassed)
+                {
+                    EventSys.Instance.AddEvent(ViewEvent.ShowTipNodePassed);
+                    return;
+                }
+
+                FightHero fh = FightDataMgr.Instance.GetHero(heroId);
+                BaseStageNode heroNode = _stageConfig.GetNode(fh.NowNodeId);
+                if (!heroNode.NextNodes.Contains(targetNodeId))
+                {
+                    EventSys.Instance.AddEvent(ViewEvent.ShowTipNotNextNode);
+                    return;
+                }
+
+                string nodeType = node.NodeType;
+
+                if(nodeType.Equals(typeof(StageNodeFight).Name))
+                {
+                    EventSys.Instance.AddEvent(LogicEvent.StartFightRound, new int[]{heroId}, targetNodeId);
+                }
+                else if(nodeType.Equals(typeof(StageNodeReward).Name))
+                {
+                    
+                }
+                
                 
                 break;
         }
     }
 
-    void OnFightDragOnHero(int id, object p1, object p2)
+    void OnFightDragOnHero(object p1, object p2)
     {
         int dragHeroId = (int)p1;       //
         int targetHeroId = (int)p2; //

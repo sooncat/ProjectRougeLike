@@ -19,7 +19,10 @@ public class StageView : BaseView
     GameObject _layerNameModel;
     GameObject _heroShowModel;
 
+    
+
     UINode _stageScrollContent;
+    UINode _warning;
 
     UINode _stageNode;
     UINode _fightNode;
@@ -39,6 +42,13 @@ public class StageView : BaseView
     /// { Key:heroId, Value:nodeTransform }
     /// </summary>
     Dictionary<int, Transform> _fightHeroNodes;
+
+    /// <summary>
+    /// 战斗中，最下方显示的英雄对应的Node.
+    /// { Key:heroId, Value:nodeTransform }
+    /// </summary>
+    Dictionary<int, Transform> _showHeroNodes;
+
     Canvas _stageCanvas;
 
     int _dragId;
@@ -62,7 +72,10 @@ public class StageView : BaseView
         EventSys.Instance.AddHander(ViewEvent.RemoveHeroStartNode, OnRemoveHeroStartNode);
         EventSys.Instance.AddHander(ViewEvent.ResetHeroStartNode, OnResetHeroStartNode);
         EventSys.Instance.AddHander(ViewEvent.ExchangeHeroStartNode, OnExchangeHeroStartNode);
-        
+        EventSys.Instance.AddHander(ViewEvent.ShowTipNodePassed, OnTipNodePassed);
+        EventSys.Instance.AddHander(ViewEvent.ShowTipNotNextNode, OnTipNotNextNode);
+
+        EventSys.Instance.AddHander(ViewEvent.FightReturnToStage, OnFightReturnStage);
     }
 
     void InitStageUi(UINode rootNode)
@@ -91,6 +104,12 @@ public class StageView : BaseView
 
         _stageNode.GetRef("HeroShowtList").gameObject.SetActive(true);
         _stageNode.GetRef("HeroShowtList").gameObject.SetActive(false);
+
+        _warning = _stageNode.GetNode("Warning");
+        DelayAction da = _warning.gameObject.AddComponent<DelayAction>();
+        da.DelaySecond = 1;
+        da.DAction = () => { _warning.gameObject.SetActive(false); };
+        _warning.gameObject.SetActive(false);
     }
 
     void InitFightNodeUi(UINode rootNode)
@@ -125,7 +144,7 @@ public class StageView : BaseView
         EventSys.Instance.AddEvent(InputEvent.FightReady);
     }
 
-    void OnFightStateMapping(int id, object p1, object p2)
+    void OnFightStateMapping(object p1, object p2)
     {
         CatDebug.LogFunc();
 
@@ -156,24 +175,37 @@ public class StageView : BaseView
 
     void CreateHeroShowList(Dictionary<int, FightHero> heros)
     {
+        _showHeroNodes = new Dictionary<int, Transform>();
         foreach (KeyValuePair<int, FightHero> pair in heros)
         {
             FightHero fightHero = pair.Value;
             GameObject go = Instantiate(_heroShowModel);
             UINode node = go.GetComponent<UINode>();
-            node.GetRef("Icon").GetComponent<Image>().sprite = ResourceSys.Instance.GetSprite(fightHero.CreatureData.Icon);
-            node.GetRef("Name").GetComponent<Text>().text = fightHero.CreatureData.Name;
-            node.GetRef("Hp").GetComponent<Text>().text = "血";
-            node.GetRef("HpSlider").GetComponent<Slider>().value = fightHero.CreatureData.HpPercent;
-            node.GetRef("Mp").GetComponent<Text>().text = "气";
-            node.GetRef("MpSlider").GetComponent<Slider>().value = fightHero.CreatureData.MpPercent;
+            SetShowNodeData(fightHero, node);
             go.transform.SetParent(_stageNode.GetRef("HeroShowListContent"));
+
+            _showHeroNodes.Add(fightHero.Id, go.transform);
         }
 
         _stageNode.GetRef("HeroShowtList").gameObject.SetActive(true);
     }
 
-    void OnCreatStageView(int id, object p1, object p2)
+    /// <summary>
+    /// 战斗中，最下方一排的英雄显示赋值
+    /// </summary>
+    /// <param name="fightHero"></param>
+    /// <param name="node"></param>
+    void SetShowNodeData(FightHero fightHero, UINode node)
+    {
+        node.GetRef("Icon").GetComponent<Image>().sprite = ResourceSys.Instance.GetSprite(fightHero.CreatureData.Icon);
+        node.GetRef("Name").GetComponent<Text>().text = fightHero.CreatureData.Name;
+        node.GetRef("Hp").GetComponent<Text>().text = "血";
+        node.GetRef("HpSlider").GetComponent<Slider>().value = fightHero.CreatureData.HpPercent;
+        node.GetRef("Mp").GetComponent<Text>().text = "气";
+        node.GetRef("MpSlider").GetComponent<Slider>().value = fightHero.CreatureData.MpPercent;
+    }
+
+    void OnCreatStageView(object p1, object p2)
     {
         StageConfig stageConfig = (StageConfig)p1;
 
@@ -242,7 +274,7 @@ public class StageView : BaseView
 
     void CreateLayer(StageLayer stageLayer)
     {
-        CatDebug.LogFunc(GetHashCode());
+        CatDebug.LogFunc(GetHashCode().ToString());
         float allNodeWidth = _stageScrollContent.GetComponent<RectTransform>().sizeDelta.x - LayerNameWidth;
         float singleNodeWidth = allNodeWidth / stageLayer.Nodes.Count;
         Vector2 modelNodeSize = _nodeModel.GetComponent<RectTransform>().sizeDelta;
@@ -433,7 +465,7 @@ public class StageView : BaseView
         EventSys.Instance.AddEvent(InputEvent.FightDragOnHero, _dragId, heroId);
     }
 
-    void OnCreateHeroStartNode(int id, object p1, object p2)
+    void OnCreateHeroStartNode(object p1, object p2)
     {
         CatDebug.LogFunc();
 
@@ -460,7 +492,7 @@ public class StageView : BaseView
         _fightHeroNodes.Add(heroData.Id, go.transform);
     }
 
-    void OnReplaceHeroStartNode(int id, object p1, object p2)
+    void OnReplaceHeroStartNode(object p1, object p2)
     {
         HeroData newHeroData = (HeroData)p1;
         int targetHeroId = ((int[])p2)[0];
@@ -475,15 +507,15 @@ public class StageView : BaseView
             d.SetEnable(true);
         }
 
-        OnCreateHeroStartNode(0, newHeroData, targetNodeId);
+        OnCreateHeroStartNode(newHeroData, targetNodeId);
     }
 
-    void OnRemoveHeroStartNode(int id, object p1, object p2)
+    void OnRemoveHeroStartNode(object p1, object p2)
     {
         
     }
 
-    void OnResetHeroStartNode(int id, object p1, object p2)
+    void OnResetHeroStartNode(object p1, object p2)
     {
         int heroId = (int)p1;
         int targetNodeId = (int)p2;
@@ -493,7 +525,7 @@ public class StageView : BaseView
         node.transform.position = target.position;
     }
 
-    void OnExchangeHeroStartNode(int id, object p1, object p2)
+    void OnExchangeHeroStartNode(object p1, object p2)
     {
         int hero1Id = ((int[])p1)[0];
         int node1Id = ((int[])p1)[1];
@@ -529,5 +561,43 @@ public class StageView : BaseView
         drag.TailWidth = 20;
         drag.IsDisableGray = true;
         return go;
+    }
+
+    void OnTipNodePassed(object p1, object p2)
+    {
+        ShowWarning("此节点已被攻略");
+    }
+
+    void OnTipNotNextNode(object p1, object p2)
+    {
+        ShowWarning("没有通路");
+    }
+
+    void ShowWarning(string msg)
+    {
+        Text t = _warning.GetRef("Text").GetComponent<Text>();
+        t.text = msg;
+        DelayAction da = _warning.GetComponent<DelayAction>();
+        da.StartDelay();
+    }
+
+    void OnFightReturnStage(object p1, object p2)
+    {
+        //update Node
+        int nodeId = (int)p2;
+        ImageGray ig = _nodeUIs[nodeId].gameObject.AddComponent<ImageGray>();
+        ig.Gray = true;
+
+        Dictionary<int, FightHero> heros = (Dictionary<int, FightHero>)p1;
+        foreach (KeyValuePair<int, FightHero> pair in heros)
+        {
+            int hId = pair.Value.Id;
+            //change pos
+            _fightHeroNodes[hId].position = _nodeUIs[nodeId].position;
+            //update data
+            UINode showNode = _showHeroNodes[hId].GetComponent<UINode>();
+            SetShowNodeData(pair.Value, showNode);
+        }
+        
     }
 }

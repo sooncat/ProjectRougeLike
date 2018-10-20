@@ -63,7 +63,7 @@ public class GameStateSys : ISystem {
     }
 
 
-    void OnChangeState(int id, object p1, object p2)
+    void OnChangeState(object p1, object p2)
     {
         Type t = (Type)p1;
         _willStateParameter = null;
@@ -99,7 +99,7 @@ public class GameStateSys : ISystem {
         _nowState.Leave();
     }
 
-    void OnLeaveState(int id, object p1, object p2)
+    void OnLeaveState(object p1, object p2)
     {
         Type t = (Type)p1;
         Debug.Log("OnLeaveState" + t.Name + ", will = " + _willStateType.Name);

@@ -40,7 +40,7 @@ public class BaseGameState {
     public virtual void Reset() { }
     public virtual void Enter(GameStateParameter parameter)
     {
-        CatDebug.LogFunc(1);
+        CatDebug.LogFuncInStack(1);
 
         EventSys.Instance.AddHander(LogicEvent.SceneLoadEnd, OnSceneLoaded);
         EventSys.Instance.AddHander(LogicEvent.UiLoadEnd, OnUiLoaded);
@@ -52,7 +52,7 @@ public class BaseGameState {
 
     public virtual void Leave()
     {
-        CatDebug.LogFunc(1);
+        CatDebug.LogFuncInStack(1);
         EventSys.Instance.RemoveHander(this);
         EventSys.Instance.AddEvent(LogicEvent.UiLoadingStart);
         StartUnLoad();
@@ -107,22 +107,22 @@ public class BaseGameState {
         }
     }
 
-    protected virtual void OnSceneLoaded(int id, object p1, object p2)
+    protected virtual void OnSceneLoaded(object p1, object p2)
     {
         //EventSys.Instance.AddEvent(LogicEvent.UiLoadingUpdate, SceneLoadPercent);
         StartLoadUi();
     }
 
-    protected virtual void OnUiLoaded(int id, object p1, object p2)
+    protected virtual void OnUiLoaded(object p1, object p2)
     {
-        CatDebug.LogFunc(1);
+        CatDebug.LogFuncInStack(1);
         //EventSys.Instance.AddEvent(LogicEvent.UiLoadingUpdate, UiLoadPercent);
         OnAllPreLoaded();
     }
 
     protected virtual void OnAllPreLoaded()
     {
-        CatDebug.LogFunc(1);
+        CatDebug.LogFuncInStack(1);
         EventSys.Instance.AddEvent(LogicEvent.UiLoadingEnd);
     }
 }
