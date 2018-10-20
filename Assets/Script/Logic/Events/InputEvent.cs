@@ -27,3 +27,16 @@ public enum InputEvent : int
     FightItem,          //战斗中，使用道具（可以对任何人使用道具）
     FightSelectHero,    //战斗中，选择英雄
 }
+
+/// <summary>
+/// AI的输入
+/// </summary>
+public enum AiInputEvent:int
+{
+    NoneStart = 50000,
+    Attack,
+    UseItem,
+    UseSkill,
+
+    AiActionEnd,    //ai行动完毕
+}

@@ -28,7 +28,9 @@ public class GameMain : BaseMain {
         GameStateSys.Instance.InitState<LoginState>();
         GameStateSys.Instance.InitState<CityState>();
         GameStateSys.Instance.InitState<FightState>();
-        
+
+        AIMgr.Instance.Init();
+
         EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(StartState));
     }
 

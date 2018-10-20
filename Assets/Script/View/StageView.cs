@@ -75,7 +75,11 @@ public class StageView : BaseView
         EventSys.Instance.AddHander(ViewEvent.ShowTipNodePassed, OnTipNodePassed);
         EventSys.Instance.AddHander(ViewEvent.ShowTipNotNextNode, OnTipNotNextNode);
 
-        EventSys.Instance.AddHander(ViewEvent.FightReturnToStage, OnFightReturnStage);
+        EventSys.Instance.AddHander(ViewEvent.FightWinReturnToStage, OnFightWinReturnStage);
+        EventSys.Instance.AddHander(ViewEvent.FightLoseReturnToStage, OnFightLoseReturnStage);
+        EventSys.Instance.AddHander(ViewEvent.ShowStageFail, OnStageFail);
+
+
     }
 
     void InitStageUi(UINode rootNode)
@@ -581,7 +585,7 @@ public class StageView : BaseView
         da.StartDelay();
     }
 
-    void OnFightReturnStage(object p1, object p2)
+    void OnFightWinReturnStage(object p1, object p2)
     {
         //update Node
         int nodeId = (int)p2;
@@ -598,6 +602,24 @@ public class StageView : BaseView
             UINode showNode = _showHeroNodes[hId].GetComponent<UINode>();
             SetShowNodeData(pair.Value, showNode);
         }
+        
+    }
+
+    void OnFightLoseReturnStage(object p1, object p2)
+    {
+        Dictionary<int, FightHero> heros = (Dictionary<int, FightHero>)p1;
+        foreach (KeyValuePair<int, FightHero> pair in heros)
+        {
+            int hId = pair.Value.Id;
+            //update data
+            UINode showNode = _showHeroNodes[hId].GetComponent<UINode>();
+            SetShowNodeData(pair.Value, showNode);
+        }
+   
+    }
+
+    void OnStageFail(object p1, object p2)
+    {
         
     }
 }

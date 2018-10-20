@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 /// <summary>
 /// 回合战斗类
@@ -32,38 +33,95 @@ public class FightProgress {
     int _nowNodeId;
 
     StageConfig _stageConfig;
+
+    enum RoundTurn
+    {
+        Hero,
+        Enemy
+    }
+
+    RoundTurn _nowTurn;
     
     public FightProgress(StageConfig stageConfig)
 	{
         _stageConfig = stageConfig;
 
         EventSys.Instance.AddHander(LogicEvent.StartFightRound, StartRound);
+
         EventSys.Instance.AddHander(InputEvent.FightAttack, OnHeroAttack);
         EventSys.Instance.AddHander(InputEvent.FightItem, OnHeroUseItem);
         EventSys.Instance.AddHander(InputEvent.FightSelectHero, OnSelectHero);
+
+        EventSys.Instance.AddHander(AiInputEvent.Attack, OnAiAttack);
+        EventSys.Instance.AddHander(AiInputEvent.AiActionEnd, OnAiEnd);
 	}
+
+    void OnAiAttack(object p1, object p2)
+    {
+        Enemy enemy = (Enemy)p1;
+        FightHero hero = (FightHero)p2;
+
+        int damage = enemy.CreatureData.Att.Value - hero.CreatureData.Def.Value;
+        damage = System.Math.Max(1, damage);
+
+        hero.CreatureData.Hp.Value -= damage;
+        if(hero.CreatureData.Hp.Value < 0)
+        {
+            hero.CreatureData.Hp.Value = 0;
+        }
+
+        EventSys.Instance.AddEvent(ViewEvent.FightEnemyAttack, hero, damage);
+        //EventSys.Instance.AddEvent(ViewEvent.FightUpdateHeroState, _heros);//单体攻击的话没必要更新所有，群体攻击可以理解为多个单体攻击
+    }
+
+    void OnAiEnd(object p1, object p2)
+    {
+        bool isAllHeroDied = true;
+        foreach (var pair in _heros)
+        {
+            if(pair.Value.CreatureData.Hp.Value > 0)
+            {
+                isAllHeroDied = false;
+                break;
+            }
+        }
+        if(isAllHeroDied)
+        {
+            EventSys.Instance.AddEvent(ViewEvent.FightShowLose, _heros);
+            TimerUtils.Instance.StartTimer(1, () =>
+            {
+                EventSys.Instance.AddEvent(ViewEvent.FightLoseReturnToStage, _heros);
+                EventSys.Instance.AddEvent(LogicEvent.FightLoseReturnToStage);
+            });
+        }
+        else
+        {
+            NextRound();
+        }
+    }
 
     /// <summary>
     /// 当前选中英雄的普通攻击
     /// </summary>
-    /// <param name="id"></param>
     /// <param name="p1"></param>
     /// <param name="p2"></param>
     void OnHeroAttack(object p1, object p2)
     {
         FightHero hero = _heros[_nowHeroId];
+        hero.IsActioned = true;
+
         Enemy enemy = _enemies[0];
 
         int damage = hero.CreatureData.Att.Value - enemy.CreatureData.Def.Value;
         damage = System.Math.Max(1, damage);
         enemy.CreatureData.Hp.Value -= damage;
-
-        if(damage > 0)
+        if (enemy.CreatureData.Hp.Value <= 0)
         {
-            EventSys.Instance.AddEvent(ViewEvent.FightEnemyHurt, damage);
-            EventSys.Instance.AddEvent(ViewEvent.FightUpdateEnemyState, enemy);
+            enemy.CreatureData.Hp.Value = 0;
         }
-
+        EventSys.Instance.AddEvent(ViewEvent.FightHeroAttack, damage);
+        EventSys.Instance.AddEvent(ViewEvent.FightUpdateEnemyState, enemy);
+        
         if (enemy.CreatureData.Hp.Value <= 0)
         {
             EventSys.Instance.AddEvent(ViewEvent.FightShowWin);
@@ -74,8 +132,39 @@ public class FightProgress {
             }
             TimerUtils.Instance.StartTimer(1, () =>
             {
-                EventSys.Instance.AddEvent(ViewEvent.FightReturnToStage, _heros, _nowNodeId);
+                EventSys.Instance.AddEvent(ViewEvent.FightWinReturnToStage, _heros, _nowNodeId);
             });
+        }
+        else
+        {
+            CheckChangeTurnToEnemy();    
+        }
+        
+    }
+
+    /// <summary>
+    /// 当玩家行动完毕后，检查是否需要切换双方主动权
+    /// </summary>
+    void CheckChangeTurnToEnemy()
+    {
+        bool isAllActioned = true;
+        foreach (KeyValuePair<int, FightHero> pair in _heros)
+        {
+            if(!pair.Value.IsActioned)
+            {
+                isAllActioned = false;
+                _nowHeroId = pair.Value.Id;
+                FightHero fh = _heros[_nowHeroId];
+                EventSys.Instance.AddEvent(ViewEvent.SetSelectedHero, fh);
+                break;
+            }
+        }
+        
+        if(isAllActioned)
+        {
+            _nowTurn = RoundTurn.Enemy;
+            EventSys.Instance.AddEvent(ViewEvent.FightChangeTurn, false);
+            EventSys.Instance.AddEvent(LogicEvent.FightStartAi, _heros, _enemies);
         }
     }
 
@@ -87,7 +176,7 @@ public class FightProgress {
     void OnSelectHero( object p1, object p2)
     {
         _nowHeroId = (int)p1;
-        EventSys.Instance.AddEvent(ViewEvent.SetSelectedHero, FightDataMgr.Instance.GetHero(_nowHeroId));
+        EventSys.Instance.AddEvent(ViewEvent.SetSelectedHero, _heros[_nowHeroId]);
     }
 
     void StartRound(object p1, object p2)
@@ -131,7 +220,9 @@ public class FightProgress {
             e.IsActioned = false;
         }
         _round++;
+        _nowTurn = RoundTurn.Hero;
 
         EventSys.Instance.AddEvent(ViewEvent.FightUpdateRound, _round, _heros[_nowHeroId]);
+        EventSys.Instance.AddEvent(ViewEvent.FightChangeTurn, true);
     }
 }

@@ -26,7 +26,7 @@ public class FightState : BaseGameState {
     Dictionary<int, int> _selectedHeros;
 
     FightProgress _fightProgress;
-
+    
     public override void Enter(GameStateParameter parameter)
     {
         base.Enter(parameter);
@@ -42,6 +42,9 @@ public class FightState : BaseGameState {
         EventSys.Instance.AddHander(InputEvent.FightNodeClicked, OnClickFightNodeEvent);
         EventSys.Instance.AddHander(InputEvent.FightDragOnNode, OnFightDragOnNode);
         EventSys.Instance.AddHander(InputEvent.FightDragOnHero, OnFightDragOnHero);
+
+        EventSys.Instance.AddHander(LogicEvent.FightLoseReturnToStage, OnFightLoseReturnToStage);
+
     }
 
     void OnExitEvent(object p1, object p2)
@@ -176,6 +179,23 @@ public class FightState : BaseGameState {
             case FSubState.Mapping:
                 
                 break;
+        }
+    }
+
+    void OnFightLoseReturnToStage(object p1, object p2)
+    {
+        //判定是否所有英雄死亡
+        bool isAllDied = true;
+        foreach (var pair in FightDataMgr.Instance.GetHeros())
+        {
+            if (pair.Value.CreatureData.Hp.Value > 0)
+            {
+                isAllDied = false;
+            }
+        }
+        if (isAllDied)
+        {
+            EventSys.Instance.AddEvent(ViewEvent.ShowStageFail);
         }
     }
 }

@@ -35,11 +35,14 @@ public enum LogicEvent : int
 
     StartFightRound,    //进入回合战斗
 
+    FightStartAi,   //开启AI，决定机器人动作
+
+    FightLoseReturnToStage, //一场战斗失败
     
 
 }
 
 public enum NetEvent:int
 {
-    CreatePlayerDatas = 10000,
+    CreatePlayerDatas = 1000,
 }

@@ -22,6 +22,7 @@ public class BaseMain : MonoBehaviour {
         InitSys<ConfigSys>();
 
         gameObject.AddComponent<TimerUtils>();
+        gameObject.AddComponent<CoroutineUtils>();
 
         GameStart();
 	}
