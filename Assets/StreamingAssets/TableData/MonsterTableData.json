@@ -6,10 +6,10 @@
 		"Icon":"Assets/Res/Icon/cards/ico_head_anduxie",
 		"Cg":"Assets/Res/Cg/2d_110",
 		"Sex": 1,
-		"Hp": 1000,
+		"Hp": 500,
 		"Mp": 500,
 		"Def": 50,
-		"Att": 100,
+		"Att": 110,
 		"Ai": 1,
 		"DropIds":[1,2,3]
 	},

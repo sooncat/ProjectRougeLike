@@ -49,8 +49,7 @@ public class FightView : BaseView {
         _heroNodeRoot = rootNode.GetRef("HeroRoot");
         _itemNodeRoot = rootNode.GetRef("ItemsContent");
 
-        _rootNode.GetRef("Win").gameObject.SetActive(false);
-        _rootNode.GetNode("Lose").gameObject.SetActive(false);
+        
         
         EventSys.Instance.AddHander(ViewEvent.CreateFightView, OnCreateFightView);
         EventSys.Instance.AddHander(ViewEvent.SetSelectedHero, OnChangeHero);
@@ -85,6 +84,9 @@ public class FightView : BaseView {
     void OnFinish(object p1, object p2)
     {
         _rootNode.gameObject.SetActive(false);
+        //clear
+        _heroNodeRoot.DestroyChildren();
+        _itemNodeRoot.DestroyChildren();
     }
 
     void OnUpdateEnemy(object p1, object p2)
@@ -132,11 +134,12 @@ public class FightView : BaseView {
         {
             sb.Append(pair.Value.CreatureData.Name).Append(",");
         }
+        sb.Append("被打败了");
 
         UINode node = _rootNode.GetNode("Lose");
         node.gameObject.SetActive(true);
         Text text = node.GetComponent<UINode>().GetRef("Text").GetComponent<Text>();
-        text.text = sb.ToString() + "被打败了";
+        text.text = sb.ToString();
 
     }
 
@@ -173,6 +176,9 @@ public class FightView : BaseView {
         }
 
         _rootNode.gameObject.SetActive(true);
+
+        _rootNode.GetRef("Win").gameObject.SetActive(false);
+        _rootNode.GetNode("Lose").gameObject.SetActive(false);
     }
 
     void SetHeroData(FightHero fightHero, UINode node, bool isSelected)

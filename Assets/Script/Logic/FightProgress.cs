@@ -54,7 +54,15 @@ public class FightProgress {
 
         EventSys.Instance.AddHander(AiInputEvent.Attack, OnAiAttack);
         EventSys.Instance.AddHander(AiInputEvent.AiActionEnd, OnAiEnd);
+
 	}
+
+    public void Clear()
+    {
+        _heros = new Dictionary<int, FightHero>();
+        _enemies = new List<Enemy>();
+        EventSys.Instance.RemoveHander(this);
+    }
 
     void OnAiAttack(object p1, object p2)
     {

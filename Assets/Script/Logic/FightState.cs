@@ -133,7 +133,7 @@ public class FightState : BaseGameState {
 
                 if(nodeType.Equals(typeof(StageNodeFight).Name))
                 {
-                    EventSys.Instance.AddEvent(LogicEvent.StartFightRound, new int[]{heroId}, targetNodeId);
+                    EventSys.Instance.AddEvent(LogicEvent.StartFightRound, new []{heroId}, targetNodeId);
                 }
                 else if(nodeType.Equals(typeof(StageNodeReward).Name))
                 {
@@ -173,7 +173,7 @@ public class FightState : BaseGameState {
                     int nodeId = _selectedHeros[targetHeroId];
                     _selectedHeros.Remove(targetHeroId);
                     _selectedHeros[dragHeroId] = nodeId;
-                    EventSys.Instance.AddEvent(ViewEvent.ReplaceHeroStartNode, newHero.CreatureData, new int[] { targetHeroId, nodeId });
+                    EventSys.Instance.AddEvent(ViewEvent.ReplaceHeroStartNode, newHero.CreatureData, new [] { targetHeroId, nodeId });
                 }
                 break;
             case FSubState.Mapping:
@@ -197,5 +197,11 @@ public class FightState : BaseGameState {
         {
             EventSys.Instance.AddEvent(ViewEvent.ShowStageFail);
         }
+    }
+
+    public override void Leave()
+    {
+        base.Leave();
+        _fightProgress.Clear();
     }
 }

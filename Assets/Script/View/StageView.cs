@@ -23,6 +23,7 @@ public class StageView : BaseView
 
     UINode _stageScrollContent;
     UINode _warning;
+    UINode _dialog;
 
     UINode _stageNode;
     UINode _fightNode;
@@ -38,7 +39,7 @@ public class StageView : BaseView
     Dictionary<int, Transform> _heroSelectNodes;
 
     /// <summary>
-    /// 被选中出战的英雄对应的Node.
+    /// 被选中出战的英雄对应的Node.初始显示于地图的startnode上
     /// { Key:heroId, Value:nodeTransform }
     /// </summary>
     Dictionary<int, Transform> _fightHeroNodes;
@@ -114,6 +115,9 @@ public class StageView : BaseView
         da.DelaySecond = 1;
         da.DAction = () => { _warning.gameObject.SetActive(false); };
         _warning.gameObject.SetActive(false);
+
+        _dialog = _stageNode.GetNode("Dialog");
+        _dialog.gameObject.SetActive(false);
     }
 
     void InitFightNodeUi(UINode rootNode)
@@ -185,7 +189,9 @@ public class StageView : BaseView
             FightHero fightHero = pair.Value;
             GameObject go = Instantiate(_heroShowModel);
             UINode node = go.GetComponent<UINode>();
+            node.GetRef("Icon").gameObject.AddComponent<ImageGray>();
             SetShowNodeData(fightHero, node);
+            
             go.transform.SetParent(_stageNode.GetRef("HeroShowListContent"));
 
             _showHeroNodes.Add(fightHero.Id, go.transform);
@@ -207,6 +213,10 @@ public class StageView : BaseView
         node.GetRef("HpSlider").GetComponent<Slider>().value = fightHero.CreatureData.HpPercent;
         node.GetRef("Mp").GetComponent<Text>().text = "气";
         node.GetRef("MpSlider").GetComponent<Slider>().value = fightHero.CreatureData.MpPercent;
+
+        ImageGray ig = node.GetRef("Icon").GetComponent<ImageGray>();
+        ig.Gray = fightHero.CreatureData.HpPercent <= 0;
+        
     }
 
     void OnCreatStageView(object p1, object p2)
@@ -529,6 +539,11 @@ public class StageView : BaseView
         node.transform.position = target.position;
     }
 
+    /// <summary>
+    /// 交换两个英雄在起始点上的位置
+    /// </summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
     void OnExchangeHeroStartNode(object p1, object p2)
     {
         int hero1Id = ((int[])p1)[0];
@@ -545,12 +560,18 @@ public class StageView : BaseView
         heroNode2.transform.position = target2.position;
     }
 
+    /// <summary>
+    /// 地图上的英雄node的实例化
+    /// </summary>
+    /// <param name="heroData"></param>
+    /// <param name="setDragIcon"></param>
+    /// <returns></returns>
     GameObject InsHeroNode(HeroData heroData, bool setDragIcon)
     {
         GameObject go = Instantiate(_nodeModel);
         Image nodeImage = go.GetComponent<Image>();
         nodeImage.sprite = ResourceSys.Instance.GetSprite(heroData.Icon);
-
+        
         Dragable drag = go.AddComponent<Dragable>();
         drag.ActionId = heroData.Id;
         drag.OnDragStart = OnDrag;
@@ -611,15 +632,23 @@ public class StageView : BaseView
         foreach (KeyValuePair<int, FightHero> pair in heros)
         {
             int hId = pair.Value.Id;
-            //update data
+            //update show list
             UINode showNode = _showHeroNodes[hId].GetComponent<UINode>();
             SetShowNodeData(pair.Value, showNode);
+            //update stage nodes
+            if(pair.Value.CreatureData.Hp.Value <= 0)
+            {
+                _fightHeroNodes[hId].GetComponent<Dragable>().SetEnable(false);
+            }
         }
+        
    
     }
 
     void OnStageFail(object p1, object p2)
     {
-        
+        _dialog.GetRef("Text").GetComponent<Text>().text = "胜败乃兵家常事";
+        _dialog.GetRef("Button").GetComponent<Button>().onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightExit); });
+        _dialog.gameObject.SetActive(true);
     }
 }
