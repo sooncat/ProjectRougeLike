@@ -17,6 +17,11 @@ public enum InputEvent : int
     CityStartFight,
     CityExit,
 
+    StageNodeClicked,           //地图界面，点击节点
+    FightNodeDetailComfirmed,   //地图界面，点击战斗详情界面的节点
+    RewardNodeDetailComfirmed,   //地图界面，点击奖励详情界面的节点
+    RewardNodeGet,              //地图界面，获取奖励
+
     FightNodeClicked,   //点击战斗地图中的节点
     FightReady,         //战斗地图界面，Ready按钮
     FightExit,          //战斗地图界面，返回按钮

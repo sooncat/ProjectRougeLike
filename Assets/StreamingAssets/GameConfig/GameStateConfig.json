@@ -33,6 +33,14 @@
 			{
 				"Prefab": "FightUI",
 				"ClassName": "FightView"
+			},
+			{
+				"Prefab": "RewardNodeUI",
+				"ClassName": "RewardNodeView"
+			},
+			{
+				"Prefab": "FightNodeUI",
+				"ClassName": "FightNodeView"
 			}],
 			"PreLoadEffect": [],
 			"PreLoadAudio": []

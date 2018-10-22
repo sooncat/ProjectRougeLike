@@ -45,6 +45,12 @@ public class FightState : BaseGameState {
 
         EventSys.Instance.AddHander(LogicEvent.FightLoseReturnToStage, OnFightLoseReturnToStage);
 
+        EventSys.Instance.AddHander(InputEvent.StageNodeClicked, OnStateNodeClicked);
+        EventSys.Instance.AddHander(InputEvent.FightNodeDetailComfirmed, (param1, param2) => { });
+        EventSys.Instance.AddHander(InputEvent.RewardNodeDetailComfirmed, (param1, param2) => { });
+        EventSys.Instance.AddHander(InputEvent.RewardNodeGet, GetReward);
+        
+
     }
 
     void OnExitEvent(object p1, object p2)
@@ -85,6 +91,11 @@ public class FightState : BaseGameState {
         OnAllPreLoaded();
     }
 
+    /// <summary>
+    /// 将英雄拖拽到地图节点上
+    /// </summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
     void OnFightDragOnNode(object p1, object p2)
     {
         int heroId = (int)p1;
@@ -137,14 +148,19 @@ public class FightState : BaseGameState {
                 }
                 else if(nodeType.Equals(typeof(StageNodeReward).Name))
                 {
-                    
+                    Reward r = FightDataMgr.Instance.GetReward(targetNodeId);
+                    EventSys.Instance.AddEvent(ViewEvent.ShowNodeRewardGet, r, new []{targetNodeId, heroId});
                 }
-                
-                
                 break;
         }
     }
 
+
+    /// <summary>
+    /// 将英雄拖拽到其他英雄节点上
+    /// </summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
     void OnFightDragOnHero(object p1, object p2)
     {
         int dragHeroId = (int)p1;       //
@@ -203,5 +219,41 @@ public class FightState : BaseGameState {
     {
         base.Leave();
         _fightProgress.Clear();
+    }
+
+    void OnStateNodeClicked(object p1, object p2)
+    {
+        int nodeId = (int)p1;
+        Type type = _stageConfig.GetNode(nodeId).GetType();
+        if (type == typeof(StageNodeFight))
+        {
+            Enemy e = FightDataMgr.Instance.GetEnemy(nodeId);
+            EventSys.Instance.AddEvent(ViewEvent.ShowNodeFightDetails, e, nodeId);
+        }
+        else if (type == typeof(StageNodeReward))
+        {
+            Reward r = FightDataMgr.Instance.GetReward(nodeId);
+            EventSys.Instance.AddEvent(ViewEvent.ShowNodeRewardDetails, r, nodeId);
+        }
+    }
+
+    void GetReward(object p1, object p2)
+    {
+        int nodeId = (int)p1;
+        int heroId = (int)p2;
+
+        FightHero fh = FightDataMgr.Instance.GetHero(heroId);
+        Reward r = FightDataMgr.Instance.GetReward(nodeId);
+        foreach (Item item in r.Data)
+        {
+            fh.AddItem(item);
+        }
+
+        //move hero to targetNode
+        fh.NowNodeId = nodeId;
+        _stageConfig.GetNode(nodeId).IsPassed = true;
+        
+        EventSys.Instance.AddEvent(ViewEvent.GetRewardReturnToStage, heroId, nodeId);
+
     }
 }

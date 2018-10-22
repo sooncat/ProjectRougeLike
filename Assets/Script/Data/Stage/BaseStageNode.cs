@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using UnityEngine;
+
 
 
 public class BaseStageNode {
@@ -21,6 +21,11 @@ public class BaseStageNode {
     /// 是否已经被攻略
     /// </summary>
     public bool IsPassed;
+
+    /// <summary>
+    /// 当前节点能容纳的最大英雄数量
+    /// </summary>
+    public int Capacity;
 
     public BaseStageNode()
     {}

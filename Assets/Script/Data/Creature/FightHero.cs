@@ -8,7 +8,7 @@ public class FightHero : Hero{
     /// <summary>
     /// 身上携带的道具
     /// </summary>
-    public List<Item> Items;
+    public Dictionary<int, Item> Items;
 
     public int NowNodeId;
 
@@ -21,8 +21,20 @@ public class FightHero : Hero{
     {
         Data = ((HeroData)hero.CreatureData).Clone() as HeroData;
         Id = hero.Id;
-        Items = new List<Item>();
+        Items = new Dictionary<int, Item>();
         Data.HpMax = new ENum<int>(Data.Hp.Value);
         Data.MpMax = new ENum<int>(Data.Mp.Value);
+    }
+
+    public void AddItem(Item item)
+    {
+        if(Items.ContainsKey(item.Id))
+        {
+            Items[item.Id].Count.Value += item.Count.Value;
+        }
+        else
+        {
+            Items.Add(item.Id, item);
+        }
     }
 }

@@ -20,6 +20,10 @@ public enum ViewEvent : int {
 
     FightSubStateMapping,   //战斗准备完毕，进入地图阶段
 
+    ShowNodeFightDetails,   //地图界面，显示战斗节点详情
+    ShowNodeRewardDetails,  //地图界面，显示奖励节点详情
+    ShowNodeRewardGet,      //地图界面，英雄被拖拽到奖励节点,显示奖励并准备赋予英雄
+
     CreateFightView,        //进入战斗，创建战斗界面
     SetSelectedHero,        //切换选中的英雄
     FightUpdateRound,       //进入战斗，下一回合
@@ -35,6 +39,7 @@ public enum ViewEvent : int {
 
     ShowStageFail,          //关卡失败
 
-    ShowTipNodePassed,      //地图界面，提示此点已经被攻略
-    ShowTipNotNextNode,      //地图界面，提示此点不是当前节点的子节点
+    ShowTipNodePassed,          //地图界面，提示此点已经被攻略
+    ShowTipNotNextNode,         //地图界面，提示此点不是当前节点的子节点
+    GetRewardReturnToStage,     //地图界面，获取奖励后刷新
 }

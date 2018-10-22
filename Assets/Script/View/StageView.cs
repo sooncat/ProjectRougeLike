@@ -26,8 +26,6 @@ public class StageView : BaseView
     UINode _dialog;
 
     UINode _stageNode;
-    UINode _fightNode;
-    UINode _rewardNode;
     
     Dictionary<int, Transform> _nodeUIs;
     Dictionary<int, Transform> _nodeLines;
@@ -63,8 +61,6 @@ public class StageView : BaseView
         base.InitUI(rootNode);
 
         InitStageUi(rootNode);
-        InitFightNodeUi(rootNode);
-        InitRewardNodeUi(rootNode);
 
         EventSys.Instance.AddHander(ViewEvent.CreateStageView, OnCreatStageView);
         EventSys.Instance.AddHander(ViewEvent.FightSubStateMapping, OnFightStateMapping);
@@ -79,6 +75,7 @@ public class StageView : BaseView
         EventSys.Instance.AddHander(ViewEvent.FightWinReturnToStage, OnFightWinReturnStage);
         EventSys.Instance.AddHander(ViewEvent.FightLoseReturnToStage, OnFightLoseReturnStage);
         EventSys.Instance.AddHander(ViewEvent.ShowStageFail, OnStageFail);
+        EventSys.Instance.AddHander(ViewEvent.GetRewardReturnToStage, OnGetRewardReturnToStage);
 
 
     }
@@ -120,27 +117,7 @@ public class StageView : BaseView
         _dialog.gameObject.SetActive(false);
     }
 
-    void InitFightNodeUi(UINode rootNode)
-    {
-        _fightNode = rootNode.GetNode("FightNodeDetail");
-        Button fightBtn = _fightNode.GetRef("Fight").GetComponent<Button>();
-        fightBtn.onClick.AddListener(()=> { });
-        Button exitBtn = _fightNode.GetRef("Exit").GetComponent<Button>();
-        exitBtn.onClick.AddListener(() => { _fightNode.gameObject.SetActive(false); });
-
-        _fightNode.gameObject.SetActive(false);
-    }
-
-    void InitRewardNodeUi(UINode rootNode)
-    {
-        _rewardNode = rootNode.GetNode("RewardNodeDetail");
-        Button fightBtn = _rewardNode.GetRef("Go").GetComponent<Button>();
-        fightBtn.onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightReady); });
-        Button exitBtn = _rewardNode.GetRef("Exit").GetComponent<Button>();
-        exitBtn.onClick.AddListener(HideRewardView);
-
-        _rewardNode.gameObject.SetActive(false);
-    }
+    
 
     void OnBtnExitClicked()
     {
@@ -313,7 +290,7 @@ public class StageView : BaseView
     {
         GameObject go = Instantiate(_nodeModel);
         go.transform.SetParent(_stageNodeRootTrans);
-        go.GetComponent<Button>().onClick.AddListener(() => { OnNodeClicked(stageNode.Id, stageNode.GetType()); });
+        go.GetComponent<Button>().onClick.AddListener(() => { OnNodeClicked(stageNode.Id); });
         go.transform.localPosition = new Vector3(posX, posY, 0);
 
         Image nodeImage = go.GetComponent<Image>();
@@ -350,116 +327,10 @@ public class StageView : BaseView
         mySlider.GetComponent<Slider>().value = 0.3f;
     }
 
-    void OnNodeClicked(int id, System.Type type)
+    void OnNodeClicked(int id)
     {
         //Debug.Log("OnNodeClicked " + id);
-        //EventSys.Instance.AddEvent(ViewEvent.ClickFightNode, id);
-        if (type == typeof(StageNodeFight))
-        {
-            ShowNodeFight(id);
-        }
-        else if(type == typeof(StageNodeReward))
-        {
-            ShowNodeReward(id);
-        }
-    }
-
-    public string GetPropertyDescription1(Enemy enemy)
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.Append("血 - ").AppendLine(enemy.CreatureData.Hp.Value.ToString());
-        sb.Append("气 - ").AppendLine(enemy.CreatureData.Mp.Value.ToString());
-        
-        return sb.ToString();
-    }
-
-    public string GetPropertyDescription2(Enemy enemy)
-    {
-        StringBuilder sb = new StringBuilder();
-        sb.Append("攻 - ").AppendLine(enemy.CreatureData.Att.Value.ToString());
-        sb.Append("防 - ").AppendLine(enemy.CreatureData.Def.Value.ToString());
-        
-        return sb.ToString();
-    }
-
-    void ShowNodeFight(int id)
-    {
-        Enemy enemy = FightDataMgr.Instance.GetEnemy(id);
-        Image icon = _fightNode.GetRef("Icon").GetComponent<Image>();
-        icon.sprite = ResourceSys.Instance.GetSprite(enemy.CreatureData.Cg);
-
-        Text detail1 = _fightNode.GetRef("Info1").GetComponent<Text>();
-        detail1.text = GetPropertyDescription1(enemy);
-        Text detail2 = _fightNode.GetRef("Info2").GetComponent<Text>();
-        detail2.text = GetPropertyDescription2(enemy);
-
-
-        Text enemyName = _fightNode.GetRef("Name").GetComponent<Text>();
-        enemyName.text = enemy.CreatureData.Name + " Lv" + enemy.CreatureData.Lv.Value;
-
-        Text des = _fightNode.GetRef("Des").GetComponent<Text>();
-        des.text = enemy.CreatureData.Description;
-
-        _fightNode.gameObject.SetActive(true);
-    }
-
-    void ShowNodeReward(int id)
-    {
-        Reward reward = FightDataMgr.Instance.GetReward(id);
-
-        UINode itemNode = _rewardNode.GetNode("Item_model");
-        Transform scTrans = _rewardNode.GetRef("Content");
-        foreach (Item item in reward.Data)
-        {
-            GameObject newNodeObj = Instantiate(itemNode.gameObject, scTrans);
-            //newNodeObj.transform.SetParent(scTrans);
-            
-            UINode newNode = newNodeObj.GetComponent<UINode>();
-            Image bg = newNode.GetRef("Bg").GetComponent<Image>();
-            bg.sprite = ResourceSys.Instance.GetFrame(item.Lv.Value);
-            Image icon = newNode.GetRef("Icon").GetComponent<Image>();
-            icon.sprite = ResourceSys.Instance.GetSprite(item.Icon);
-            Text itemName = newNode.GetRef("Name").GetComponent<Text>();
-            itemName.text = item.Name;
-            if(item.Count.Value > 1)
-            {
-                itemName.text = item.Name + " * " + item.Count.Value;
-            }
-            Text itemDes = newNode.GetRef("Des").GetComponent<Text>();
-            itemDes.text = item.Description;
-
-            newNodeObj.SetActive(true);
-        }
-        
-        //set scroll view height
-        //float itemHeight = itemNode.gameObject.GetComponent<RectTransform>().sizeDelta.y;
-        //float height = reward.Data.Count * itemHeight;
-        //Transform scrollViewRef = _rewardNode.GetRef("Scroll View");
-        //RectTransform rt = scrollViewRef.GetComponent<RectTransform>();
-        //rt.sizeDelta = new Vector2(rt.sizeDelta.x, height);
-
-        itemNode.gameObject.SetActive(false);
-        _rewardNode.gameObject.SetActive(true);
-    }
-
-    void HideRewardView()
-    {
-        Transform scTrans = _rewardNode.GetRef("Content");
-        List<Transform> tobeDel = new List<Transform>();
-        foreach (Transform subTrans in scTrans)
-        {
-            if(subTrans.name.Equals("Item_model"))
-            {
-                continue;
-            }
-            tobeDel.Add(subTrans);
-        }
-        for (int i = 0; i < tobeDel.Count;i++ )
-        {
-            Destroy(tobeDel[i].gameObject);
-        }
-
-        _rewardNode.gameObject.SetActive(false);
+        EventSys.Instance.AddEvent(InputEvent.StageNodeClicked, id);
     }
 
     void OnDrag(int nodeId)
@@ -641,8 +512,6 @@ public class StageView : BaseView
                 _fightHeroNodes[hId].GetComponent<Dragable>().SetEnable(false);
             }
         }
-        
-   
     }
 
     void OnStageFail(object p1, object p2)
@@ -650,5 +519,19 @@ public class StageView : BaseView
         _dialog.GetRef("Text").GetComponent<Text>().text = "胜败乃兵家常事";
         _dialog.GetRef("Button").GetComponent<Button>().onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightExit); });
         _dialog.gameObject.SetActive(true);
+    }
+
+    void OnGetRewardReturnToStage(object p1, object p2)
+    {
+        
+
+        //update Node
+        int nodeId = (int)p2;
+        Transform nodeTrans = _nodeUIs[nodeId];
+        ImageGray ig = nodeTrans.gameObject.AddComponent<ImageGray>();
+        ig.Gray = true;
+
+        int heroId = (int)p1;
+        _fightHeroNodes[heroId].transform.position = nodeTrans.transform.position;
     }
 }

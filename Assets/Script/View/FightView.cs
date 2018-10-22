@@ -203,8 +203,9 @@ public class FightView : BaseView {
         _itemNodeRoot.DestroyChildren();
 
         //reset items
-        foreach (Item item in fh.Items)
+        foreach (var pair in fh.Items)
         {
+            Item item = pair.Value;
             GameObject go = Instantiate(_modelNode.GetNode("Item").gameObject);
             go.transform.SetParent(_itemNodeRoot);
 
@@ -212,7 +213,7 @@ public class FightView : BaseView {
             Image image = itemNode.GetRef("Image").GetComponent<Image>();
             image.sprite = ResourceSys.Instance.GetSprite(item.Icon);
             Text num = itemNode.GetRef("Text").GetComponent<Text>();
-            num.text = item.Count.ToString();
+            num.text = item.Count.Value.ToString();
         }
         
     }
