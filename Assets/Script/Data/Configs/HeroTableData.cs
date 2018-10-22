@@ -16,6 +16,7 @@ public class HeroDataInfo : BaseDataInfo {
 
     public string Name;
     public string Description;
+    public int Job;
 
     //fight property
     public int Sex;
@@ -28,6 +29,5 @@ public class HeroDataInfo : BaseDataInfo {
     public string Cg;
     public string Color;
     public string FightIcon;
-    public int Job;
-
+    
 }

@@ -46,7 +46,12 @@ public class CreateUIs : MonoBehaviour {
         nodeFight1.NextNodes.Add(20); nodeFight1.NextNodes.Add(21);
         StageNodeFight nodeFight2 = new StageNodeFight(20, 1, "Fight", "", "Assets/Res/Icon/cards/ico_head_anduxie");
         nodeFight2.SetData(100, 1, 1);
-        nodeFight2.NextNodes.Add(30);
+        nodeFight2.NextNodes.Add(40);
+
+        StageNodeSafe nodeSafe = new StageNodeSafe(40, 0, "House", "", "Assets/Res/Icon/Item/ico_common_mianzhan");
+        nodeSafe.NextNodes.Add(30);
+
+
         StageNodeFight nodeFightBoss = new StageNodeFight(30, 0, "FighBoss", "", "Assets/Res/Icon/cards/ico_head_baoshi");
         nodeFightBoss.SetData(200, 1, 1);
 
@@ -55,7 +60,7 @@ public class CreateUIs : MonoBehaviour {
         nodeReward1.NextNodes.Add(20); nodeReward1.NextNodes.Add(21);
         StageNodeReward nodeReward2 = new StageNodeReward(21, 0, "Reward", "", "Assets/Res/Icon/cards/ico_head_guidiao");
         nodeReward2.SetData(new [] { 10000, 10001 }, new [] { 20, 10 });
-        nodeReward2.NextNodes.Add(30);
+        nodeReward2.NextNodes.Add(40);
 
         StageLayer layer0 = new StageLayer(0, "Start", "");
         layer0.Nodes.Add(nodeStart1);
@@ -66,14 +71,17 @@ public class CreateUIs : MonoBehaviour {
         StageLayer layer2 = new StageLayer(2, "L2", "");
         layer2.Nodes.Add(nodeFight2);
         layer2.Nodes.Add(nodeReward2);
-        StageLayer layer3 = new StageLayer(3, "Boss", "");
-        layer3.Nodes.Add(nodeFightBoss);
+        StageLayer layer3 = new StageLayer(3, "L3", "");
+        layer3.Nodes.Add(nodeSafe);
+        StageLayer layer4 = new StageLayer(4, "Boss", "");
+        layer4.Nodes.Add(nodeFightBoss);
 
         stageConfig = new StageConfig(0, "Stage First", "");
         stageConfig.Layers.Add(layer0);
         stageConfig.Layers.Add(layer1);
         stageConfig.Layers.Add(layer2);
         stageConfig.Layers.Add(layer3);
+        stageConfig.Layers.Add(layer4);
 
         stageConfig.ItemIds.Add(20000);
 

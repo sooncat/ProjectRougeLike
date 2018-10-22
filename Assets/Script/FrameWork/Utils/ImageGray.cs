@@ -19,7 +19,7 @@ public class ImageGray : MonoBehaviour {
     void SetGray()
     {
         Shader s = Shader.Find(_gray ? "UI/Gray" : "UI/Default");
-        GetComponent<Image>().material = new Material(s);
+        GetComponentInChildren<Image>().material = new Material(s);
     }
 
 }

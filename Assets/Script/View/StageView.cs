@@ -15,6 +15,7 @@ public class StageView : BaseView
     Transform _stageLineRootTrans;
     Transform _stageLayerRootTrans;
     GameObject _stageNodeModel;
+    GameObject _heroNodeModel;
     GameObject _lineModel;
     GameObject _layerNameModel;
     GameObject _heroShowModel;
@@ -125,11 +126,12 @@ public class StageView : BaseView
         btnExit.onClick.AddListener(OnBtnExitClicked);
 
         _modelNode = _stageNode.GetNode("Models");
-        _stageNodeModel = _modelNode.GetRef("Node_model").gameObject;
+        _stageNodeModel = _modelNode.GetNode("Node_model").gameObject;
+        _heroNodeModel = _modelNode.GetNode("HeroNode_model").gameObject;
         _lineModel = _modelNode.GetNode("Slider_model").gameObject;
         _layerNameModel = _modelNode.GetRef("LayerName_model").gameObject;
         _heroShowModel = _modelNode.GetNode("HeroShow_model").gameObject;
-
+        
         _stageScrollContent = _stageNode.GetNode("Content");
         _stageNodeRootTrans = _stageScrollContent.GetRef("Stage").transform;
         _stageLineRootTrans = _stageScrollContent.GetRef("Line").transform;
@@ -181,7 +183,7 @@ public class StageView : BaseView
 
         foreach (KeyValuePair<int, Transform> pair in _nodeUIs)
         {
-            Dropable dropable = pair.Value.GetComponent<Dropable>();
+            Dropable dropable = pair.Value.GetComponentInChildren<Dropable>();
             dropable.enabled = true;
         }
 
@@ -189,7 +191,7 @@ public class StageView : BaseView
 
         foreach (KeyValuePair<int, Transform> pair in _fightHeroNodes)
         {
-            Dragable dragable = pair.Value.GetComponent<Dragable>();
+            Dragable dragable = pair.Value.GetComponentInChildren<Dragable>();
             HeroData hd = (HeroData)heroes[pair.Key].CreatureData;
             dragable.DragIcon = ResourceSys.Instance.GetSprite(hd.FightIcon);
         }
@@ -295,7 +297,6 @@ public class StageView : BaseView
 
             GameObject go = InsHeroNode(hd, false);
             go.transform.SetParent(heroSelectListContent);
-            go.GetComponent<Button>().onClick.AddListener(() => {  });
             
             _heroSelectNodes.Add(hd.Id, go.transform);
         }
@@ -329,21 +330,26 @@ public class StageView : BaseView
     void CreateNode(BaseStageNode stageNode, float posX, float posY)
     {
         GameObject go = Instantiate(_stageNodeModel);
+        UINode uiNode = go.GetComponent<UINode>();
         go.transform.SetParent(_stageNodeRootTrans);
-        go.GetComponent<Button>().onClick.AddListener(() => { OnNodeClicked(stageNode.Id); });
         go.transform.localPosition = new Vector3(posX, posY, 0);
 
-        Image nodeImage = go.GetComponent<Image>();
+        Button btn = uiNode.GetRef("Button").GetComponent<Button>();
+        btn.onClick.AddListener(() => { OnNodeClicked(stageNode.Id); });
+        
+        Image nodeImage = uiNode.GetRef("Button").GetComponent<Image>();
         Sprite newSprite = ResourceSys.Instance.GetSprite(stageNode.Icon);
         nodeImage.sprite = newSprite;
 
-        Dropable drop = go.AddComponent<Dropable>();
+        Dropable drop = uiNode.GetRef("Button").gameObject.AddComponent<Dropable>();
         drop.ActionId = stageNode.Id;
         drop.OnDroped = DropOnNode;
         if(!stageNode.NodeType.Equals(typeof(StageNodeStart).Name))
         {
             drop.enabled = false;
         }
+
+        uiNode.GetRef("All").gameObject.SetActive(false);
         
         _nodeUIs.Add(stageNode.Id, go.transform);
     }
@@ -399,20 +405,21 @@ public class StageView : BaseView
 
         if(_heroSelectNodes.ContainsKey(heroData.Id))
         {
-            Dragable d = _heroSelectNodes[heroData.Id].GetComponent<Dragable>();
+            Dragable d = _heroSelectNodes[heroData.Id].GetComponentInChildren<Dragable>();
             d.SetEnable(false);
         }
 
         GameObject go = InsHeroNode(heroData, false);//这里的英雄还可能与其他英雄交换，故不添加特殊dragicon
         go.transform.SetParent(_stageNodeRootTrans);
-        go.GetComponent<Button>().onClick.AddListener(() => { });
+        //go.GetComponent<Button>().onClick.AddListener(() => { });
 
         Dropable drop = go.AddComponent<Dropable>();
         drop.ActionId = heroData.Id;
         drop.OnDroped = DropOnHero;
 
         Transform target = _nodeUIs[targetNodeId];
-        go.transform.position = target.position;
+        UINode targetNode = target.GetComponent<UINode>();
+        go.transform.SetParent(targetNode.GetRef("HeroRoot"));
 
         _fightHeroNodes.Add(heroData.Id, go.transform);
     }
@@ -428,7 +435,7 @@ public class StageView : BaseView
         _fightHeroNodes.Remove(targetHeroId);
         if (_heroSelectNodes.ContainsKey(targetHeroId))
         {
-            Dragable d = _heroSelectNodes[targetHeroId].GetComponent<Dragable>();
+            Dragable d = _heroSelectNodes[targetHeroId].GetComponentInChildren<Dragable>();
             d.SetEnable(true);
         }
 
@@ -447,7 +454,8 @@ public class StageView : BaseView
 
         Transform node = _fightHeroNodes[heroId];
         Transform target = _nodeUIs[targetNodeId];
-        node.transform.position = target.position;
+        Transform hRoot = target.GetComponent<UINode>().GetRef("HeroRoot");
+        node.transform.SetParent(hRoot);
     }
 
     /// <summary>
@@ -463,12 +471,12 @@ public class StageView : BaseView
         int node2Id = ((int[])p2)[1];
 
         Transform heroNode1 = _fightHeroNodes[hero1Id];
-        Transform target1 = _nodeUIs[node1Id];
+        Transform target1 = _nodeUIs[node1Id].GetComponent<UINode>().GetRef("HeroRoot");
         Transform heroNode2 = _fightHeroNodes[hero2Id];
-        Transform target2 = _nodeUIs[node2Id];
+        Transform target2 = _nodeUIs[node2Id].GetComponent<UINode>().GetRef("HeroRoot");
 
-        heroNode1.transform.position = target1.position;
-        heroNode2.transform.position = target2.position;
+        heroNode1.transform.SetParent(target1);
+        heroNode2.transform.SetParent(target2);
     }
 
     /// <summary>
@@ -479,11 +487,12 @@ public class StageView : BaseView
     /// <returns></returns>
     GameObject InsHeroNode(HeroData heroData, bool setDragIcon)
     {
-        GameObject go = Instantiate(_stageNodeModel);
-        Image nodeImage = go.GetComponent<Image>();
+        GameObject go = Instantiate(_heroNodeModel);
+        UINode uiNode = go.GetComponent<UINode>();
+        Image nodeImage = uiNode.GetRef("Image").GetComponent<Image>();
         nodeImage.sprite = ResourceSys.Instance.GetSprite(heroData.Icon);
-        
-        Dragable drag = go.AddComponent<Dragable>();
+
+        Dragable drag = uiNode.GetRef("Image").gameObject.AddComponent<Dragable>();
         drag.ActionId = heroData.Id;
         drag.OnDragStart = OnDrag;
         drag.Canv = _stageCanvas;
@@ -529,7 +538,8 @@ public class StageView : BaseView
         {
             int hId = pair.Value.Id;
             //change pos
-            _fightHeroNodes[hId].position = _nodeUIs[nodeId].position;
+            Transform targetTrans = _nodeUIs[pair.Value.NowNodeId].GetComponent<UINode>().GetRef("HeroRoot");
+            _fightHeroNodes[hId].SetParent(targetTrans);
             //update data
             UINode showNode = _showHeroNodes[hId].GetComponent<UINode>();
             SetShowNodeData(pair.Value, showNode);
@@ -552,7 +562,7 @@ public class StageView : BaseView
             //update stage nodes
             if(pair.Value.CreatureData.Hp.Value <= 0)
             {
-                _fightHeroNodes[hId].GetComponent<Dragable>().SetEnable(false);
+                _fightHeroNodes[hId].GetComponentInChildren<Dragable>().SetEnable(false);
             }
         }
     }
@@ -601,7 +611,8 @@ public class StageView : BaseView
         ig.Gray = true;
 
         FightHero hero = (FightHero)p1;
-        _fightHeroNodes[hero.Id].transform.position = nodeTrans.transform.position;
+        Transform t = nodeTrans.GetComponent<UINode>().GetRef("HeroRoot");
+        _fightHeroNodes[hero.Id].transform.SetParent(t);
         SetPathPassed(hero.LastNodeId, hero.NowNodeId, ((HeroData)hero.CreatureData).TheColor);
     }
 

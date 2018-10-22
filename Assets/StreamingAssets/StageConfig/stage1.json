@@ -122,7 +122,7 @@
 					"NodeType": "StageNodeReward",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
-						"$values": [30]
+						"$values": [40]
 					}
 				},
 				{
@@ -138,7 +138,7 @@
 					"NodeType": "StageNodeFight",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
-						"$values": [30]
+						"$values": [40]
 					}
 				}]
 			}
@@ -146,9 +146,34 @@
 		{
 			"$type": "StageLayer, Assembly-CSharp",
 			"Id": 3,
-			"Name": "Boss",
+			"Name": "L3",
 			"Description": "",
 			"Layer": 3,
+			"Nodes": {
+				"$type": "System.Collections.Generic.List`1[[BaseStageNode, Assembly-CSharp]], mscorlib",
+				"$values": [{
+					"$type": "StageNodeSafe, Assembly-CSharp",
+					"Id": 40,
+					"Index": 0,
+					"Name": "House",
+					"Description": "",
+					"Icon": "Assets/Res/Icon/Item/ico_common_mianzhan",
+					"NodeType": "StageNodeSafe",
+					"NextNodes": {
+						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
+						"$values": [30]
+					},
+					"IsPassed": false,
+					"IsFinalNode": false
+				}]
+			}
+		},
+		{
+			"$type": "StageLayer, Assembly-CSharp",
+			"Id": 4,
+			"Name": "Boss",
+			"Description": "",
+			"Layer": 4,
 			"Nodes": {
 				"$type": "System.Collections.Generic.List`1[[BaseStageNode, Assembly-CSharp]], mscorlib",
 				"$values": [{

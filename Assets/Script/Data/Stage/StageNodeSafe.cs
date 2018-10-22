@@ -7,5 +7,9 @@ using System.Collections.Generic;
 /// </summary>
 public class StageNodeSafe : BaseStageNode {
 
-	
+    public StageNodeSafe(int id, int index, string name, string des, string icon)
+        : base(id, index, name, des, icon)
+    {
+
+    }
 }

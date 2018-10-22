@@ -301,7 +301,7 @@ public class FightProgress {
             int nowHp = fh.CreatureData.Hp.Value;
             if (nowHp >= 0)
             {
-                fh.CreatureData.Hp.Value = System.Math.Max(nowHp+100, fh.CreatureData.HpMax.Value);
+                fh.CreatureData.Hp.Value = System.Math.Min(nowHp+100, fh.CreatureData.HpMax.Value);
                 originHero.DelItem(item.Id, 1);
                 EventSys.Instance.AddEvent(ViewEvent.FightUpdateAllHeroState, _heros);
 
@@ -312,7 +312,7 @@ public class FightProgress {
         else if(item.Id == 2)
         {
             int nowMp = fh.CreatureData.Mp.Value;
-            fh.CreatureData.Hp.Value = System.Math.Max(nowMp + 100, fh.CreatureData.MpMax.Value);
+            fh.CreatureData.Hp.Value = System.Math.Min(nowMp + 100, fh.CreatureData.MpMax.Value);
             originHero.DelItem(item.Id, 1);
             EventSys.Instance.AddEvent(ViewEvent.FightUpdateAllHeroState, _heros);
 

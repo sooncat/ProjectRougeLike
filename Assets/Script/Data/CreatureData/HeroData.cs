@@ -67,7 +67,8 @@ public class HeroData : CreatureData, ICloneable {
         result.Cg = Cg;
         result.FightIcon = FightIcon;
         result.TheColor = new Color(TheColor.r, TheColor.g, TheColor.b, TheColor.a);
-        
+        result.Job = Job;
+
         return result;
     }
 }
