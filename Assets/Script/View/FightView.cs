@@ -93,7 +93,7 @@ public class FightView : BaseView {
 
         if(node.GetRef("Selected").gameObject.activeSelf)
         {
-            RefreshItem(fh.Items);
+            RefreshItem(fh);
         }
     }
 
@@ -271,13 +271,13 @@ public class FightView : BaseView {
         _itemNodeRoot.DestroyChildren();
 
         //reset items
-        RefreshItem(fh.Items);
+        RefreshItem(fh);
         
     }
 
-    void RefreshItem(Dictionary<int, Item> items)
+    void RefreshItem(FightHero fh)
     {
-        foreach (var pair in items)
+        foreach (var pair in fh.Items)
         {
             Item item = pair.Value;
             GameObject go = Instantiate(_modelNode.GetNode("Item").gameObject);
@@ -291,6 +291,11 @@ public class FightView : BaseView {
 
             if (item.UsableInFight)
             {
+                if(item.JobLimited > 0 && item.JobLimited != ((HeroData)fh.CreatureData).Job )
+                {
+                    continue;
+                }
+
                 Dragable dragable = image.gameObject.AddComponent<Dragable>();
                 dragable.HasTail = true;
                 dragable.TailSprite = ResourceSys.Instance.GetSprite(GameConstants.CommonDragTail);

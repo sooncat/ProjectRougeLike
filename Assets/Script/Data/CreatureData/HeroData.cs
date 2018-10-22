@@ -15,7 +15,7 @@ public class HeroData : CreatureData, ICloneable {
     public ENum<int> EquipLv { private set; get; }
 
     //public List<ENum<int>> Items;
-
+    public int Job;
     public string FightIcon;
     public Color TheColor;
 
@@ -41,6 +41,7 @@ public class HeroData : CreatureData, ICloneable {
 
         //EquipId = new ENum<int>(dataInfo.Equip);
         //EquipLv = new ENum<int>(1);
+        Job = dataInfo.Job;
         Icon = dataInfo.Icon;
         Cg = dataInfo.Cg;
         FightIcon = dataInfo.FightIcon;

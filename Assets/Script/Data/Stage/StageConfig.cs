@@ -8,6 +8,7 @@ public class StageConfig {
     public string Name;
     public string Description;
     public List<StageLayer> Layers;
+    public List<int> ItemIds; 
 
     public StageConfig()
     {}
@@ -18,6 +19,7 @@ public class StageConfig {
         Name = name;
         Description = des;
         Layers = new List<StageLayer>();
+        ItemIds = new List<int>();
     }
 
     public BaseStageNode GetNode(int id)

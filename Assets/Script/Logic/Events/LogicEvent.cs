@@ -38,6 +38,7 @@ public enum LogicEvent : int
     FightStartAi,   //开启AI，决定机器人动作
 
     FightLoseReturnToStage, //一场战斗失败
+    FightWinReturnToStage, //一场战斗胜利
     
 
 }

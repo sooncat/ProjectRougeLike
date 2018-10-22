@@ -75,6 +75,8 @@ public class CreateUIs : MonoBehaviour {
         stageConfig.Layers.Add(layer2);
         stageConfig.Layers.Add(layer3);
 
+        stageConfig.ItemIds.Add(20000);
+
         stageConfig.Sort();
     }
 

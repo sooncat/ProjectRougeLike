@@ -39,6 +39,7 @@ public enum ViewEvent : int {
     FightUpdateAllHeroState,    //战斗中更新所有英雄状态
 
     ShowStageFail,          //关卡失败
+    ShowStageWin,           //关卡胜利
 
     ShowTipNodePassed,          //地图界面，提示此点已经被攻略
     ShowTipNotNextNode,         //地图界面，提示此点不是当前节点的子节点

@@ -63,5 +63,18 @@
 		"UsableInFight":false,
 		"JobLimited":0,
 		"Command":""
+	},
+	{
+		"Id": 20000,
+		"Name": "烧鸡",
+		"Description": "英雄升级用品",
+		"Lv": 3,
+		"Icon": "Assets/Res/Icon/Item/ico_usableitem_shiwu2",
+		"Price": 1,
+		"Type": 100,
+		"Color":"#0000ff",
+		"UsableInFight":false,
+		"JobLimited":0,
+		"Command":""
 	}]
 }

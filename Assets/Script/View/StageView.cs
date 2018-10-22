@@ -14,7 +14,7 @@ public class StageView : BaseView
     Transform _stageNodeRootTrans;
     Transform _stageLineRootTrans;
     Transform _stageLayerRootTrans;
-    GameObject _nodeModel;
+    GameObject _stageNodeModel;
     GameObject _lineModel;
     GameObject _layerNameModel;
     GameObject _heroShowModel;
@@ -24,6 +24,8 @@ public class StageView : BaseView
     UINode _stageScrollContent;
     UINode _warning;
     UINode _dialog;
+    UINode _winNode;
+    UINode _modelNode;
 
     UINode _stageNode;
     
@@ -107,6 +109,7 @@ public class StageView : BaseView
         EventSys.Instance.AddHander(ViewEvent.FightWinReturnToStage, OnFightWinReturnStage);
         EventSys.Instance.AddHander(ViewEvent.FightLoseReturnToStage, OnFightLoseReturnStage);
         EventSys.Instance.AddHander(ViewEvent.ShowStageFail, OnStageFail);
+        EventSys.Instance.AddHander(ViewEvent.ShowStageWin, OnStageWin);
         EventSys.Instance.AddHander(ViewEvent.GetRewardReturnToStage, OnGetRewardReturnToStage);
 
 
@@ -121,11 +124,11 @@ public class StageView : BaseView
         Button btnExit = _stageNode.GetRef("ButtonExit").GetComponent<Button>();
         btnExit.onClick.AddListener(OnBtnExitClicked);
 
-        UINode modelNode = _stageNode.GetNode("Models");
-        _nodeModel = modelNode.GetRef("Node_model").gameObject;
-        _lineModel = modelNode.GetNode("Slider_model").gameObject;
-        _layerNameModel = modelNode.GetRef("LayerName_model").gameObject;
-        _heroShowModel = modelNode.GetNode("HeroShow_model").gameObject;
+        _modelNode = _stageNode.GetNode("Models");
+        _stageNodeModel = _modelNode.GetRef("Node_model").gameObject;
+        _lineModel = _modelNode.GetNode("Slider_model").gameObject;
+        _layerNameModel = _modelNode.GetRef("LayerName_model").gameObject;
+        _heroShowModel = _modelNode.GetNode("HeroShow_model").gameObject;
 
         _stageScrollContent = _stageNode.GetNode("Content");
         _stageNodeRootTrans = _stageScrollContent.GetRef("Stage").transform;
@@ -146,7 +149,12 @@ public class StageView : BaseView
         _warning.gameObject.SetActive(false);
 
         _dialog = _stageNode.GetNode("Dialog");
+        _dialog.GetRef("Button").GetComponent<Button>().onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightExit); });
         _dialog.gameObject.SetActive(false);
+
+        _winNode = _stageNode.GetNode("Win");
+        _winNode.GetRef("Button").GetComponent<Button>().onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightExit); });
+        _winNode.gameObject.SetActive(false);
     }
 
     
@@ -300,7 +308,7 @@ public class StageView : BaseView
         CatDebug.LogFunc(GetHashCode().ToString());
         float allNodeWidth = _stageScrollContent.GetComponent<RectTransform>().sizeDelta.x - LayerNameWidth;
         float singleNodeWidth = allNodeWidth / stageLayer.Nodes.Count;
-        Vector2 modelNodeSize = _nodeModel.GetComponent<RectTransform>().sizeDelta;
+        Vector2 modelNodeSize = _stageNodeModel.GetComponent<RectTransform>().sizeDelta;
         float nodeXLeft = LayerNameWidth + (singleNodeWidth - modelNodeSize.x) / 2;
 
         float posY = stageLayer.Layer * _layerHeight + BottomGap;
@@ -320,7 +328,7 @@ public class StageView : BaseView
 
     void CreateNode(BaseStageNode stageNode, float posX, float posY)
     {
-        GameObject go = Instantiate(_nodeModel);
+        GameObject go = Instantiate(_stageNodeModel);
         go.transform.SetParent(_stageNodeRootTrans);
         go.GetComponent<Button>().onClick.AddListener(() => { OnNodeClicked(stageNode.Id); });
         go.transform.localPosition = new Vector3(posX, posY, 0);
@@ -471,7 +479,7 @@ public class StageView : BaseView
     /// <returns></returns>
     GameObject InsHeroNode(HeroData heroData, bool setDragIcon)
     {
-        GameObject go = Instantiate(_nodeModel);
+        GameObject go = Instantiate(_stageNodeModel);
         Image nodeImage = go.GetComponent<Image>();
         nodeImage.sprite = ResourceSys.Instance.GetSprite(heroData.Icon);
         
@@ -552,8 +560,36 @@ public class StageView : BaseView
     void OnStageFail(object p1, object p2)
     {
         _dialog.GetRef("Text").GetComponent<Text>().text = "胜败乃兵家常事";
-        _dialog.GetRef("Button").GetComponent<Button>().onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightExit); });
         _dialog.gameObject.SetActive(true);
+    }
+
+    void OnStageWin(object p1, object p2)
+    {
+        List<Item> items = (List<Item>)p1;
+        Transform content = _winNode.GetRef("Content");
+        content.DestroyChildren();
+        foreach (Item item in items)
+        {
+            GameObject newNodeObj = Instantiate(_modelNode.GetNode("RewardItem").gameObject, content);
+
+            UINode newNode = newNodeObj.GetComponent<UINode>();
+            Image bg = newNode.GetRef("Bg").GetComponent<Image>();
+            bg.sprite = ResourceSys.Instance.GetFrame(item.Lv.Value);
+            Image icon = newNode.GetRef("Icon").GetComponent<Image>();
+            icon.sprite = ResourceSys.Instance.GetSprite(item.Icon);
+            Text itemName = newNode.GetRef("Name").GetComponent<Text>();
+            itemName.text = item.Name;
+            if (item.Count.Value > 1)
+            {
+                itemName.text = item.Name + " * " + item.Count.Value;
+            }
+            Text itemDes = newNode.GetRef("Des").GetComponent<Text>();
+            itemDes.text = item.Description;
+
+            newNodeObj.SetActive(true);
+        }
+
+        _winNode.gameObject.SetActive(true);
     }
 
     void OnGetRewardReturnToStage(object p1, object p2)

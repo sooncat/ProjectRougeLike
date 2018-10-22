@@ -44,6 +44,7 @@ public class FightState : BaseGameState {
         EventSys.Instance.AddHander(InputEvent.FightDragOnHero, OnFightDragOnHero);
 
         EventSys.Instance.AddHander(LogicEvent.FightLoseReturnToStage, OnFightLoseReturnToStage);
+        EventSys.Instance.AddHander(LogicEvent.FightWinReturnToStage, OnFightWinReturnToStage);
 
         EventSys.Instance.AddHander(InputEvent.StageNodeClicked, OnStateNodeClicked);
         EventSys.Instance.AddHander(InputEvent.FightNodeDetailComfirmed, (param1, param2) => { });
@@ -208,6 +209,11 @@ public class FightState : BaseGameState {
         }
     }
 
+    /// <summary>
+    /// 英雄战斗失败，回到地图界面
+    /// </summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
     void OnFightLoseReturnToStage(object p1, object p2)
     {
         //判定是否所有英雄死亡
@@ -225,12 +231,32 @@ public class FightState : BaseGameState {
         }
     }
 
+    void OnFightWinReturnToStage(object p1, object p2)
+    {
+        int nodeId = (int)p1;
+        bool isLast = _stageConfig.GetNode(nodeId).IsFinalNode;
+        if(isLast)
+        {
+            List<Item> rewards = new List<Item>();
+            foreach (int itemId in _stageConfig.ItemIds)
+            {
+                rewards.Add(new Item(itemId, 1));
+            }
+            EventSys.Instance.AddEvent(ViewEvent.ShowStageWin, rewards);
+        }
+    }
+
     public override void Leave()
     {
         base.Leave();
         _fightProgress.Clear();
     }
 
+    /// <summary>
+    /// 单击节点显示详情
+    /// </summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
     void OnStateNodeClicked(object p1, object p2)
     {
         int nodeId = (int)p1;
@@ -245,8 +271,21 @@ public class FightState : BaseGameState {
             Reward r = FightDataMgr.Instance.GetReward(nodeId);
             EventSys.Instance.AddEvent(ViewEvent.ShowNodeRewardDetails, r, nodeId);
         }
+        else if(type == typeof(StageNodeHidden))
+        {
+            
+        }
+        else if(type == typeof(StageNodeSafe))
+        {
+            
+        }
     }
 
+    /// <summary>
+    /// 从奖励节点拿到奖励
+    /// </summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
     void GetReward(object p1, object p2)
     {
         int nodeId = (int)p1;

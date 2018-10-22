@@ -161,6 +161,7 @@ public class FightProgress {
     void OnWinConfirm(object p1, object p2)
     {
         EventSys.Instance.AddEvent(ViewEvent.FightWinReturnToStage, _heros, _nowNodeId);
+        EventSys.Instance.AddEvent(LogicEvent.FightWinReturnToStage, _nowNodeId);
     }
 
     void OnLoseConfirm(object p1, object p2)

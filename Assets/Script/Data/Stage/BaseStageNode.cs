@@ -22,6 +22,14 @@ public class BaseStageNode {
     /// </summary>
     public bool IsPassed;
 
+    /// <summary>
+    /// 是否是最终节点
+    /// </summary>
+    public bool IsFinalNode
+    {
+        get { return NextNodes.Count == 0; }
+    }
+
     public BaseStageNode()
     {}
 
@@ -36,6 +44,6 @@ public class BaseStageNode {
         NodeType = GetType().Name;
     }
 
-    //是不是需要重写litjson的读写方法...
+    
     
 }
