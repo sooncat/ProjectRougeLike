@@ -22,11 +22,6 @@ public class BaseStageNode {
     /// </summary>
     public bool IsPassed;
 
-    /// <summary>
-    /// 当前节点能容纳的最大英雄数量
-    /// </summary>
-    public int Capacity;
-
     public BaseStageNode()
     {}
 
@@ -38,7 +33,6 @@ public class BaseStageNode {
         Description = des;
         Icon = icon;
         NextNodes = new List<int>();
-
         NodeType = GetType().Name;
     }
 

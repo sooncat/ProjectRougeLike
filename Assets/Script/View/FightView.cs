@@ -12,6 +12,8 @@ public class FightView : BaseView {
     UINode _rootNode;
     UINode _enemyNode;
     UINode _modelNode;
+    UINode _winNode;
+    UINode _loseNode;
     Transform _heroNodeRoot;
     Transform _itemNodeRoot;
 
@@ -24,6 +26,8 @@ public class FightView : BaseView {
     /// {Key:heroId, Value:nodeTrans}
     /// </summary>
     Dictionary<int, Transform> _heroNodes;
+
+    int _dragItemId;
     
     public override void InitUI(UINode rootNode)
     {
@@ -49,7 +53,10 @@ public class FightView : BaseView {
         _heroNodeRoot = rootNode.GetRef("HeroRoot");
         _itemNodeRoot = rootNode.GetRef("ItemsContent");
 
-        
+        _winNode = rootNode.GetNode("Win");
+        _winNode.GetRef("Button").GetComponent<Button>().onClick.AddListener(OnWinConfirmed);
+        _loseNode = rootNode.GetNode("Lose");
+        _loseNode.GetRef("Button").GetComponent<Button>().onClick.AddListener(OnLoseConfirmed);
         
         EventSys.Instance.AddHander(ViewEvent.CreateFightView, OnCreateFightView);
         EventSys.Instance.AddHander(ViewEvent.SetSelectedHero, OnChangeHero);
@@ -62,6 +69,7 @@ public class FightView : BaseView {
         EventSys.Instance.AddHander(ViewEvent.FightChangeTurn, OnChangeTurn);
         EventSys.Instance.AddHander(ViewEvent.FightEnemyAttack, OnEnemyAttack);
         EventSys.Instance.AddHander(ViewEvent.FightUpdateHeroState, OnUpdateHero);
+        EventSys.Instance.AddHander(ViewEvent.FightUpdateAllHeroState, OnUpdateAllHero);
         EventSys.Instance.AddHander(ViewEvent.FightLoseReturnToStage, OnFinish);
         
     }
@@ -72,13 +80,30 @@ public class FightView : BaseView {
         int damage = (int)p2;
 
         UINode node = _heroNodes[hero.Id].GetComponent<UINode>();
-        SetHeroData(hero, node, false);
+        SetHeroData(hero, node);
+        node.GetRef("Selected").gameObject.SetActive(false);
         ShowHurt(node, damage);
     }
 
     void OnUpdateHero(object p1, object p2)
     {
-        Debug.LogError("Not Support Yet");
+        FightHero fh = (FightHero)p1;
+        UINode node = _heroNodes[fh.Id].GetComponent<UINode>();
+        SetHeroData(fh, node);
+
+        if(node.GetRef("Selected").gameObject.activeSelf)
+        {
+            RefreshItem(fh.Items);
+        }
+    }
+
+    void OnUpdateAllHero(object p1, object p2)
+    {
+        Dictionary<int, FightHero> heros = (Dictionary<int, FightHero>)p1;
+        foreach (KeyValuePair<int, FightHero> pair in heros)
+        {
+            OnUpdateHero(pair.Value, null);
+        }
     }
 
     void OnFinish(object p1, object p2)
@@ -123,7 +148,37 @@ public class FightView : BaseView {
 
     void OnShowWin(object p1, object p2)
     {
-        _rootNode.GetRef("Win").gameObject.SetActive(true);
+        List<Item> items = (List<Item>)p1;
+        Transform content = _winNode.GetRef("Content");
+        content.DestroyChildren();
+        foreach (Item item in items)
+        {
+            GameObject newNodeObj = Instantiate(_modelNode.GetNode("RewardItem").gameObject, content);
+
+            UINode newNode = newNodeObj.GetComponent<UINode>();
+            Image bg = newNode.GetRef("Bg").GetComponent<Image>();
+            bg.sprite = ResourceSys.Instance.GetFrame(item.Lv.Value);
+            Image icon = newNode.GetRef("Icon").GetComponent<Image>();
+            icon.sprite = ResourceSys.Instance.GetSprite(item.Icon);
+            Text itemName = newNode.GetRef("Name").GetComponent<Text>();
+            itemName.text = item.Name;
+            if (item.Count.Value > 1)
+            {
+                itemName.text = item.Name + " * " + item.Count.Value;
+            }
+            Text itemDes = newNode.GetRef("Des").GetComponent<Text>();
+            itemDes.text = item.Description;
+
+            newNodeObj.SetActive(true);
+        }
+        
+        _winNode.gameObject.SetActive(true);
+        
+    }
+
+    void OnWinConfirmed()
+    {
+        EventSys.Instance.AddEvent(InputEvent.FightWinConfirm);
     }
 
     void OnShowLose(object p1, object p2)
@@ -136,11 +191,15 @@ public class FightView : BaseView {
         }
         sb.Append("被打败了");
 
-        UINode node = _rootNode.GetNode("Lose");
-        node.gameObject.SetActive(true);
-        Text text = node.GetComponent<UINode>().GetRef("Text").GetComponent<Text>();
+        _loseNode.gameObject.SetActive(true);
+        Text text = _loseNode.GetComponent<UINode>().GetRef("Info").GetComponent<Text>();
         text.text = sb.ToString();
 
+    }
+
+    void OnLoseConfirmed()
+    {
+        EventSys.Instance.AddEvent(InputEvent.FightLoseConfirm);
     }
 
     void OnCreateFightView(object p1, object p2)
@@ -153,6 +212,14 @@ public class FightView : BaseView {
             cg.sprite = ResourceSys.Instance.GetSprite(e.CreatureData.Cg);
             Slider s = _enemyNode.GetRef("HpSlider").GetComponent<Slider>();
             s.value = e.CreatureData.HpPercent;
+
+            Dropable dropable = cg.gameObject.GetComponent<Dropable>();
+            if(dropable == null)
+            {
+                dropable = cg.gameObject.AddComponent<Dropable>();
+            }
+            dropable.ActionId = e.InstanceId;
+            dropable.OnDroped = OnDropOnEnemy;
         }
         
         //create heros
@@ -166,22 +233,24 @@ public class FightView : BaseView {
             go.transform.SetParent(_heroNodeRoot);
 
             UINode node = go.GetComponent<UINode>();
-            SetHeroData(fh, node, false);
+            SetHeroData(fh, node);
+            node.GetRef("Selected").gameObject.SetActive(false);
             ShowHurt(node, -1);
 
             Dropable dropable = go.AddComponent<Dropable>();
             dropable.ActionId = fh.Id;
+            dropable.OnDroped = OnDropOnHero;
 
             _heroNodes.Add(fh.Id, go.transform);
         }
 
         _rootNode.gameObject.SetActive(true);
 
-        _rootNode.GetRef("Win").gameObject.SetActive(false);
-        _rootNode.GetNode("Lose").gameObject.SetActive(false);
+        _winNode.gameObject.SetActive(false);
+        _loseNode.gameObject.SetActive(false);
     }
 
-    void SetHeroData(FightHero fightHero, UINode node, bool isSelected)
+    void SetHeroData(FightHero fightHero, UINode node)
     {
         Image ico = node.GetRef("Icon").GetComponent<Image>();
         ico.sprite = ResourceSys.Instance.GetSprite(fightHero.CreatureData.Icon);
@@ -189,7 +258,6 @@ public class FightView : BaseView {
         hs.value = fightHero.CreatureData.HpPercent;
         Slider ms = node.GetRef("MpSlider").GetComponent<Slider>();
         ms.value = fightHero.CreatureData.MpPercent;
-        node.GetRef("Selected").gameObject.SetActive(isSelected);
     }
 
     void OnChangeHero(object p1, object p2)
@@ -203,7 +271,13 @@ public class FightView : BaseView {
         _itemNodeRoot.DestroyChildren();
 
         //reset items
-        foreach (var pair in fh.Items)
+        RefreshItem(fh.Items);
+        
+    }
+
+    void RefreshItem(Dictionary<int, Item> items)
+    {
+        foreach (var pair in items)
         {
             Item item = pair.Value;
             GameObject go = Instantiate(_modelNode.GetNode("Item").gameObject);
@@ -214,8 +288,19 @@ public class FightView : BaseView {
             image.sprite = ResourceSys.Instance.GetSprite(item.Icon);
             Text num = itemNode.GetRef("Text").GetComponent<Text>();
             num.text = item.Count.Value.ToString();
+
+            if (item.UsableInFight)
+            {
+                Dragable dragable = image.gameObject.AddComponent<Dragable>();
+                dragable.HasTail = true;
+                dragable.TailSprite = ResourceSys.Instance.GetSprite(GameConstants.CommonDragTail);
+                dragable.TailColor = item.TheColor;
+                dragable.TailWidth = 20;
+                dragable.Canv = _rootNode.GetComponent<Canvas>();
+                dragable.ActionId = item.Id;
+                dragable.OnDragStart = OnDragFromItem;
+            }
         }
-        
     }
 
     void OnUpdateRound(object p1, object p2)
@@ -255,6 +340,33 @@ public class FightView : BaseView {
                 node.GetRef("Selected").gameObject.SetActive(false);
             }
         }
+    }
+
+    /// <summary>
+    /// 拖拽在敌人身上
+    /// </summary>
+    /// <param name="enemyInstanceId"></param>
+    void OnDropOnEnemy(int enemyInstanceId)
+    {
+        EventSys.Instance.AddEvent(InputEvent.FightUseItemToEnemy, enemyInstanceId, _dragItemId);
+    }
+
+    /// <summary>
+    /// 开始拖拽道具
+    /// </summary>
+    /// <param name="itemId"></param>
+    void OnDragFromItem(int itemId)
+    {
+        _dragItemId = itemId;
+    }
+
+    /// <summary>
+    /// 拖拽到英雄身上
+    /// </summary>
+    /// <param name="heroId"></param>
+    void OnDropOnHero(int heroId)
+    {
+        EventSys.Instance.AddEvent(InputEvent.FightUseItemToHero, heroId, _dragItemId);
     }
 
 }

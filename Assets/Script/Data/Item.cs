@@ -17,7 +17,10 @@ public class Item {
     public string Command;
     public string Icon;
     public ENum<int> Price;
-    public ENum<int> Lv; 
+    public ENum<int> Lv;
+    public bool UsableInFight;
+    public Color TheColor;
+    public int JobLimited;
 
     public Item(int id, int count)
     {
@@ -32,5 +35,9 @@ public class Item {
         Icon = dataInfo.Icon;
         Price.Value = dataInfo.Price;
         Lv.Value = dataInfo.Lv;
+
+        UsableInFight = dataInfo.UsableInFight;
+        ColorUtility.TryParseHtmlString(dataInfo.Color, out TheColor);
+        JobLimited = dataInfo.JobLimited;
     }
 }

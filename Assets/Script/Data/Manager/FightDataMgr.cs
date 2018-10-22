@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -56,7 +57,8 @@ public class FightDataMgr {
                 if (node is StageNodeFight)
                 {
                     StageNodeFight nodeF = (StageNodeFight)node;
-                    Enemy enemy = new Enemy(nodeF.EnemyId, nodeF.EnemyLv, nodeF.EnemyAi);
+                    int index = 0;//如果改为多敌人，那么这里也要修改为顺序增加的值
+                    Enemy enemy = new Enemy(nodeF.EnemyId, nodeF.EnemyLv, nodeF.EnemyAi, index);
                     _enemies.Add(node.Id, enemy);
                 }
                 else if(node is StageNodeReward)
@@ -117,6 +119,19 @@ public class FightDataMgr {
         Enemy result;
         _enemies.TryGetValue(nodeId, out result);
         return result;
+    }
+
+    public Enemy GetEnemyByInstanceId(int insId)
+    {
+        foreach (var pair in _enemies)
+        {
+            if(pair.Value.InstanceId == insId)
+            {
+                return pair.Value;
+            }
+        }
+        throw new Exception("Not Found Enemy With InsId = " + insId);
+        return null;
     }
 
     public Reward GetReward(int nodeId)

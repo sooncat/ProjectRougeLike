@@ -193,7 +193,17 @@ public class FightState : BaseGameState {
                 }
                 break;
             case FSubState.Mapping:
-                
+                //将英雄拖拽到英雄身上，除非是安全屋，否则不可能
+                FightHero fh = FightDataMgr.Instance.GetHero(targetHeroId);
+                BaseStageNode stageNode = _stageConfig.GetNode(fh.NowNodeId);
+                if(stageNode.NodeType.Equals(typeof(StageNodeSafe).Name))
+                {
+                    
+                }
+                else
+                {
+                    EventSys.Instance.AddEvent(ViewEvent.ShowTipNodePassed);
+                }
                 break;
         }
     }
@@ -253,7 +263,7 @@ public class FightState : BaseGameState {
         fh.NowNodeId = nodeId;
         _stageConfig.GetNode(nodeId).IsPassed = true;
         
-        EventSys.Instance.AddEvent(ViewEvent.GetRewardReturnToStage, heroId, nodeId);
+        EventSys.Instance.AddEvent(ViewEvent.GetRewardReturnToStage, fh, nodeId);
 
     }
 }

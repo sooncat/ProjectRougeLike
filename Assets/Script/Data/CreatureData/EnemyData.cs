@@ -6,6 +6,11 @@ using UnityEngine;
 public class EnemyData : CreatureData {
 
     public ENum<int> Ai;
+
+    /// <summary>
+    /// 这里是简化处理，只写id，不写num。默认num=1
+    /// id直接按itemid来处理。
+    /// </summary>
     public List<ENum<int>> DropIds;
 
     public EnemyData(MonsterDataInfo dataInfo, int lv, int ai)

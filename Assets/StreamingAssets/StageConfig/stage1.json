@@ -73,12 +73,12 @@
 					"RewardItemIds": {
 						"$type": "System.Int32[], mscorlib",
 						"$values": [10000,
-						2]
+						2,4,3]
 					},
 					"RewardItemNums": {
 						"$type": "System.Int32[], mscorlib",
 						"$values": [100,
-						1]
+						1,1,1]
 					},
 					"Id": 11,
 					"Index": 1,
@@ -107,12 +107,12 @@
 					"RewardItemIds": {
 						"$type": "System.Int32[], mscorlib",
 						"$values": [10000,
-						1]
+						1,4,3]
 					},
 					"RewardItemNums": {
 						"$type": "System.Int32[], mscorlib",
 						"$values": [100,
-						1]
+						1,1,1]
 					},
 					"Id": 21,
 					"Index": 0,

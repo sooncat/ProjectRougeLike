@@ -6,6 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 用户输入事件，点击/拖拽/滑屏等
 /// 由View发出，Logic接收
+/// 注意此类事件的参数应尽量使用基本数据，如int/bool等，方便模拟输入
 /// </summary>
 public enum InputEvent : int
 {
@@ -29,8 +30,13 @@ public enum InputEvent : int
     FightDragOnHero,    //战斗地图界面，拖拽到英雄节点上
 
     FightAttack,        //战斗中，普通攻击（英雄只能对敌人攻击）
-    FightItem,          //战斗中，使用道具（可以对任何人使用道具）
     FightSelectHero,    //战斗中，选择英雄
+
+    FightUseItemToEnemy,     //战斗中，对敌人使用道具
+    FightUseItemToHero,      //战斗中，对英雄使用道具
+
+    FightWinConfirm,        //一个节点战斗胜利
+    FightLoseConfirm,       //一个节点战斗失败
 }
 
 /// <summary>

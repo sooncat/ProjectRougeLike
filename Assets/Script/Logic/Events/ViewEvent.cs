@@ -36,6 +36,7 @@ public enum ViewEvent : int {
     FightChangeTurn,        //一个回合中，切换主动权
     FightEnemyAttack,       //战斗中敌人攻击
     FightUpdateHeroState,   //战斗中更新英雄状态
+    FightUpdateAllHeroState,    //战斗中更新所有英雄状态
 
     ShowStageFail,          //关卡失败
 

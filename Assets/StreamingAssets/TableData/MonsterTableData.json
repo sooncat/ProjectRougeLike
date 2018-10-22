@@ -20,10 +20,10 @@
 		"Icon":"Assets/Res/Icon/cards/ico_head_feitianshadao",
 		"Cg":"Assets/Res/Cg/2d_105",
 		"Sex": 0,
-		"Hp": 2000,
+		"Hp": 2500,
 		"Mp": 1000,
 		"Def": 100,
-		"Att": 200,
+		"Att": 100,
 		"DropIds":[2,3,4]
 	}]
 }

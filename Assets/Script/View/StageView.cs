@@ -28,7 +28,39 @@ public class StageView : BaseView
     UINode _stageNode;
     
     Dictionary<int, Transform> _nodeUIs;
-    Dictionary<int, Transform> _nodeLines;
+
+    struct DIKey
+    {
+        public bool Equals(DIKey other)
+        {
+            return _fromNodeId == other._fromNodeId && _targetNodeId == other._targetNodeId;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (_fromNodeId*397) ^ _targetNodeId;
+            }
+        }
+
+        readonly int _fromNodeId;
+        readonly int _targetNodeId;
+
+        public DIKey(int fId, int tId)
+        {
+            _fromNodeId = fId;
+            _targetNodeId = tId;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            return obj is DIKey && Equals((DIKey) obj);
+        }
+    }
+
+    Dictionary<DIKey, Transform> _nodeLines;
 
     /// <summary>
     /// 选择英雄出战时，界面最下方横排的NodeList
@@ -91,7 +123,7 @@ public class StageView : BaseView
 
         UINode modelNode = _stageNode.GetNode("Models");
         _nodeModel = modelNode.GetRef("Node_model").gameObject;
-        _lineModel = modelNode.GetRef("Slider_model").gameObject;
+        _lineModel = modelNode.GetNode("Slider_model").gameObject;
         _layerNameModel = modelNode.GetRef("LayerName_model").gameObject;
         _heroShowModel = modelNode.GetNode("HeroShow_model").gameObject;
 
@@ -201,7 +233,7 @@ public class StageView : BaseView
         StageConfig stageConfig = (StageConfig)p1;
 
         _nodeUIs = new Dictionary<int, Transform>();
-        _nodeLines = new Dictionary<int, Transform>();
+        _nodeLines = new Dictionary<DIKey, Transform>();
 
         //_layerHeight = (Screen.height - LayerGap * 2) / stageConfig.Layers.Count;
 
@@ -221,7 +253,7 @@ public class StageView : BaseView
                     GameObject lineModel = Instantiate(_lineModel);
                     lineModel.transform.SetParent(_stageLineRootTrans);
                     SetLineUI(t.position, nextT.position, lineModel.GetComponent<Slider>());
-                    _nodeLines.Add(node.Id * 100 + nextNode, lineModel.transform);
+                    _nodeLines.Add(new DIKey(node.Id, nextNode), lineModel.transform);
                 }
             }
         }
@@ -324,7 +356,7 @@ public class StageView : BaseView
         mySlider.transform.position = new Vector3(centerX, centerY, 0);
         mySlider.transform.localEulerAngles = UIUtils.GetEulerAngle(p1, p2);
         mySlider.GetComponent<RectTransform>().sizeDelta = new Vector2(distance, 20);
-        mySlider.GetComponent<Slider>().value = 0.3f;
+        mySlider.GetComponent<Slider>().value = 0f;
     }
 
     void OnNodeClicked(int id)
@@ -493,6 +525,9 @@ public class StageView : BaseView
             //update data
             UINode showNode = _showHeroNodes[hId].GetComponent<UINode>();
             SetShowNodeData(pair.Value, showNode);
+
+            Color c = ((HeroData)pair.Value.CreatureData).TheColor;
+            SetPathPassed(pair.Value.LastNodeId, pair.Value.NowNodeId, c);
         }
         
     }
@@ -523,15 +558,22 @@ public class StageView : BaseView
 
     void OnGetRewardReturnToStage(object p1, object p2)
     {
-        
-
         //update Node
         int nodeId = (int)p2;
         Transform nodeTrans = _nodeUIs[nodeId];
         ImageGray ig = nodeTrans.gameObject.AddComponent<ImageGray>();
         ig.Gray = true;
 
-        int heroId = (int)p1;
-        _fightHeroNodes[heroId].transform.position = nodeTrans.transform.position;
+        FightHero hero = (FightHero)p1;
+        _fightHeroNodes[hero.Id].transform.position = nodeTrans.transform.position;
+        SetPathPassed(hero.LastNodeId, hero.NowNodeId, ((HeroData)hero.CreatureData).TheColor);
+    }
+
+    void SetPathPassed(int fromNodeId, int targetNodeId, Color c)
+    {
+        DIKey id = new DIKey(fromNodeId, targetNodeId);
+        UINode node = _nodeLines[id].GetComponent<UINode>();
+        node.GetComponent<Slider>().value = 1;
+        node.GetRef("Fill").GetComponent<Image>().color = c;
     }
 }

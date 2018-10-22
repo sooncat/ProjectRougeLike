@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using com.initialworld.framework;
 using UnityEngine;
 
 /// <summary>
@@ -49,12 +50,15 @@ public class FightProgress {
         EventSys.Instance.AddHander(LogicEvent.StartFightRound, StartRound);
 
         EventSys.Instance.AddHander(InputEvent.FightAttack, OnHeroAttack);
-        EventSys.Instance.AddHander(InputEvent.FightItem, OnHeroUseItem);
         EventSys.Instance.AddHander(InputEvent.FightSelectHero, OnSelectHero);
-
+        EventSys.Instance.AddHander(InputEvent.FightUseItemToEnemy, OnUseItemToEnemy);
+        EventSys.Instance.AddHander(InputEvent.FightUseItemToHero, OnUseItemToHero);
+        EventSys.Instance.AddHander(InputEvent.FightWinConfirm, OnWinConfirm);
+        EventSys.Instance.AddHander(InputEvent.FightLoseConfirm, OnLoseConfirm);
+        
         EventSys.Instance.AddHander(AiInputEvent.Attack, OnAiAttack);
         EventSys.Instance.AddHander(AiInputEvent.AiActionEnd, OnAiEnd);
-
+        
 	}
 
     public void Clear()
@@ -96,11 +100,6 @@ public class FightProgress {
         if(isAllHeroDied)
         {
             EventSys.Instance.AddEvent(ViewEvent.FightShowLose, _heros);
-            TimerUtils.Instance.StartTimer(1, () =>
-            {
-                EventSys.Instance.AddEvent(ViewEvent.FightLoseReturnToStage, _heros);
-                EventSys.Instance.AddEvent(LogicEvent.FightLoseReturnToStage);
-            });
         }
         else
         {
@@ -129,25 +128,45 @@ public class FightProgress {
         }
         EventSys.Instance.AddEvent(ViewEvent.FightHeroAttack, damage);
         EventSys.Instance.AddEvent(ViewEvent.FightUpdateEnemyState, enemy);
-        
+
         if (enemy.CreatureData.Hp.Value <= 0)
         {
-            EventSys.Instance.AddEvent(ViewEvent.FightShowWin);
-            _stageConfig.GetNode(_nowNodeId).IsPassed = true;
-            foreach (KeyValuePair<int, FightHero> pair in _heros)
-            {
-                pair.Value.NowNodeId = _nowNodeId;
-            }
-            TimerUtils.Instance.StartTimer(1, () =>
-            {
-                EventSys.Instance.AddEvent(ViewEvent.FightWinReturnToStage, _heros, _nowNodeId);
-            });
+            EnemyBeHurtDead(enemy);
         }
         else
         {
-            CheckChangeTurnToEnemy();    
+            CheckChangeTurnToEnemy();
         }
+    }
+
+    void EnemyBeHurtDead(Enemy enemy)
+    {
+        List<ENum<int>> itemIds = ((EnemyData)enemy.CreatureData).DropIds;
+        List<Item> items = new List<Item>();
+        foreach (ENum<int> id in itemIds)
+        {
+            Item item = new Item(id.Value, 1);
+            FightDataMgr.Instance.GetHero(_nowHeroId).AddItem(item);
+            items.Add(item);
+        }
+        EventSys.Instance.AddEvent(ViewEvent.FightShowWin, items);
         
+        _stageConfig.GetNode(_nowNodeId).IsPassed = true;
+        foreach (KeyValuePair<int, FightHero> pair in _heros)
+        {
+            pair.Value.NowNodeId = _nowNodeId;
+        }
+    }
+
+    void OnWinConfirm(object p1, object p2)
+    {
+        EventSys.Instance.AddEvent(ViewEvent.FightWinReturnToStage, _heros, _nowNodeId);
+    }
+
+    void OnLoseConfirm(object p1, object p2)
+    {
+        EventSys.Instance.AddEvent(ViewEvent.FightLoseReturnToStage, _heros);
+        EventSys.Instance.AddEvent(LogicEvent.FightLoseReturnToStage);
     }
 
     /// <summary>
@@ -176,10 +195,6 @@ public class FightProgress {
         }
     }
 
-    void OnHeroUseItem( object p1, object p2)
-    {
-        
-    }
 
     void OnSelectHero( object p1, object p2)
     {
@@ -232,5 +247,78 @@ public class FightProgress {
 
         EventSys.Instance.AddEvent(ViewEvent.FightUpdateRound, _round, _heros[_nowHeroId]);
         EventSys.Instance.AddEvent(ViewEvent.FightChangeTurn, true);
+    }
+
+    void OnUseItemToEnemy(object p1, object p2)
+    {
+        int enemyInstanceId = (int)p1;
+        int itemId = (int)p2;
+
+        Enemy enemy = FightDataMgr.Instance.GetEnemyByInstanceId(enemyInstanceId);
+        FightHero fh = FightDataMgr.Instance.GetHero(_nowHeroId);
+        Item item = fh.Items[itemId];
+
+
+        if(item.Id == 4)
+        {
+            int damage = 1000;
+            enemy.CreatureData.Hp.Value -= damage;
+            if (enemy.CreatureData.Hp.Value <= 0)
+            {
+                enemy.CreatureData.Hp.Value = 0;
+            }
+            EventSys.Instance.AddEvent(ViewEvent.FightHeroAttack, damage);
+            EventSys.Instance.AddEvent(ViewEvent.FightUpdateEnemyState, enemy);
+
+            if (enemy.CreatureData.Hp.Value <= 0)
+            {
+                EnemyBeHurtDead(enemy);
+            }
+            else
+            {
+                CheckChangeTurnToEnemy();
+            }
+            fh.DelItem(item.Id, 1);
+            EventSys.Instance.AddEvent(ViewEvent.FightUpdateHeroState, fh);
+        }
+
+        fh.IsActioned = true;
+        CheckChangeTurnToEnemy();
+    }
+
+    void OnUseItemToHero(object p1, object p2)
+    {
+        int targetHeroId = (int)p1;
+        int itemId = (int)p2;
+
+        FightHero originHero = FightDataMgr.Instance.GetHero(_nowHeroId);
+        FightHero fh = FightDataMgr.Instance.GetHero(targetHeroId);
+        Item item = fh.Items[itemId];
+
+        if(item.Id == 1)
+        {
+            int nowHp = fh.CreatureData.Hp.Value;
+            if (nowHp >= 0)
+            {
+                fh.CreatureData.Hp.Value = System.Math.Max(nowHp+100, fh.CreatureData.HpMax.Value);
+                originHero.DelItem(item.Id, 1);
+                EventSys.Instance.AddEvent(ViewEvent.FightUpdateAllHeroState, _heros);
+
+                fh.IsActioned = true;
+                CheckChangeTurnToEnemy();
+            }
+        }
+        else if(item.Id == 2)
+        {
+            int nowMp = fh.CreatureData.Mp.Value;
+            fh.CreatureData.Hp.Value = System.Math.Max(nowMp + 100, fh.CreatureData.MpMax.Value);
+            originHero.DelItem(item.Id, 1);
+            EventSys.Instance.AddEvent(ViewEvent.FightUpdateAllHeroState, _heros);
+
+            fh.IsActioned = true;
+            CheckChangeTurnToEnemy();
+        }
+
+        
     }
 }

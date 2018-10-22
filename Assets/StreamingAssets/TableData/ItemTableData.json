@@ -2,41 +2,53 @@
 	"Data": [{
 		"Id": 1,
 		"Name": "止血草",
-		"Description": "常见草药，恢复少量HP",
+		"Description": "恢复少量血",
 		"Lv": 1,
 		"Icon": "Assets/Res/Icon/Item/icon_material_upgrade81002",
 		"Price": 100,
 		"Type":1,
+		"Color":"#DC4040",
+		"UsableInFight":true,
+		"JobLimited":0,
 		"Command":""
 	},
 	{
 		"Id": 2,
 		"Name": "薄荷草",
-		"Description": "帮助提神，恢复少量MP",
+		"Description": "恢复少量气",
 		"Lv": 2,
 		"Icon": "Assets/Res/Icon/Item/icon_material_upgrade80101",
 		"Price": 200,
 		"Type":1,
+		"Color":"#4040DC",
+		"UsableInFight":true,
+		"JobLimited":0,
 		"Command":""
 	},
 	{
 		"Id": 3,
 		"Name": "武功秘籍残页",
-		"Description": "收集一定数量可以分析该武功的弱点",
+		"Description": "可以分析武功的弱点",
 		"Lv": 3,
-		"Icon": "Assets/Res/Icon/Item/icon_material_upgrade11003",
+		"Icon": "Assets/Res/Icon/Item/ico_cardeqiupment_11003",
 		"Price": 1,
 		"Type": 0,
+		"Color":"#0000ff",
+		"UsableInFight":false,
+		"JobLimited":0,
 		"Command":""
 	},
 	{
 		"Id": 4,
-		"Name": "袖箭",
-		"Description": "任何人都可以使用的暗器，固定100点伤害",
+		"Name": "神机箭",
+		"Description": "弓职专用1000点伤害",
 		"Lv": 3,
-		"Icon": "icon4",
+		"Icon": "Assets/Res/Icon/skill/ico_skill_potianyijian",
 		"Price": 200,
 		"Type": 10,
+		"Color":"#0000ff",
+		"UsableInFight":true,
+		"JobLimited":2,
 		"Command":""
 	},
 	{
@@ -47,6 +59,9 @@
 		"Icon": "Assets/Res/Icon/Item/goldqian",
 		"Price": 1,
 		"Type": 100,
+		"Color":"#0000ff",
+		"UsableInFight":false,
+		"JobLimited":0,
 		"Command":""
 	}]
 }
