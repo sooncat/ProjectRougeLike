@@ -15,7 +15,7 @@ public class GameMain : BaseMain {
         CatDebug.RegistLogTypeLabel(CatLogType.CatTimer, "Timer");
 
         InitSys<ViewSys>();
-        ConfigSys.Instance.InitJsonConfig<GameStateConfig>(Application.streamingAssetsPath + "/GameConfig/GameStateConfig.json");
+        ConfigSys.Instance.InitJsonConfig<GameStateConfig>("Configs/GameConfig/GameStateConfig");
 
         ConfigDataMgr.Instance.Load<HeroTableData>();
         ConfigDataMgr.Instance.Load<MonsterTableData>();

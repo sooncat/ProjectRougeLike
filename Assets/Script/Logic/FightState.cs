@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using UnityEngine;
 
 
 public class FightState : BaseGameState {
@@ -81,7 +82,7 @@ public class FightState : BaseGameState {
             TypeNameHandling = TypeNameHandling.All
         };
         
-        string str = IOUtils.ReadFileString(GameConstants.StageConfigPath + _stageName + GameConstants.StageConfigTail);
+        string str = Resources.Load<TextAsset>(GameConstants.StageConfigPath + _stageName).text;
         _stageConfig = JsonConvert.DeserializeObject<StageConfig>(str, settings);
 
         EventSys.Instance.AddEvent(LogicEvent.CreateFightStageData, _stageConfig);

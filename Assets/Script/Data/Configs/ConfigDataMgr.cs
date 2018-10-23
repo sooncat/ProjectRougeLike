@@ -33,7 +33,7 @@ public class ConfigDataMgr {
 
     private ConfigDataMgr()
     {
-        _configPath = Application.streamingAssetsPath + "/TableData/";
+        _configPath = "Configs/TableData/";
         _dataConfigs = new Dictionary<Type, Dictionary<int, BaseDataInfo>>();
     }
 
@@ -49,11 +49,11 @@ public class ConfigDataMgr {
         //todo 改为异步&加密
         Type t = typeof(T);
 
-        string resPath = _configPath + t.Name + ".json";
+        string resPath = _configPath + t.Name;
         
-        if (File.Exists(resPath))
-        {
-            string s = IOUtils.ReadFileString(resPath);
+        //if (File.Exists("Assets/"+resPath))
+        //{
+            string s = Resources.Load<TextAsset>(resPath).text;
             IDataConfig resDataConfig = LitJson.JsonMapper.ToObject<T>(s);
             
             IList dataList = resDataConfig.GetDataInfoList();
@@ -65,11 +65,11 @@ public class ConfigDataMgr {
                 tableData.Add(key, dataDetail);
             }
             _dataConfigs.Add(typeof(T), tableData);
-        }
-        else
-        {
-            throw new FileNotFoundException("Don't Find Type Res named " + resPath);    
-        }
+        //}
+        //else
+        //{
+        //    throw new FileNotFoundException("Don't Find Type Res named " + resPath);    
+        //}
     }
 
     public BaseDataInfo GetDataInfo<T>(int id) where T : IDataConfig

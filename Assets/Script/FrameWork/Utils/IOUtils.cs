@@ -10,7 +10,8 @@ public class IOUtils {
     {
         byte[] b = null;
 
-        if (Application.platform == RuntimePlatform.Android && path.Contains(Application.streamingAssetsPath))
+        if (Application.platform == RuntimePlatform.Android && 
+            path.Contains(Application.streamingAssetsPath))
         {
             WWW www = new WWW(path);
             while (!www.isDone)
