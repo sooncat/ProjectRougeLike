@@ -16,6 +16,7 @@ public class BaseStageNode {
     public string Icon;
     public string NodeType;
     public List<int> NextNodes;
+    public bool HiddenDetail;
 
     /// <summary>
     /// 是否已经被攻略

@@ -11,7 +11,7 @@ public class CreatureData {
 
     //base property
     public ENum<int> Lv;
-    public ENum<int> Sex;
+    public int Sex;
     public ENum<int> Hp;
     public ENum<int> Mp;
     public ENum<int> Def;

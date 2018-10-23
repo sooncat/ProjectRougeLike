@@ -45,6 +45,10 @@
 			{
 				"Prefab": "SafeNodeUI",
 				"ClassName": "SafeNodeView"
+			},
+			{
+				"Prefab": "UnKnowNodeUI",
+				"ClassName": "UnKnowNodeView"
 			}],
 			"PreLoadEffect": [],
 			"PreLoadAudio": []

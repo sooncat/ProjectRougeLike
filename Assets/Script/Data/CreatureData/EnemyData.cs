@@ -20,7 +20,7 @@ public class EnemyData : CreatureData {
         Description = dataInfo.Description;
 
         Lv = new ENum<int>(lv);
-        Sex = new ENum<int>(dataInfo.Sex);
+        Sex = dataInfo.Sex;
         Hp = new ENum<int>(dataInfo.Hp);
         HpMax = new ENum<int>(dataInfo.Hp);
         Mp = new ENum<int>(dataInfo.Mp);

@@ -24,6 +24,7 @@ public enum ViewEvent : int {
     ShowNodeRewardDetails,  //地图界面，显示奖励节点详情
     ShowNodeRewardGet,      //地图界面，英雄被拖拽到奖励节点,显示奖励并准备赋予英雄
     ShowNodeSafeDetails,    //地图界面，显示安全屋节点详情
+    ShowNodeUnKnow,         //地图界面，显示未知节点详情
 
     CreateFightView,        //进入战斗，创建战斗界面
     SetSelectedHero,        //切换选中的英雄

@@ -162,12 +162,12 @@
 						"$type": "System.Collections.Generic.List`1[[StageNodeReward+ConditionConfig, Assembly-CSharp]], mscorlib",
 						"$values": [{
 							"$type": "StageNodeReward+ConditionConfig, Assembly-CSharp",
-							"ConditionExpress": "Job",
-							"Val": "2",
+							"ConditionExpress": "Sex",
+							"Val": "1",
 							"Rewards": {
 								"$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
-								"3": 1,
-								"4": 1
+								"10000": 1000,
+								"3": 1
 							}
 						},
 						{
@@ -185,12 +185,13 @@
 					"Index": 2,
 					"Name": "Reward",
 					"Description": "",
-					"Icon": "Assets/Res/Icon/Item/ico_usableitem_baoxiang1",
+					"Icon": "Assets/Res/Icon/cards/ico_head_weizhi",
 					"NodeType": "StageNodeReward",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
 						"$values": [40]
-					}
+					},
+					"HiddenDetail":true
 				},
 				{
 					"$type": "StageNodeFight, Assembly-CSharp",

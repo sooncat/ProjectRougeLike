@@ -306,7 +306,14 @@ public class FightState : BaseGameState {
     void OnStateNodeClicked(object p1, object p2)
     {
         int nodeId = (int)p1;
-        Type type = _stageConfig.GetNode(nodeId).GetType();
+        BaseStageNode node = _stageConfig.GetNode(nodeId);
+        if(node.HiddenDetail)
+        {
+            EventSys.Instance.AddEvent(ViewEvent.ShowNodeUnKnow, nodeId);
+            return;
+        }
+        Type type = node.GetType();
+
         if (type == typeof(StageNodeFight))
         {
             Enemy e = FightDataMgr.Instance.GetEnemy(nodeId);

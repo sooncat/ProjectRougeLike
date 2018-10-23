@@ -29,7 +29,7 @@ public class HeroData : CreatureData, ICloneable {
         Description = dataInfo.Description;
 
         Lv = new ENum<int>(lv);
-        Sex = new ENum<int>(dataInfo.Sex);
+        Sex = dataInfo.Sex;
         Hp = new ENum<int>(dataInfo.Hp);
         Mp = new ENum<int>(dataInfo.Mp);
         Def = new ENum<int>(dataInfo.Def);
@@ -57,7 +57,7 @@ public class HeroData : CreatureData, ICloneable {
         result.Description = Description;
 
         result.Lv = new ENum<int>(Lv.Value);
-        result.Sex = new ENum<int>(Sex.Value);
+        result.Sex = Sex;
         result.Hp = new ENum<int>(Hp.Value);
         result.Mp = new ENum<int>(Mp.Value);
         result.Def = new ENum<int>(Def.Value);
