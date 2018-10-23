@@ -196,7 +196,6 @@ public class FightProgress {
         }
     }
 
-
     void OnSelectHero( object p1, object p2)
     {
         _nowHeroId = (int)p1;
@@ -281,10 +280,15 @@ public class FightProgress {
             }
             fh.DelItem(item.Id, 1);
             EventSys.Instance.AddEvent(ViewEvent.FightUpdateHeroState, fh);
-        }
 
-        fh.IsActioned = true;
-        CheckChangeTurnToEnemy();
+            fh.IsActioned = true;
+            CheckChangeTurnToEnemy();
+        }
+        else
+        {
+            EventSys.Instance.AddEvent(ViewEvent.FigetShowTipNotSupportYet);
+        }
+        
     }
 
     void OnUseItemToHero(object p1, object p2)
@@ -292,34 +296,41 @@ public class FightProgress {
         int targetHeroId = (int)p1;
         int itemId = (int)p2;
 
+        CatDebug.LogFunc("targetHeroId = " + targetHeroId + ", itemId = " + itemId);
+
         FightHero originHero = FightDataMgr.Instance.GetHero(_nowHeroId);
-        FightHero fh = FightDataMgr.Instance.GetHero(targetHeroId);
-        Item item = fh.Items[itemId];
+        FightHero targetHero = FightDataMgr.Instance.GetHero(targetHeroId);
+        Item item = targetHero.Items[itemId];
 
         if(item.Id == 1)
         {
-            int nowHp = fh.CreatureData.Hp.Value;
+            int nowHp = targetHero.CreatureData.Hp.Value;
             if (nowHp >= 0)
             {
-                fh.CreatureData.Hp.Value = System.Math.Min(nowHp+100, fh.CreatureData.HpMax.Value);
+                targetHero.CreatureData.Hp.Value = System.Math.Min(nowHp+100, targetHero.CreatureData.HpMax.Value);
                 originHero.DelItem(item.Id, 1);
                 EventSys.Instance.AddEvent(ViewEvent.FightUpdateAllHeroState, _heros);
+                EventSys.Instance.AddEvent(ViewEvent.FightHeroHpSupply, targetHero.Id, 100);
 
-                fh.IsActioned = true;
+                originHero.IsActioned = true;
                 CheckChangeTurnToEnemy();
             }
         }
         else if(item.Id == 2)
         {
-            int nowMp = fh.CreatureData.Mp.Value;
-            fh.CreatureData.Hp.Value = System.Math.Min(nowMp + 100, fh.CreatureData.MpMax.Value);
+            int nowMp = targetHero.CreatureData.Mp.Value;
+            targetHero.CreatureData.Mp.Value = System.Math.Min(nowMp + 100, targetHero.CreatureData.MpMax.Value);
             originHero.DelItem(item.Id, 1);
             EventSys.Instance.AddEvent(ViewEvent.FightUpdateAllHeroState, _heros);
+            EventSys.Instance.AddEvent(ViewEvent.FightHeroMpSupply, targetHero.Id, 100);
 
-            fh.IsActioned = true;
+            originHero.IsActioned = true;
             CheckChangeTurnToEnemy();
         }
-
+        else
+        {
+            EventSys.Instance.AddEvent(ViewEvent.FigetShowTipNotSupportYet);
+        }
         
     }
 }

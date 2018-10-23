@@ -42,6 +42,7 @@ public class FightState : BaseGameState {
         EventSys.Instance.AddHander(InputEvent.FightNodeClicked, OnClickFightNodeEvent);
         EventSys.Instance.AddHander(InputEvent.FightDragOnNode, OnFightDragOnNode);
         EventSys.Instance.AddHander(InputEvent.FightDragOnHero, OnFightDragOnHero);
+        EventSys.Instance.AddHander(InputEvent.FightDragAllOnNode, OnFightDragAllOnNode);
 
         EventSys.Instance.AddHander(LogicEvent.FightLoseReturnToStage, OnFightLoseReturnToStage);
         EventSys.Instance.AddHander(LogicEvent.FightWinReturnToStage, OnFightWinReturnToStage);
@@ -152,10 +153,53 @@ public class FightState : BaseGameState {
                     Reward r = FightDataMgr.Instance.GetReward(targetNodeId);
                     EventSys.Instance.AddEvent(ViewEvent.ShowNodeRewardGet, r, new []{targetNodeId, heroId});
                 }
+                else if(nodeType.Equals(typeof(StageNodeSafe).Name))
+                {
+                    fh.NowNodeId = targetNodeId;
+                    EventSys.Instance.AddEvent(ViewEvent.GetSafeReturnToStage, fh);
+                }
                 break;
         }
     }
 
+    void OnFightDragAllOnNode(object p1, object p2)
+    {
+        int fromNodeId = (int)p1;
+        int targetNodeId = (int)p2;
+
+        StageNodeSafe fromNode = (StageNodeSafe)_stageConfig.GetNode(fromNodeId);
+        BaseStageNode targetNode = _stageConfig.GetNode(targetNodeId);
+
+        if (!fromNode.NextNodes.Contains(targetNodeId))
+        {
+            EventSys.Instance.AddEvent(ViewEvent.ShowTipNotNextNode);
+            return;
+        }
+
+        if(targetNode.GetType() !=  typeof(StageNodeFight))
+        {
+            EventSys.Instance.AddEvent(ViewEvent.ShowTipNotSupportYet);
+            return;
+        }
+
+        switch (_fState)
+        {
+            case FSubState.SelectHero:
+                break;
+            case FSubState.Mapping:
+                
+                List<int> heros = new List<int>();
+                foreach (var pair in FightDataMgr.Instance.GetHeros())
+                {
+                    if (pair.Value.NowNodeId == fromNode.Id)
+                    {
+                        heros.Add(pair.Value.Id);
+                    }
+                }
+                EventSys.Instance.AddEvent(LogicEvent.StartFightRound, heros.ToArray(), targetNodeId);
+                break;
+        }
+    }
 
     /// <summary>
     /// 将英雄拖拽到其他英雄节点上
@@ -199,7 +243,9 @@ public class FightState : BaseGameState {
                 BaseStageNode stageNode = _stageConfig.GetNode(fh.NowNodeId);
                 if(stageNode.NodeType.Equals(typeof(StageNodeSafe).Name))
                 {
-                    
+                    FightHero dragHero = FightDataMgr.Instance.GetHero(dragHeroId);
+                    dragHero.NowNodeId = fh.NowNodeId;
+                    EventSys.Instance.AddEvent(ViewEvent.GetSafeReturnToStage, dragHero);
                 }
                 else
                 {
@@ -277,7 +323,7 @@ public class FightState : BaseGameState {
         }
         else if(type == typeof(StageNodeSafe))
         {
-            
+            EventSys.Instance.AddEvent(ViewEvent.ShowNodeSafeDetails, nodeId);
         }
     }
 

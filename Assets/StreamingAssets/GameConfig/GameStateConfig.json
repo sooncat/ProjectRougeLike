@@ -41,6 +41,10 @@
 			{
 				"Prefab": "FightNodeUI",
 				"ClassName": "FightNodeView"
+			},
+			{
+				"Prefab": "SafeNodeUI",
+				"ClassName": "SafeNodeView"
 			}],
 			"PreLoadEffect": [],
 			"PreLoadAudio": []

@@ -45,8 +45,9 @@ public class FightView : BaseView {
 
         _enemyNode = rootNode.GetNode("Enemy");
         GameObject enemyHurt = _enemyNode.GetRef("Hurt").gameObject;
-        
         enemyHurt.SetActive(false);
+        GameObject enemySupply = _enemyNode.GetRef("Supply").gameObject;
+        enemySupply.SetActive(false);
 
         _modelNode = rootNode.GetNode("Models");
 
@@ -64,6 +65,8 @@ public class FightView : BaseView {
         EventSys.Instance.AddHander(ViewEvent.FightUpdateEnemyState, OnUpdateEnemy);
         EventSys.Instance.AddHander(ViewEvent.FightShowWin, OnShowWin);
         EventSys.Instance.AddHander(ViewEvent.FightHeroAttack, OnHeroAttack);
+        EventSys.Instance.AddHander(ViewEvent.FightHeroHpSupply, OnHeroHpSupply);
+        EventSys.Instance.AddHander(ViewEvent.FightHeroMpSupply, OnHeroMpSupply);
         EventSys.Instance.AddHander(ViewEvent.FightShowLose, OnShowLose);
         EventSys.Instance.AddHander(ViewEvent.FightWinReturnToStage, OnFinish);
         EventSys.Instance.AddHander(ViewEvent.FightChangeTurn, OnChangeTurn);
@@ -71,6 +74,7 @@ public class FightView : BaseView {
         EventSys.Instance.AddHander(ViewEvent.FightUpdateHeroState, OnUpdateHero);
         EventSys.Instance.AddHander(ViewEvent.FightUpdateAllHeroState, OnUpdateAllHero);
         EventSys.Instance.AddHander(ViewEvent.FightLoseReturnToStage, OnFinish);
+        EventSys.Instance.AddHander(ViewEvent.FigetShowTipNotSupportYet, ShowTipNotSupportYet);
         
     }
 
@@ -143,6 +147,58 @@ public class FightView : BaseView {
         }
         da.DelaySecond = 1;
         da.DAction = () => { hurt.gameObject.SetActive(false); };
+        da.StartDelay();
+    }
+
+    void OnHeroHpSupply(object p1, object p2)
+    {
+        int heroId = (int)p1;
+        int supply = (int)p2;
+        ShowHpSupply(_heroNodes[heroId].GetComponent<UINode>(), supply);
+    }
+
+    void OnHeroMpSupply(object p1, object p2)
+    {
+        int heroId = (int)p1;
+        int supply = (int)p2;
+        ShowMpSupply(_heroNodes[heroId].GetComponent<UINode>(), supply);
+    }
+
+    void ShowHpSupply(UINode node, int sVal)
+    {
+        GameObject supply = node.GetRef("Supply").gameObject;
+        if (sVal < 0)
+        {
+            supply.SetActive(false);
+            return;
+        }
+        supply.GetComponent<Text>().text = "+" + sVal;
+        DelayAction da = supply.GetComponent<DelayAction>();
+        if (da == null)
+        {
+            da = supply.AddComponent<DelayAction>();
+        }
+        da.DelaySecond = 1;
+        da.DAction = () => { supply.gameObject.SetActive(false); };
+        da.StartDelay();
+    }
+
+    void ShowMpSupply(UINode node, int sVal)
+    {
+        GameObject supply = node.GetRef("MpSupply").gameObject;
+        if (sVal < 0)
+        {
+            supply.SetActive(false);
+            return;
+        }
+        supply.GetComponent<Text>().text = "+" + sVal;
+        DelayAction da = supply.GetComponent<DelayAction>();
+        if (da == null)
+        {
+            da = supply.AddComponent<DelayAction>();
+        }
+        da.DelaySecond = 1;
+        da.DAction = () => { supply.gameObject.SetActive(false); };
         da.StartDelay();
     }
 
@@ -234,6 +290,9 @@ public class FightView : BaseView {
 
             UINode node = go.GetComponent<UINode>();
             SetHeroData(fh, node);
+            node.GetRef("Hurt").gameObject.SetActive(false);
+            node.GetRef("Supply").gameObject.SetActive(false);
+            node.GetRef("MpSupply").gameObject.SetActive(false);
             node.GetRef("Selected").gameObject.SetActive(false);
             ShowHurt(node, -1);
 
@@ -264,19 +323,20 @@ public class FightView : BaseView {
     {
         //reset hero selected label
         FightHero fh = (FightHero)p1;
-        Transform t = _heroNodes[fh.Id];
-        UINode node = t.GetComponent<UINode>();
-        node.GetRef("Selected").gameObject.SetActive(true);
-
-        _itemNodeRoot.DestroyChildren();
+        foreach (KeyValuePair<int, Transform> pair in _heroNodes)
+        {
+            Transform t = pair.Value;
+            UINode node = t.GetComponent<UINode>();
+            node.GetRef("Selected").gameObject.SetActive(fh.Id == pair.Key);    
+        }
 
         //reset items
         RefreshItem(fh);
-        
     }
 
     void RefreshItem(FightHero fh)
     {
+        _itemNodeRoot.DestroyChildren();
         foreach (var pair in fh.Items)
         {
             Item item = pair.Value;
@@ -372,6 +432,11 @@ public class FightView : BaseView {
     void OnDropOnHero(int heroId)
     {
         EventSys.Instance.AddEvent(InputEvent.FightUseItemToHero, heroId, _dragItemId);
+    }
+
+    void ShowTipNotSupportYet(object p1, object p2)
+    {
+        Debug.Log("Not Support Yet");
     }
 
 }

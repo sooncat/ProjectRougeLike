@@ -30,6 +30,8 @@ public class AIMgr {
 
     void StartAI(object p1, object p2)
     {
+        CatDebug.LogFunc();
+
         Dictionary<int, FightHero> heroes = (Dictionary<int, FightHero>)p1;
         List<Enemy> enemies = (List<Enemy>)p2;
 

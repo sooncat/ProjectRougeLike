@@ -23,6 +23,7 @@ public class FightHero : Hero{
             if(_nowNodeId != value)
             {
                 _lastNodeId = _nowNodeId;
+                _path.Add(_lastNodeId);
                 _nowNodeId = value;
             }
         }
@@ -31,6 +32,15 @@ public class FightHero : Hero{
     public int LastNodeId
     {
         get { return _lastNodeId; }
+    }
+
+    List<int> _path; 
+    /// <summary>
+    /// 途径路径，可用于存档记录等
+    /// </summary>
+    public List<int> Path
+    {
+        get { return _path; }
     }
 
     /// <summary>
@@ -47,6 +57,7 @@ public class FightHero : Hero{
         Data.MpMax = new ENum<int>(Data.Mp.Value);
 
         _lastNodeId = -1;
+        _path = new List<int>();
     }
 
     public void AddItem(Item item)

@@ -28,6 +28,7 @@ public enum InputEvent : int
     FightExit,          //战斗地图界面，返回按钮
     FightDragOnNode,    //战斗地图界面，拖拽到普通节点上
     FightDragOnHero,    //战斗地图界面，拖拽到英雄节点上
+    FightDragAllOnNode, //战斗地图界面，将（安全屋内）所有英雄拖拽到普通节点（一般是Boss）上
 
     FightAttack,        //战斗中，普通攻击（英雄只能对敌人攻击）
     FightSelectHero,    //战斗中，选择英雄

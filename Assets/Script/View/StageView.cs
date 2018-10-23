@@ -87,6 +87,12 @@ public class StageView : BaseView
 
     int _dragId;
 
+    enum DragFrom
+    {
+        Hero, All,
+    }
+    DragFrom _dragFrom;
+
     private const int BottomGap = 50;
     private const int LayerNameWidth = 200;
     readonly int _layerHeight = 150;
@@ -106,13 +112,15 @@ public class StageView : BaseView
         EventSys.Instance.AddHander(ViewEvent.ExchangeHeroStartNode, OnExchangeHeroStartNode);
         EventSys.Instance.AddHander(ViewEvent.ShowTipNodePassed, OnTipNodePassed);
         EventSys.Instance.AddHander(ViewEvent.ShowTipNotNextNode, OnTipNotNextNode);
+        EventSys.Instance.AddHander(ViewEvent.ShowTipNotSupportYet, OnTipNotSupport);
+        
 
         EventSys.Instance.AddHander(ViewEvent.FightWinReturnToStage, OnFightWinReturnStage);
         EventSys.Instance.AddHander(ViewEvent.FightLoseReturnToStage, OnFightLoseReturnStage);
         EventSys.Instance.AddHander(ViewEvent.ShowStageFail, OnStageFail);
         EventSys.Instance.AddHander(ViewEvent.ShowStageWin, OnStageWin);
         EventSys.Instance.AddHander(ViewEvent.GetRewardReturnToStage, OnGetRewardReturnToStage);
-
+        EventSys.Instance.AddHander(ViewEvent.GetSafeReturnToStage, OnGetSafeReturnToStage);
 
     }
 
@@ -383,12 +391,22 @@ public class StageView : BaseView
     {
         //CatDebug.LogFunc(nodeId.ToString());
         _dragId = nodeId;
+        _dragFrom = DragFrom.Hero;
     }
 
     void DropOnNode(int nodeId)
     {
         //CatDebug.LogFunc(nodeId.ToString());
-        EventSys.Instance.AddEvent(InputEvent.FightDragOnNode, _dragId, nodeId);
+        switch (_dragFrom)
+        {
+            case DragFrom.All:
+                EventSys.Instance.AddEvent(InputEvent.FightDragAllOnNode, _dragId, nodeId);
+                break;
+            case DragFrom.Hero:
+                EventSys.Instance.AddEvent(InputEvent.FightDragOnNode, _dragId, nodeId);    
+                break;
+        }
+        
     }
 
     void DropOnHero(int heroId)
@@ -518,6 +536,11 @@ public class StageView : BaseView
         ShowWarning("没有通路");
     }
 
+    void OnTipNotSupport(object p1, object p2)
+    {
+        ShowWarning("暂不支持");
+    }
+
     void ShowWarning(string msg)
     {
         Text t = _warning.GetRef("Text").GetComponent<Text>();
@@ -622,5 +645,42 @@ public class StageView : BaseView
         UINode node = _nodeLines[id].GetComponent<UINode>();
         node.GetComponent<Slider>().value = 1;
         node.GetRef("Fill").GetComponent<Image>().color = c;
+    }
+
+    void OnGetSafeReturnToStage(object p1, object p2)
+    {
+        FightHero hero = (FightHero)p1;
+        //
+        Transform nodeTrans = _nodeUIs[hero.LastNodeId];
+        ImageGray ig = nodeTrans.gameObject.AddComponent<ImageGray>();
+        ig.Gray = true;
+        //
+        nodeTrans = _nodeUIs[hero.NowNodeId];
+        UINode node = nodeTrans.GetComponent<UINode>();
+        Transform t = node.GetRef("HeroRoot");
+        _fightHeroNodes[hero.Id].transform.SetParent(t);
+        
+        SetPathPassed(hero.LastNodeId, hero.NowNodeId, ((HeroData)hero.CreatureData).TheColor);
+
+        if(node.GetRef("HeroRoot").childCount > 1)
+        {
+            node.GetRef("All").gameObject.SetActive(true);
+            Dragable dragable = node.GetRef("All").gameObject.GetComponent<Dragable>();
+            if(dragable == null)
+            {
+                dragable = node.GetRef("All").gameObject.AddComponent<Dragable>();
+            }
+            dragable.HasTail = true;
+            dragable.TailColor = Color.white;
+            dragable.TailSprite = ResourceSys.Instance.GetSprite(GameConstants.CommonDragTail);
+            dragable.TailWidth = 30;
+            dragable.ActionId = hero.NowNodeId;
+            dragable.Canv = _stageCanvas;
+            dragable.OnDragStart = i =>
+            {
+                _dragFrom = DragFrom.All;
+                _dragId = hero.NowNodeId;
+            };
+        }
     }
 }
