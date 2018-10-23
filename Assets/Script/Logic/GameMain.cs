@@ -20,6 +20,7 @@ public class GameMain : BaseMain {
         ConfigDataMgr.Instance.Load<HeroTableData>();
         ConfigDataMgr.Instance.Load<MonsterTableData>();
         ConfigDataMgr.Instance.Load<ItemTableData>();
+        ConfigDataMgr.Instance.Load<PropertyDesTableData>();
 
         PlayerDataMgr.Instance.Init();
         FightDataMgr.Instance.Init();

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class RewardNodeView : BaseView {
 
-
     UINode _rewardNode;
     UINode _models;
     Button _getBtn;
@@ -39,26 +38,58 @@ public class RewardNodeView : BaseView {
     {
         UINode itemNode = _models.GetNode("Item_model");
         Transform scTrans = _rewardNode.GetRef("Content");
-        foreach (Item item in reward.Data)
+        reward.ConditionData.Sort();
+        foreach (Reward.Condition cItem in reward.ConditionData)
         {
-            GameObject newNodeObj = Instantiate(itemNode.gameObject, scTrans);
-            //newNodeObj.transform.SetParent(scTrans);
-
-            UINode newNode = newNodeObj.GetComponent<UINode>();
-            Image bg = newNode.GetRef("Bg").GetComponent<Image>();
-            bg.sprite = ResourceSys.Instance.GetFrame(item.Lv.Value);
-            Image icon = newNode.GetRef("Icon").GetComponent<Image>();
-            icon.sprite = ResourceSys.Instance.GetSprite(item.Icon);
-            Text itemName = newNode.GetRef("Name").GetComponent<Text>();
-            itemName.text = item.Name;
-            if (item.Count.Value > 1)
+            if (!string.IsNullOrEmpty(cItem.Express))
             {
-                itemName.text = item.Name + " * " + item.Count.Value;
-            }
-            Text itemDes = newNode.GetRef("Des").GetComponent<Text>();
-            itemDes.text = item.Description;
+                //show condition
+                UINode conditionNode = _models.GetNode("Condition_model");
+                GameObject conditionObj = Instantiate(conditionNode.gameObject, scTrans);
 
-            newNodeObj.SetActive(true);
+                UINode cNode = conditionObj.GetComponent<UINode>();
+                Dictionary<int, BaseDataInfo> res = ConfigDataMgr.Instance.GetData<PropertyDesTableData>();
+                string showExpress = "";
+                string showVal = "";
+                foreach (KeyValuePair<int, BaseDataInfo> pair in res)
+                {
+                    PDesDataInfo info = (PDesDataInfo)pair.Value;
+                    if(info.PropertyName.Equals(cItem.Express))
+                    {
+                        showExpress = info.Description;
+                        for (int i = 0; i < info.Values.Count;i++ )
+                        {
+                            if(cItem.Val.Equals(info.Values[i]))
+                            {
+                                showVal = info.ValueDes[i];
+                                break;
+                            }
+                        }
+                    }
+                }
+                cNode.GetRef("Condition").GetComponent<Text>().text = "如果<color=#4040DC>" + showExpress + "=" + showVal+"</color>";
+            }
+            foreach (Item item in cItem.Rewards)
+            {
+                GameObject newNodeObj = Instantiate(itemNode.gameObject, scTrans);
+                //newNodeObj.transform.SetParent(scTrans);
+
+                UINode newNode = newNodeObj.GetComponent<UINode>();
+                Image bg = newNode.GetRef("Bg").GetComponent<Image>();
+                bg.sprite = ResourceSys.Instance.GetFrame(item.Lv.Value);
+                Image icon = newNode.GetRef("Icon").GetComponent<Image>();
+                icon.sprite = ResourceSys.Instance.GetSprite(item.Icon);
+                Text itemName = newNode.GetRef("Name").GetComponent<Text>();
+                itemName.text = item.Name;
+                if (item.Count.Value > 1)
+                {
+                    itemName.text = item.Name + " * " + item.Count.Value;
+                }
+                Text itemDes = newNode.GetRef("Des").GetComponent<Text>();
+                itemDes.text = item.Description;
+
+                newNodeObj.SetActive(true);    
+            }
         }
         itemNode.gameObject.SetActive(false);
         _rewardNode.gameObject.SetActive(true);

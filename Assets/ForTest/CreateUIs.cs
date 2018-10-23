@@ -56,10 +56,20 @@ public class CreateUIs : MonoBehaviour {
         nodeFightBoss.SetData(200, 1, 1);
 
         StageNodeReward nodeReward1 = new StageNodeReward(11, 1, "Reward", "", "Assets/Res/Icon/cards/ico_head_guidiao");
-        nodeReward1.SetData(new [] { 10000, 10001 }, new []{ 10, 20 });
+        Dictionary<int,int> cRewards = new Dictionary<int, int>();
+        cRewards.Add(10000, 10);
+        cRewards.Add(10001, 20);
+        nodeReward1.AddData("Job", "2", cRewards);
+        nodeReward1.AddData(string.Empty, "", cRewards);
+
         nodeReward1.NextNodes.Add(20); nodeReward1.NextNodes.Add(21);
         StageNodeReward nodeReward2 = new StageNodeReward(21, 0, "Reward", "", "Assets/Res/Icon/cards/ico_head_guidiao");
-        nodeReward2.SetData(new [] { 10000, 10001 }, new [] { 20, 10 });
+
+        Dictionary<int, int> cRewards2 = new Dictionary<int, int>();
+        cRewards2.Add(10000, 11);
+        cRewards2.Add(10001, 21);
+        nodeReward2.AddData("Job", "2", cRewards2);
+        nodeReward2.AddData(string.Empty, "", cRewards2);
         nodeReward2.NextNodes.Add(40);
 
         StageLayer layer0 = new StageLayer(0, "Start", "");
@@ -142,7 +152,7 @@ public class CreateUIs : MonoBehaviour {
 
     void CreateNode(BaseStageNode stageNode, float posX, float posY)
     {
-        GameObject go = GameObject.Instantiate(NodeModel);
+        GameObject go = Instantiate(NodeModel);
         go.transform.SetParent(StageNodeTrans);
         go.GetComponent<Button>().onClick.AddListener(() => { OnNodeClicked(stageNode.Id); });
         go.transform.localPosition = new Vector3(posX, posY, 0);
@@ -206,10 +216,30 @@ public class CreateUIs : MonoBehaviour {
         }
         else if (id == 10)
         {
+            PropertyDesTableData d = new PropertyDesTableData();
+            d.Data = new List<PDesDataInfo>();
+            PDesDataInfo info = new PDesDataInfo();
+            info.PropertyName = "Job";
+            info.Description = "职业";
+            info.Values = new List<string>();
+            info.Values.AddRange(new []{"1","2","3"});
+            info.ValueDes = new List<string>();
+            info.ValueDes.AddRange(new [] { "侠客", "神箭", "机巧" });
+            
+            d.Data.Add(info);
+
+            PDesDataInfo info2 = new PDesDataInfo();
+            info2.PropertyName = "Sex";
+            info2.Description = "性别";
+            info2.Values = new List<string>();
+            info2.Values.AddRange(new[] { "1", "0" });
+            info2.ValueDes = new List<string>();
+            info2.ValueDes.AddRange(new[] { "男", "女" });
+            d.Data.Add(info2);
 
 
-
-
+            string s = JsonMapper.ToJson(d);
+            IOUtils.SaveFile(s, "Assets/sc100.json");
         }
     }
 

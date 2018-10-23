@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using UnityEngine;
+
 
 public class FightState : BaseGameState {
 
@@ -339,9 +339,26 @@ public class FightState : BaseGameState {
 
         FightHero fh = FightDataMgr.Instance.GetHero(heroId);
         Reward r = FightDataMgr.Instance.GetReward(nodeId);
-        foreach (Item item in r.Data)
+        foreach (Reward.Condition cItem in r.ConditionData)
         {
-            fh.AddItem(item);
+            bool shouldGet = false;
+            if(string.IsNullOrEmpty(cItem.Express))
+            {
+                shouldGet = true;   
+            }
+            else
+            {
+                System.Reflection.FieldInfo fi = fh.CreatureData.GetType().GetField(cItem.Express);
+                string objVal = fi.GetValue(fh.CreatureData).ToString();
+                shouldGet = objVal.Equals(cItem.Val);
+            }
+            if(shouldGet)
+            {
+                foreach (Item item in cItem.Rewards)
+                {
+                    fh.AddItem(item);
+                }
+            }
         }
 
         //move hero to targetNode

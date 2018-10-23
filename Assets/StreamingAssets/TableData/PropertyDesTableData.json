@@ -1,0 +1,22 @@
+{
+	"Data": [{
+		"Id": 0,
+		"PropertyName": "Job",
+		"Description": "\u804C\u4E1A",
+		"Values": ["1",
+		"2",
+		"3"],
+		"ValueDes": ["\u4FA0\u5BA2",
+		"\u795E\u7BAD",
+		"\u673A\u5DE7"]
+	},
+	{
+		"Id": 1,
+		"PropertyName": "Sex",
+		"Description": "\u6027\u522B",
+		"Values": ["1",
+		"0"],
+		"ValueDes": ["\u7537",
+		"\u5973"]
+	}]
+}

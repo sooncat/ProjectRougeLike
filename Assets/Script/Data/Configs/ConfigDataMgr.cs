@@ -83,4 +83,10 @@ public class ConfigDataMgr {
         }
         return result;
     }
+
+    public Dictionary<int, BaseDataInfo> GetData<T>() where T : IDataConfig
+    {
+        Dictionary<int, BaseDataInfo> dataTable = _dataConfigs[typeof(T)];
+        return dataTable;
+    }
 }

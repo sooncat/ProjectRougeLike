@@ -64,7 +64,7 @@ public class FightDataMgr {
                 else if(node is StageNodeReward)
                 {
                     StageNodeReward nodeR = (StageNodeReward)node;
-                    Reward reward = new Reward(nodeR.RewardItemIds, nodeR.RewardItemNums, nodeR.Icon);
+                    Reward reward = new Reward(nodeR);
                     _rewards.Add(node.Id, reward);
                 }
             }

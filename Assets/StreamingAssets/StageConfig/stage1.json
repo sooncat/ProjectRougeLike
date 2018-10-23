@@ -70,10 +70,28 @@
 				},
 				{
 					"$type": "StageNodeReward, Assembly-CSharp",
-					"RewardItemIds": {
-						"$type": "System.Int32[], mscorlib",
-						"$values": [10000,
-						2,4,3]
+					"Rewards": {
+						"$type": "System.Collections.Generic.List`1[[StageNodeReward+ConditionConfig, Assembly-CSharp]], mscorlib",
+						"$values": [{
+							"$type": "StageNodeReward+ConditionConfig, Assembly-CSharp",
+							"ConditionExpress": "Job",
+							"Val": "2",
+							"Rewards": {
+								"$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+								"3": 1,
+								"4": 1
+							}
+						},
+						{
+							"$type": "StageNodeReward+ConditionConfig, Assembly-CSharp",
+							"ConditionExpress": "",
+							"Val": "",
+							"Rewards": {
+								"$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+								"10000": 100,
+								"2": 1
+							}
+						}]
 					},
 					"RewardItemNums": {
 						"$type": "System.Int32[], mscorlib",
@@ -104,15 +122,28 @@
 				"$type": "System.Collections.Generic.List`1[[BaseStageNode, Assembly-CSharp]], mscorlib",
 				"$values": [{
 					"$type": "StageNodeReward, Assembly-CSharp",
-					"RewardItemIds": {
-						"$type": "System.Int32[], mscorlib",
-						"$values": [10000,
-						1,4,3]
-					},
-					"RewardItemNums": {
-						"$type": "System.Int32[], mscorlib",
-						"$values": [100,
-						1,1,1]
+					"Rewards": {
+						"$type": "System.Collections.Generic.List`1[[StageNodeReward+ConditionConfig, Assembly-CSharp]], mscorlib",
+						"$values": [{
+							"$type": "StageNodeReward+ConditionConfig, Assembly-CSharp",
+							"ConditionExpress": "Job",
+							"Val": "2",
+							"Rewards": {
+								"$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+								"3": 1,
+								"4": 1
+							}
+						},
+						{
+							"$type": "StageNodeReward+ConditionConfig, Assembly-CSharp",
+							"ConditionExpress": "",
+							"Val": "",
+							"Rewards": {
+								"$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+								"10000": 100,
+								"2": 1
+							}
+						}]
 					},
 					"Id": 21,
 					"Index": 0,
@@ -127,15 +158,28 @@
 				},
 				{
 					"$type": "StageNodeReward, Assembly-CSharp",
-					"RewardItemIds": {
-						"$type": "System.Int32[], mscorlib",
-						"$values": [10000,
-						1,4,3]
-					},
-					"RewardItemNums": {
-						"$type": "System.Int32[], mscorlib",
-						"$values": [100,
-						1,1,1]
+					"Rewards": {
+						"$type": "System.Collections.Generic.List`1[[StageNodeReward+ConditionConfig, Assembly-CSharp]], mscorlib",
+						"$values": [{
+							"$type": "StageNodeReward+ConditionConfig, Assembly-CSharp",
+							"ConditionExpress": "Job",
+							"Val": "2",
+							"Rewards": {
+								"$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+								"3": 1,
+								"4": 1
+							}
+						},
+						{
+							"$type": "StageNodeReward+ConditionConfig, Assembly-CSharp",
+							"ConditionExpress": "",
+							"Val": "",
+							"Rewards": {
+								"$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
+								"10000": 100,
+								"2": 1
+							}
+						}]
 					},
 					"Id": 22,
 					"Index": 2,

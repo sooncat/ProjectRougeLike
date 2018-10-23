@@ -12,4 +12,5 @@ public class GameConstants {
     public const string FramePath = "Assets/Res/frame/frame_common_level";
 
     public const string CommonDragTail = "Assets/Res/Icon/button/linear3";
+
 }

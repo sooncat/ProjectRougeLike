@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using NUnit.Framework;
 using UnityEngine;
 
 /// <summary>
@@ -11,18 +13,39 @@ public class Reward {
     public string Name;
     public string Description;
 
-    public List<Item> Data;
     public string Icon;
 
-    public Reward(int[] itemIds, int[] itemNums, string icon = null)
+    public struct Condition : IComparable<Condition>
     {
-        Data = new List<Item>();
-        for (int i = 0; i < itemIds.Length;i++ )
+        public string Express;
+        public string Val;
+        public List<Item> Rewards;
+
+        public int CompareTo(Condition obj)
         {
-            Item item = new Item(itemIds[i], itemNums[i]);
-            Data.Add(item);
+            return String.Compare(Express, obj.Express, StringComparison.Ordinal);
         }
-        Icon = icon;
+    }
+
+    public List<Condition> ConditionData;
+
+    public Reward(StageNodeReward node)
+    {
+        ConditionData = new List<Condition>();
+        foreach (StageNodeReward.ConditionConfig c in node.Rewards)
+        {
+            Condition thisCondition = new Condition();
+            thisCondition.Express = c.ConditionExpress;
+            thisCondition.Val = c.Val;
+            thisCondition.Rewards = new List<Item>(); ;
+            foreach (KeyValuePair<int, int> pair in c.Rewards)
+            {
+                Item item = new Item(pair.Key, pair.Value);
+                thisCondition.Rewards.Add(item);
+            }
+            ConditionData.Add(thisCondition);
+        }
+        Icon = node.Icon;
     }
 
 }
