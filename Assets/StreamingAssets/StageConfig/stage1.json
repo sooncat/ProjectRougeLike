@@ -65,7 +65,7 @@
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
 						"$values": [20,
-						21]
+						21,22]
 					}
 				},
 				{
@@ -84,12 +84,12 @@
 					"Index": 1,
 					"Name": "Reward",
 					"Description": "",
-					"Icon": "Assets/Res/Icon/cards/ico_head_guidiao",
+					"Icon": "Assets/Res/Icon/Item/ico_usableitem_baoxiang1",
 					"NodeType": "StageNodeReward",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
 						"$values": [20,
-						21]
+						21,22]
 					}
 				}]
 			}
@@ -118,7 +118,30 @@
 					"Index": 0,
 					"Name": "Reward",
 					"Description": "",
-					"Icon": "Assets/Res/Icon/cards/ico_head_guidiao",
+					"Icon": "Assets/Res/Icon/Item/ico_usableitem_baoxiang1",
+					"NodeType": "StageNodeReward",
+					"NextNodes": {
+						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
+						"$values": [40]
+					}
+				},
+				{
+					"$type": "StageNodeReward, Assembly-CSharp",
+					"RewardItemIds": {
+						"$type": "System.Int32[], mscorlib",
+						"$values": [10000,
+						1,4,3]
+					},
+					"RewardItemNums": {
+						"$type": "System.Int32[], mscorlib",
+						"$values": [100,
+						1,1,1]
+					},
+					"Id": 22,
+					"Index": 2,
+					"Name": "Reward",
+					"Description": "",
+					"Icon": "Assets/Res/Icon/Item/ico_usableitem_baoxiang1",
 					"NodeType": "StageNodeReward",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
@@ -157,7 +180,7 @@
 					"Index": 0,
 					"Name": "House",
 					"Description": "",
-					"Icon": "Assets/Res/Icon/Item/ico_common_mianzhan",
+					"Icon": "Assets/Res/Icon/Func/guild_yezhan",
 					"NodeType": "StageNodeSafe",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
