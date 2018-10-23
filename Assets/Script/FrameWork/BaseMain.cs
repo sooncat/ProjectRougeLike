@@ -9,7 +9,9 @@ public class BaseMain : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        
+
+        Screen.SetResolution(640, 960, false);
+
         DontDestroyOnLoad(gameObject);
 
         Sys = new List<ISystem>();
