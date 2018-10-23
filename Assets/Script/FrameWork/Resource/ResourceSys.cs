@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEditor;
 
 public class ResourceSys : ISystem
 {
@@ -34,11 +33,11 @@ public class ResourceSys : ISystem
     
     public Sprite GetSprite(string iconPath)
     {
-        if(!iconPath.EndsWith(".png"))
-        {
-            iconPath += ".png";
-        }
-        Sprite result = AssetDatabase.LoadAssetAtPath<Sprite>(iconPath);
+        //if(!iconPath.EndsWith(".png"))
+        //{
+        //    iconPath += ".png";
+        //}
+        Sprite result = Resources.Load<Sprite>(iconPath);
         if(result == null)
         {
             throw new FileNotFoundException(iconPath);
