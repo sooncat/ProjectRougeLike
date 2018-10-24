@@ -2,7 +2,7 @@
 	"Data": [{
 		"Id": 1,
 		"Name": "墨香",
-		"Description": "墨门大弟子，善使剑",
+		"Description": "墨门大弟子，为人侠义，剑法超绝。",
 		"Job": 1,
 		"Sex": 1,
 		"Hp": 1000,
@@ -17,7 +17,7 @@
 	{
 		"Id": 2,
 		"Name": "曲非烟",
-		"Description": "墨门小师妹，善于弓箭远程攻击",
+		"Description": "墨门小师妹，心性贪玩，弓箭刚刚入门。\n\r<color=#4040DC>学艺不精：使用特制箭矢才能打出高伤害</color>",
 		"Job": 2,
 		"Sex": 0,
 		"Hp": 500,
@@ -26,13 +26,13 @@
 		"Att": 50,
 		"FightIcon": "Icon/Item/ico_cardeqiupment_11005",
 		"Icon": "Icon/cards/ico_head_qufeiyan",
-		"Cg":"Cg/2d_140",
+		"Cg":"Cg/2d_109",
 		"Color":"#ff0000"
 	},
 	{
 		"Id": 3,
 		"Name": "唐栯独",
-		"Description": "墨门技术人员，善于机关之术",
+		"Description": "墨门机巧师，好卖弄小聪明，善于操作机关。",
 		"Job": 3,
 		"Sex": 1,
 		"Hp": 500,

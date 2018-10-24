@@ -2,7 +2,7 @@
 	"Data": [{
 		"Id": 100,
 		"Name": "暗毒蝎",
-		"Description": "艾吉奥饲养的异物，体型非常庞大的蝎子。非常残暴好战，有时甚至会违抗艾吉奥。",
+		"Description": "艾吉奥饲养的异物，体型庞大，残暴好战，有时甚至会违抗主人的命令。\n\r<color=#4040DC>硬壳：有效防御远程攻击</color>",
 		"Icon":"Icon/cards/ico_head_anduxie",
 		"Cg":"Cg/2d_110",
 		"Sex": 1,

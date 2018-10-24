@@ -49,6 +49,8 @@ public class FightState : BaseGameState {
         EventSys.Instance.AddHander(LogicEvent.FightWinReturnToStage, OnFightWinReturnToStage);
 
         EventSys.Instance.AddHander(InputEvent.StageNodeClicked, OnStateNodeClicked);
+        EventSys.Instance.AddHander(InputEvent.StageHeroNodeClicked, OnStateHeroNodeClicked);
+        
         EventSys.Instance.AddHander(InputEvent.FightNodeDetailComfirmed, (param1, param2) => { });
         EventSys.Instance.AddHander(InputEvent.RewardNodeDetailComfirmed, (param1, param2) => { });
         EventSys.Instance.AddHander(InputEvent.RewardNodeGet, GetReward);
@@ -318,7 +320,7 @@ public class FightState : BaseGameState {
         if (type == typeof(StageNodeFight))
         {
             Enemy e = FightDataMgr.Instance.GetEnemy(nodeId);
-            EventSys.Instance.AddEvent(ViewEvent.ShowNodeFightDetails, e, nodeId);
+            EventSys.Instance.AddEvent(ViewEvent.ShowNodeFightDetails, e.CreatureData, nodeId);
         }
         else if (type == typeof(StageNodeReward))
         {
@@ -333,6 +335,14 @@ public class FightState : BaseGameState {
         {
             EventSys.Instance.AddEvent(ViewEvent.ShowNodeSafeDetails, nodeId);
         }
+    }
+
+    void OnStateHeroNodeClicked(object p1, object p2)
+    {
+        int heroId = (int)p1;
+
+        Hero hero = PlayerDataMgr.Instance.GetHero(heroId);
+        EventSys.Instance.AddEvent(ViewEvent.ShowHeroNodeDetails, hero.CreatureData, heroId);
     }
 
     /// <summary>

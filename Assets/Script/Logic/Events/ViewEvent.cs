@@ -21,6 +21,7 @@ public enum ViewEvent : int {
     FightSubStateMapping,   //战斗准备完毕，进入地图阶段
 
     ShowNodeFightDetails,   //地图界面，显示战斗节点详情
+    ShowHeroNodeDetails,    //地图界面，显示英雄节点详情
     ShowNodeRewardDetails,  //地图界面，显示奖励节点详情
     ShowNodeRewardGet,      //地图界面，英雄被拖拽到奖励节点,显示奖励并准备赋予英雄
     ShowNodeSafeDetails,    //地图界面，显示安全屋节点详情

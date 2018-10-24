@@ -387,6 +387,11 @@ public class StageView : BaseView
         EventSys.Instance.AddEvent(InputEvent.StageNodeClicked, id);
     }
 
+    void OnHerNodeClicked(int heroId)
+    {
+        EventSys.Instance.AddEvent(InputEvent.StageHeroNodeClicked, heroId);
+    }
+
     void OnDrag(int nodeId)
     {
         //CatDebug.LogFunc(nodeId.ToString());
@@ -510,6 +515,13 @@ public class StageView : BaseView
         Image nodeImage = uiNode.GetRef("Image").GetComponent<Image>();
         nodeImage.sprite = ResourceSys.Instance.GetSprite(heroData.Icon);
 
+        Button btn = uiNode.GetRef("Image").GetComponent<Button>();
+        if(btn == null)
+        {
+            btn = uiNode.GetRef("Image").gameObject.AddComponent<Button>();
+        }
+        btn.onClick.AddListener(() => { OnHerNodeClicked(heroData.Id); });
+
         Dragable drag = uiNode.GetRef("Image").gameObject.AddComponent<Dragable>();
         drag.ActionId = heroData.Id;
         drag.OnDragStart = OnDrag;
@@ -523,6 +535,7 @@ public class StageView : BaseView
         drag.TailColor = heroData.TheColor;
         drag.TailWidth = 20;
         drag.IsDisableGray = true;
+
         return go;
     }
 

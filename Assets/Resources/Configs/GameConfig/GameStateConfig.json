@@ -49,6 +49,10 @@
 			{
 				"Prefab": "UnKnowNodeUI",
 				"ClassName": "UnKnowNodeView"
+			},
+			{
+				"Prefab": "HeroNodeUI",
+				"ClassName": "HeroNodeView"
 			}],
 			"PreLoadEffect": [],
 			"PreLoadAudio": []
