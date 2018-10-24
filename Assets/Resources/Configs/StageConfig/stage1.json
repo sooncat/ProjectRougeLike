@@ -1,7 +1,7 @@
 {
 	"$type": "StageConfig, Assembly-CSharp",
 	"Id": 0,
-	"Name": "Stage First",
+	"Name": "西域惊魂",
 	"Description": "",
 	"Layers": {
 		"$type": "System.Collections.Generic.List`1[[StageLayer, Assembly-CSharp]], mscorlib",
@@ -78,7 +78,7 @@
 							"Val": "2",
 							"Rewards": {
 								"$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
-								"3": 1,
+								"1": 1,
 								"4": 1
 							}
 						},
@@ -130,7 +130,7 @@
 							"Val": "2",
 							"Rewards": {
 								"$type": "System.Collections.Generic.Dictionary`2[[System.Int32, mscorlib],[System.Int32, mscorlib]], mscorlib",
-								"3": 1,
+								"1": 1,
 								"4": 1
 							}
 						},

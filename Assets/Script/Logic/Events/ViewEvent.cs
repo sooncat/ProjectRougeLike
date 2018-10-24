@@ -49,6 +49,7 @@ public enum ViewEvent : int {
     ShowTipNodePassed,          //地图界面，提示此点已经被攻略
     ShowTipNotNextNode,         //地图界面，提示此点不是当前节点的子节点
     ShowTipNotSupportYet,       //地图界面，提示暂不支持此操作
+    ShowTipSelectHero,          //地图界面，提示开始战斗前至少选择一个英雄
 
     FigetShowTipNotSupportYet,  //战斗界面，提示暂不支持此操作
 

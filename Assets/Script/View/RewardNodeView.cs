@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.UIElements;
 using UnityEngine.UI;
+using Button = UnityEngine.UI.Button;
+using Image = UnityEngine.UI.Image;
 
 public class RewardNodeView : BaseView {
 
@@ -92,6 +95,8 @@ public class RewardNodeView : BaseView {
             }
         }
         itemNode.gameObject.SetActive(false);
+
+        _rewardNode.GetRef("Scroll View").GetComponent<ScrollRect>().ScrollToTop();
         _rewardNode.gameObject.SetActive(true);
     }
 

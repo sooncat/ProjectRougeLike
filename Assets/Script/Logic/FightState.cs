@@ -65,9 +65,16 @@ public class FightState : BaseGameState {
 
     void OnFightReadyEvent(object p1, object p2)
     {
-        _fState = FSubState.Mapping;
-        EventSys.Instance.AddEventNow(LogicEvent.CreateFightHeroData, _selectedHeros);
-        EventSys.Instance.AddEvent(ViewEvent.FightSubStateMapping, FightDataMgr.Instance.GetHeros());
+        if (_selectedHeros.Count > 0)
+        {
+            _fState = FSubState.Mapping;
+            EventSys.Instance.AddEventNow(LogicEvent.CreateFightHeroData, _selectedHeros);
+            EventSys.Instance.AddEvent(ViewEvent.FightSubStateMapping, FightDataMgr.Instance.GetHeros());
+        }
+        else
+        {
+            EventSys.Instance.AddEvent(ViewEvent.ShowTipSelectHero);
+        }
     }
 
     void OnClickFightNodeEvent(object p1, object p2)

@@ -16,7 +16,7 @@
 	{
 		"Id": 200,
 		"Name": "艾吉奥",
-		"Description": "闻名西域的大盗，常年流窜在中原和西域的盗匪头目，其情报网十分发达，得知玉玺被盗之后，打算趁火打劫。",
+		"Description": "闻名西域的大盗，常年流窜在中原和西域的盗匪头目。\n\r<color=#4040DC>沙盗：血气属性强化</color>\n\r<color=#4040DC>登徒子：对女性造成更高伤害</color>",
 		"Icon":"Icon/cards/ico_head_feitianshadao",
 		"Cg":"Cg/2d_105",
 		"Sex": 0,

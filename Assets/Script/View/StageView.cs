@@ -113,7 +113,7 @@ public class StageView : BaseView
         EventSys.Instance.AddHander(ViewEvent.ShowTipNodePassed, OnTipNodePassed);
         EventSys.Instance.AddHander(ViewEvent.ShowTipNotNextNode, OnTipNotNextNode);
         EventSys.Instance.AddHander(ViewEvent.ShowTipNotSupportYet, OnTipNotSupport);
-        
+        EventSys.Instance.AddHander(ViewEvent.ShowTipSelectHero, OnTipSelectHero);
 
         EventSys.Instance.AddHander(ViewEvent.FightWinReturnToStage, OnFightWinReturnStage);
         EventSys.Instance.AddHander(ViewEvent.FightLoseReturnToStage, OnFightLoseReturnStage);
@@ -254,6 +254,7 @@ public class StageView : BaseView
         _nodeLines = new Dictionary<DIKey, Transform>();
 
         //_layerHeight = (Screen.height - LayerGap * 2) / stageConfig.Layers.Count;
+        _stageNode.GetRef("StageInfo").GetComponent<Text>().text = stageConfig.Name;
 
         foreach (StageLayer stageLayer in stageConfig.Layers)
         {
@@ -552,6 +553,11 @@ public class StageView : BaseView
     void OnTipNotSupport(object p1, object p2)
     {
         ShowWarning("暂不支持");
+    }
+
+    void OnTipSelectHero(object p1, object p2)
+    {
+        ShowWarning("请至少上阵一名英雄");
     }
 
     void ShowWarning(string msg)
