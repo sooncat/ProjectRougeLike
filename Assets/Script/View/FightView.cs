@@ -87,6 +87,16 @@ public class FightView : BaseView {
         SetHeroData(hero, node);
         node.GetRef("Selected").gameObject.SetActive(false);
         ShowHurt(node, damage);
+
+        if(hero.CreatureData.Hp.Value <= 0)
+        {
+            ImageGray imageGray = node.GetRef("Icon").gameObject.GetComponent<ImageGray>();
+            if(imageGray == null)
+            {
+                imageGray = node.GetRef("Icon").gameObject.AddComponent<ImageGray>();
+            }
+            imageGray.Gray = true;
+        }
     }
 
     void OnUpdateHero(object p1, object p2)

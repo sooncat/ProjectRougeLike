@@ -317,6 +317,10 @@ public class FightState : BaseGameState {
     {
         int nodeId = (int)p1;
         BaseStageNode node = _stageConfig.GetNode(nodeId);
+        if(node.IsPassed)
+        {
+            return;
+        }
         if(node.HiddenDetail)
         {
             EventSys.Instance.AddEvent(ViewEvent.ShowNodeUnKnow, nodeId);

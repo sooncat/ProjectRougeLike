@@ -178,7 +178,7 @@ public class FightProgress {
         bool isAllActioned = true;
         foreach (KeyValuePair<int, FightHero> pair in _heros)
         {
-            if(!pair.Value.IsActioned)
+            if(!pair.Value.IsActioned && pair.Value.CreatureData.Hp.Value > 0)
             {
                 isAllActioned = false;
                 _nowHeroId = pair.Value.Id;
