@@ -199,8 +199,13 @@ public class FightProgress {
 
     void OnSelectHero( object p1, object p2)
     {
-        _nowHeroId = (int)p1;
-        EventSys.Instance.AddEvent(ViewEvent.SetSelectedHero, _heros[_nowHeroId]);
+        int selectId = (int)p1;
+        FightHero fh = _heros[selectId];
+        if (!fh.IsActioned && fh.CreatureData.Hp.Value > 0)
+        {
+            _nowHeroId = selectId;
+            EventSys.Instance.AddEvent(ViewEvent.SetSelectedHero, _heros[_nowHeroId]);
+        }
     }
 
     void StartRound(object p1, object p2)

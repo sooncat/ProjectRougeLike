@@ -315,6 +315,9 @@ public class FightView : BaseView {
             dropable.ActionId = fh.Id;
             dropable.OnDroped = OnDropOnHero;
 
+            Button btn = node.GetRef("Icon").GetComponent<Image>().gameObject.AddComponent<Button>();
+            btn.onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightSelectHero, fh.Id); });
+
             _heroNodes.Add(fh.Id, go.transform);
         }
 
@@ -365,7 +368,7 @@ public class FightView : BaseView {
             btn.onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightItemClicked, item.Id); });
             Text num = itemNode.GetRef("Text").GetComponent<Text>();
             num.text = item.Count.Value.ToString();
-
+            num.raycastTarget = false;//避免遮挡
             if (item.UsableInFight)
             {
                 if(item.JobLimited > 0 && item.JobLimited != ((HeroData)fh.CreatureData).Job )
