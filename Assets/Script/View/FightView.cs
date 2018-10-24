@@ -58,7 +58,9 @@ public class FightView : BaseView {
         _winNode.GetRef("Button").GetComponent<Button>().onClick.AddListener(OnWinConfirmed);
         _loseNode = rootNode.GetNode("Lose");
         _loseNode.GetRef("Button").GetComponent<Button>().onClick.AddListener(OnLoseConfirmed);
-        
+
+        ShowItemDes(string.Empty, null);
+
         EventSys.Instance.AddHander(ViewEvent.CreateFightView, OnCreateFightView);
         EventSys.Instance.AddHander(ViewEvent.SetSelectedHero, OnChangeHero);
         EventSys.Instance.AddHander(ViewEvent.FightUpdateRound, OnUpdateRound);
@@ -74,8 +76,8 @@ public class FightView : BaseView {
         EventSys.Instance.AddHander(ViewEvent.FightUpdateHeroState, OnUpdateHero);
         EventSys.Instance.AddHander(ViewEvent.FightUpdateAllHeroState, OnUpdateAllHero);
         EventSys.Instance.AddHander(ViewEvent.FightLoseReturnToStage, OnFinish);
-        EventSys.Instance.AddHander(ViewEvent.FigetShowTipNotSupportYet, ShowTipNotSupportYet);
-        
+        EventSys.Instance.AddHander(ViewEvent.FightShowTipNotSupportYet, ShowTipNotSupportYet);
+        EventSys.Instance.AddHander(ViewEvent.FightShowItemDes, ShowItemDes);
     }
 
     void OnEnemyAttack(object p1, object p2)
@@ -97,6 +99,8 @@ public class FightView : BaseView {
             }
             imageGray.Gray = true;
         }
+
+        ShowItemDes(string.Empty, null);
     }
 
     void OnUpdateHero(object p1, object p2)
@@ -139,6 +143,7 @@ public class FightView : BaseView {
     {
         int damage = (int)p1;
         ShowHurt(_enemyNode, damage);
+        ShowItemDes(string.Empty, null);
     }
 
     void ShowHurt(UINode node, int damage)
@@ -356,6 +361,8 @@ public class FightView : BaseView {
             UINode itemNode = go.GetComponent<UINode>();
             Image image = itemNode.GetRef("Image").GetComponent<Image>();
             image.sprite = ResourceSys.Instance.GetSprite(item.Icon);
+            Button btn = image.gameObject.AddComponent<Button>();
+            btn.onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightItemClicked, item.Id); });
             Text num = itemNode.GetRef("Text").GetComponent<Text>();
             num.text = item.Count.Value.ToString();
 
@@ -449,4 +456,9 @@ public class FightView : BaseView {
         Debug.Log("Not Support Yet");
     }
 
+    void ShowItemDes(object p1, object p2)
+    {
+        string des = (string)p1;
+        _rootNode.GetRef("ItemDes").GetComponent<Text>().text = des;
+    }
 }

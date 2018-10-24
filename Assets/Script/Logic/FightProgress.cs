@@ -55,7 +55,8 @@ public class FightProgress {
         EventSys.Instance.AddHander(InputEvent.FightUseItemToHero, OnUseItemToHero);
         EventSys.Instance.AddHander(InputEvent.FightWinConfirm, OnWinConfirm);
         EventSys.Instance.AddHander(InputEvent.FightLoseConfirm, OnLoseConfirm);
-        
+        EventSys.Instance.AddHander(InputEvent.FightItemClicked, OnItemClicked);
+
         EventSys.Instance.AddHander(AiInputEvent.Attack, OnAiAttack);
         EventSys.Instance.AddHander(AiInputEvent.AiActionEnd, OnAiEnd);
         
@@ -286,7 +287,7 @@ public class FightProgress {
         }
         else
         {
-            EventSys.Instance.AddEvent(ViewEvent.FigetShowTipNotSupportYet);
+            EventSys.Instance.AddEvent(ViewEvent.FightShowTipNotSupportYet);
         }
         
     }
@@ -329,8 +330,16 @@ public class FightProgress {
         }
         else
         {
-            EventSys.Instance.AddEvent(ViewEvent.FigetShowTipNotSupportYet);
+            EventSys.Instance.AddEvent(ViewEvent.FightShowTipNotSupportYet);
         }
         
+    }
+
+    void OnItemClicked(object p1, object p2)
+    {
+        int itemId = (int)p1;
+        ItemDataInfo itemInfo = (ItemDataInfo)ConfigDataMgr.Instance.GetDataInfo<ItemTableData>(itemId);
+
+        EventSys.Instance.AddEvent(ViewEvent.FightShowItemDes, itemInfo.Description);
     }
 }

@@ -28,7 +28,7 @@
 	{
 		"Id": 3,
 		"Name": "武功秘籍残页",
-		"Description": "可以分析武功的弱点",
+		"Description": "可在培养界面提升英雄武功",
 		"Lv": 3,
 		"Icon": "Icon/Item/ico_cardeqiupment_11003",
 		"Price": 1,

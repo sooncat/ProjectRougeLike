@@ -42,6 +42,7 @@ public enum ViewEvent : int {
     FightEnemyAttack,       //战斗中敌人攻击
     FightUpdateHeroState,   //战斗中更新英雄状态
     FightUpdateAllHeroState,    //战斗中更新所有英雄状态
+    FightShowItemDes,     //战斗中显示道具描述
 
     ShowStageFail,          //关卡失败
     ShowStageWin,           //关卡胜利
@@ -51,7 +52,7 @@ public enum ViewEvent : int {
     ShowTipNotSupportYet,       //地图界面，提示暂不支持此操作
     ShowTipSelectHero,          //地图界面，提示开始战斗前至少选择一个英雄
 
-    FigetShowTipNotSupportYet,  //战斗界面，提示暂不支持此操作
+    FightShowTipNotSupportYet,  //战斗界面，提示暂不支持此操作
 
     GetRewardReturnToStage,     //地图界面，获取奖励后刷新
     GetSafeReturnToStage,       //从SafeHouse返回地图界面

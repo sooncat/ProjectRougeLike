@@ -34,6 +34,7 @@ public enum InputEvent : int
 
     FightAttack,        //战斗中，普通攻击（英雄只能对敌人攻击）
     FightSelectHero,    //战斗中，选择英雄
+    FightItemClicked,   //战斗中，点击道具
 
     FightUseItemToEnemy,     //战斗中，对敌人使用道具
     FightUseItemToHero,      //战斗中，对英雄使用道具
