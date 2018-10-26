@@ -4,7 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// 此类事件用于UI更新
-/// 一般由Logic发出，View接收
+/// 一般由Logic发出，View接收，参数尽量使用完整的Data类型，方便View扩展显示（也方便复用代码）
 /// </summary>
 public enum ViewEvent : int {
 

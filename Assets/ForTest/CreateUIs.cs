@@ -210,7 +210,7 @@ public class CreateUIs : MonoBehaviour {
             {
                 TypeNameHandling = TypeNameHandling.All
             };
-            byte[] b = IOUtils.ReadFile("Assets/sc10.json");
+            byte[] b = IOUtils.ReadFileFromStreamingAssets("Assets/sc10.json");
             string str = System.Text.Encoding.UTF8.GetString(b);
             StageConfig sc = JsonConvert.DeserializeObject<StageConfig>(str, settings);
         }

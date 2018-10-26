@@ -8,13 +8,27 @@ public class LoadTest : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-        Sprite s = Resources.Load<Sprite>("Icon/cards/blankplus");
-        GetComponent<Image>().sprite = s;
+        byte[] byteData = IOUtils.ReadFileFromStreamingAssets("hello.txt");
+        string text = IOUtils.Byte2String(byteData);
 
+        GetComponent<UINode>().GetRef("Text").GetComponent<Text>().text = text;
+
+        string testStr = "\n\rtemp4567";
+        IOUtils.SaveFile(testStr, "MyTest.kk");
+
+        StartCoroutine(WaitForRead());
+
+        
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+    IEnumerator WaitForRead()
+    {
+        yield return new WaitForSeconds(1);
+
+        byte[] data2 = IOUtils.ReadFileFromPersistent("MyTest.kk");
+        string text2 = IOUtils.Byte2String(data2);
+
+        GetComponent<UINode>().GetRef("Text").GetComponent<Text>().text += text2;
 	}
 }
