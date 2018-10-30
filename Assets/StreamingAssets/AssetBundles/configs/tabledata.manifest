@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 1321118869
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 064746f7ce1059585b82747ea6420768
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5ad585dd02dfb5016c0dad519eab8f49
+HashAppended: 0
+ClassTypes:
+- Class: 49
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Configs/TableData/PropertyDesTableData.json
+- Assets/Res/Configs/TableData/HeroTableData.json
+- Assets/Res/Configs/TableData/ItemTableData.json
+- Assets/Res/Configs/TableData/MonsterTableData.json
+Dependencies: []

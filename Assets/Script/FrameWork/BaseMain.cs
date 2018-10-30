@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using com.initialworld.framework;
 using UnityEngine;
 using UnityEngine.Analytics;
 
@@ -17,11 +18,13 @@ public class BaseMain : MonoBehaviour {
         Sys = new List<ISystem>();
 
         InitSys<EventSys>();
+        InitSys<AssetBundleSys>();
         InitSys<ResourceSys>();
         InitSys<AudioSys>();
         InitSys<GameStateSys>();
         InitSys<SceneSys>();
         InitSys<ConfigSys>();
+        InitSys<PreLoadSys>();
 
         gameObject.AddComponent<TimerUtils>();
         gameObject.AddComponent<CoroutineUtils>();

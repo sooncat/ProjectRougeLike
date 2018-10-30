@@ -7,6 +7,8 @@ public class LoginState : BaseGameState {
 
     public override void Enter(GameStateParameter parameter)
     {
+        CatDebug.LogFunc();
+
         base.Enter(parameter);
 
         EventSys.Instance.AddHander(InputEvent.LoginLogin, OnLoginEvent);

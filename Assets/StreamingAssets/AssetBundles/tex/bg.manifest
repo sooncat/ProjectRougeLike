@@ -1,0 +1,25 @@
+ManifestFileVersion: 0
+CRC: 3973137508
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8ef4a3ae84b7e25bd7c3d6c17c1a124a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Tex/Bg/fight.png
+- Assets/Res/Tex/Bg/bg.png
+- Assets/Res/Tex/Bg/heidi.png
+- Assets/Res/Tex/Bg/fightbg.jpg
+- Assets/Res/Tex/Bg/messageBg.png
+- Assets/Res/Tex/Bg/mainlogo.png
+- Assets/Res/Tex/Bg/city.png
+- Assets/Res/Tex/Bg/fightbg.png
+Dependencies: []

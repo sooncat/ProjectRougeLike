@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using com.initialworld.framework;
 using UnityEngine;
 
 /// <summary>
@@ -33,8 +34,17 @@ public class ResourceSys : ISystem
 
     public GameObject CreateUI(string uiPrefabPath)
     {
-        //todo: load and ins obj.
-        return null;
+        string rootPath = Application.streamingAssetsPath + "/AssetBundles/" + uiPrefabPath;
+        AssetBundle assetBundle = AssetBundleSys.Instance.LoadAssetBundleInStreaming(rootPath);
+        string resName = GetName(uiPrefabPath);
+        GameObject go = assetBundle.LoadAsset<GameObject>(resName);
+        return Instantiate(go);
+    }
+
+    string GetName(string path)
+    {
+        int index = path.LastIndexOf("/", StringComparison.Ordinal);
+        return path.Substring(index + 1);
     }
     
     public Sprite GetSprite(string iconPath)

@@ -7,13 +7,15 @@ using System.Collections.Generic;
 public enum FrameEvent : int 
 {
     StartNone = -999,
-    StartLoadAssetBundleAsync,   //开始加载一个AssetBundle
-    EndLoadAssetBundleAsync,     //加载一个AssetBundle完毕
-    ClearAssetBundleChche,  //清理加载AssetBundle的缓存
 
-    AddPreLoadRes,          //添加需要预加载的资源路径
-    PreLoadStart,           //开始预加载
-    PreLoadUpdatePercent,   //更新预加载进度
-    PreloadEnd,             //预加载结束
+    StartLoadAssetBundleAsyncInStreaming,   //开始加载一个AssetBundle
+    StartLoadAssetBundleAsyncInPersistent,  //开始加载一个AssetBundle
+    EndLoadAssetBundleAsync,                //加载一个AssetBundle完毕
+    ClearAssetBundleChche,                  //清理加载AssetBundle的缓存
+
+    AddPreLoadRes,                          //添加需要预加载的资源路径
+    PreLoadStart,                           //开始预加载
+    PreLoadUpdatePercent,                   //更新预加载进度
+    PreloadEnd,                             //预加载结束
 
 }

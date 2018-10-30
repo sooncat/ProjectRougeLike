@@ -1,0 +1,75 @@
+ManifestFileVersion: 0
+CRC: 3201781992
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: ab8b0971762f5bbc834780b578c75703
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: c73412a662fd4e4f36af34cbdf078b85
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_quan850002.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_quan850006.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_jian830000.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_qiang820009.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_qiang820003.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_jian830004.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_quan850001.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_qiang820008.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_anqi860009.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_gong840008.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_dao810002.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_gong840005.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_quan850009.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_gong840004.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_jian830008.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_anqi860008.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_dao810000.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_anqi860000.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_jian830001.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_qiang820000.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_anqi860005.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_jian830007.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_jian830002.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_qiang820005.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_dao810009.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_quan850004.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_dao810004.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_quan850000.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_dao810008.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_gong840003.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_quan850008.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_qiang820001.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_jian830003.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_quan850005.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_dao810005.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_gong840001.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_qiang820006.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_jian830009.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_dao810003.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_anqi860006.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_anqi860003.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_dao810007.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_jian830006.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_anqi860007.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_qiang820004.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_gong840009.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_gong840006.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_gong840007.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_dao810006.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_gong840000.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_anqi860004.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_gong840002.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_qiang820007.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_qiang820002.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_dao810001.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_anqi860002.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_quan850003.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_anqi860001.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_jian830005.png
+- Assets/Res/Tex/Icon/Weapon/ico_weapon_quan850007.png
+Dependencies: []

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using com.initialworld.framework;
 using LitJson;
 
 public class ConfigSys : ISystem {
@@ -22,11 +23,12 @@ public class ConfigSys : ISystem {
 
     Dictionary<Type, object> _configs;
 
-    public void InitJsonConfig<T>(string filePath)
+    public void InitJsonConfig<T>(string abPath, string fileName)
     {
-        //byte[] b = IOUtils.ReadFile(filePath);
-        string str = Resources.Load<TextAsset>(filePath).text;
-        T result = JsonMapper.ToObject<T>(str);
+        string path = Application.streamingAssetsPath + "/AssetBundles/"+abPath;
+        AssetBundle ab = AssetBundleSys.Instance.LoadAssetBundleInStreaming(path);
+        TextAsset ta = ab.LoadAsset<TextAsset>(fileName);
+        T result = JsonMapper.ToObject<T>(ta.text);
         _configs.Add(typeof(T), result);
     }
 

@@ -3,44 +3,50 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace com.initialworld.framework
 {
+
+    /// <summary>
+    /// AssetBundle基本用法：
+    /// 游戏资源放在StreamingAssets文件夹中，用LoadFromFile（同步或异步）加载
+    /// 更新资源在persistentAssets文件夹中，用UnityWebRequest异步加载
+    /// </summary>
     public class AssetBundleSys : ISystem
     {
-
-        private AssetBundleSys _instance;
-        public AssetBundleSys Instance
+        private static AssetBundleSys _instance;
+        public static AssetBundleSys Instance
         {
             get { return _instance; }
         }
 
-        Dictionary<string, AssetBundle> _cache;
-
-
-
+        Dictionary<string, AssetBundle> _assetCache;
+        
         public override void Init()
         {
             base.Init();
 
             _instance = this;
-            _cache = new Dictionary<string, AssetBundle>();
-
-            EventSys.Instance.AddHander(FrameEvent.StartLoadAssetBundleAsync, OnStartLoadAssetBundle);
+            _assetCache = new Dictionary<string, AssetBundle>();
+            
+            EventSys.Instance.AddHander(FrameEvent.StartLoadAssetBundleAsyncInPersistent, OnStartLoadAssetBundleInPersistent);
+            EventSys.Instance.AddHander(FrameEvent.StartLoadAssetBundleAsyncInStreaming, (p1,p2)=>{OnStartLoadLoadAssetBundleAsyncInStreaming((string)p1);});
             EventSys.Instance.AddHander(FrameEvent.ClearAssetBundleChche, Clear);
         }
 
         /// <summary>
-        /// 异步加载，推荐
+        /// 异步加载，一般用于加载persistentData目录下的文件
         /// </summary>
         /// <param name="p1"></param>
         /// <param name="p2"></param>
-        void OnStartLoadAssetBundle(object p1, object p2)
+        void OnStartLoadAssetBundleInPersistent(object p1, object p2)
         {
             string path = (string)p1;
-            if (_cache.ContainsKey(path))
+            CatDebug.LogFunc("load res path = " + path);
+            if (_assetCache.ContainsKey(path))
             {
-                EventSys.Instance.AddEvent(FrameEvent.EndLoadAssetBundleAsync, _cache[path]);
+                EventSys.Instance.AddEvent(FrameEvent.EndLoadAssetBundleAsync, path, _assetCache[path]);
             }
             StartCoroutine(LoadAssetBundleAsync(path));
         }
@@ -48,47 +54,66 @@ namespace com.initialworld.framework
         IEnumerator LoadAssetBundleAsync(string path)
         {
             string realPath = GetRealPath(path);
-            WWW www = new WWW(realPath);
-            yield return www;
+            UnityWebRequest request = UnityWebRequest.GetAssetBundle(realPath, 0);
+            yield return request.SendWebRequest();
 
-            if (!string.IsNullOrEmpty(www.error))
+            if (!string.IsNullOrEmpty(request.error))
             {
-                throw new Exception(www.error);
+                throw new Exception(request.error);
             }
-            AssetBundle ab = www.assetBundle;
+            AssetBundle ab = DownloadHandlerAssetBundle.GetContent(request);
             //ab.Unload(false);
-            _cache.Add(path, ab);
-            www.Dispose();
+            _assetCache.Add(path, ab);
+            request.Dispose();
 
-            EventSys.Instance.AddEvent(FrameEvent.EndLoadAssetBundleAsync, ab);
+            EventSys.Instance.AddEvent(FrameEvent.EndLoadAssetBundleAsync, path, ab);
         }
 
         /// <summary>
-        /// 同步加载，不推荐
+        /// 同步加载Application.streamingAssetsPath目录下的资源
+        /// </summary>
+        /// <param name="path">需要Application.streamingAssetsPath前缀</param>
+        /// <returns></returns>
+        public AssetBundle LoadAssetBundleInStreaming(string path)
+        {
+            if (_assetCache.ContainsKey(path))
+            {
+                return _assetCache[path];
+                //EventSys.Instance.AddEvent(FrameEvent.EndLoadAssetBundleAsync, path, _assetCache[path]);
+            }
+            AssetBundle ab = AssetBundle.LoadFromFile(path);
+            //ab.Unload(false);
+            _assetCache.Add(path, ab);
+            return ab;
+        }
+
+        /// <summary>
+        /// 异步加载Application.streamingAssetsPath目录下的资源
         /// </summary>
         /// <param name="path"></param>
-        /// <returns></returns>
-        public AssetBundle LoadAssetBundle(string path)
+        public void OnStartLoadLoadAssetBundleAsyncInStreaming(string path)
         {
-            if (_cache.ContainsKey(path))
+            if (_assetCache.ContainsKey(path))
             {
-                EventSys.Instance.AddEvent(FrameEvent.EndLoadAssetBundleAsync, _cache[path]);
+                EventSys.Instance.AddEvent(FrameEvent.EndLoadAssetBundleAsync, path, _assetCache[path]);
             }
-            string realPath = GetRealPath(path);
+            StartCoroutine(LoadAssetBundleAsyncInStreaming(path));
+        }
 
-            WWW www = new WWW(realPath);
-            while (!www.isDone)
-            { }
-            if (!string.IsNullOrEmpty(www.error))
+        IEnumerator LoadAssetBundleAsyncInStreaming(string path)
+        {
+            //string path = Path.Combine(Application.streamingAssetsPath, "myassetBundle");
+            var bundleLoadRequest = AssetBundle.LoadFromFileAsync(path);
+            yield return bundleLoadRequest;
+
+            var myLoadedAssetBundle = bundleLoadRequest.assetBundle;
+            if (myLoadedAssetBundle == null)
             {
-                throw new Exception(www.error);
+                Debug.Log("Failed to load AssetBundle!");
+                yield break;
             }
-            AssetBundle ab = www.assetBundle;
-            //ab.Unload(false);
-            _cache.Add(path, ab);
-            www.Dispose();
-
-            return ab;
+            _assetCache.Add(path, myLoadedAssetBundle);
+            EventSys.Instance.AddEvent(FrameEvent.EndLoadAssetBundleAsync, path, myLoadedAssetBundle);
         }
 
         /// <summary>
@@ -101,15 +126,16 @@ namespace com.initialworld.framework
         void Clear(object p1, object p2)
         {
             bool isClearAll = (bool)p1;
-            foreach (KeyValuePair<string, AssetBundle> pair in _cache)
+            foreach (KeyValuePair<string, AssetBundle> pair in _assetCache)
             {
                 pair.Value.Unload(isClearAll);
             }
-            _cache.Clear();
+            _assetCache.Clear();
         }
 
         /// <summary>
         /// 得到WWW使用的地址格式，如果是网络地址则无需修改
+        /// 用于异步读取persistentData目录下的资源
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>

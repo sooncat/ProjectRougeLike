@@ -1,0 +1,64 @@
+ManifestFileVersion: 0
+CRC: 472741156
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 4cbda02ae6526bd1d9a2053e01dd0e98
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Tex/Icon/Cards/ico_head_qinggang.png
+- Assets/Res/Tex/Icon/Cards/ico_head_moxiang.png
+- Assets/Res/Tex/Icon/Cards/ico_head_tangyoudu.png
+- Assets/Res/Tex/Icon/Cards/ico_head_xiechaseng.png
+- Assets/Res/Tex/Icon/Cards/ico_head_suipoxiewu.png
+- Assets/Res/Tex/Icon/Cards/ico_head_feitianshadao.png
+- Assets/Res/Tex/Icon/Cards/ico_head_peiyuanyuan.png
+- Assets/Res/Tex/Icon/Cards/ico_head_silieguiwang.png
+- Assets/Res/Tex/Icon/Cards/ico_head_ziyunxingtian.png
+- Assets/Res/Tex/Icon/Cards/ico_head_anduxie.png
+- Assets/Res/Tex/Icon/Cards/ico_head_aoyou.png
+- Assets/Res/Tex/Icon/Cards/ico_head_tieyi.png
+- Assets/Res/Tex/Icon/Cards/ico_head_weizhi.png
+- Assets/Res/Tex/Icon/Cards/ico_head_yehuoshixiangmo.png
+- Assets/Res/Tex/Icon/Cards/ico_head_biyanhaixuanshou.png
+- Assets/Res/Tex/Icon/Cards/ico_head_tufeiniu.png
+- Assets/Res/Tex/Icon/Cards/ico_head_huotou.png
+- Assets/Res/Tex/Icon/Cards/ico_head_jinshanbadao.png
+- Assets/Res/Tex/Icon/Cards/ico_head_lengxue.png
+- Assets/Res/Tex/Icon/Cards/ico_head_liaoyuanbaihao.png
+- Assets/Res/Tex/Icon/Cards/ico_head_wuyincaizang.png
+- Assets/Res/Tex/Icon/Cards/ico_head_honglianhanba.png
+- Assets/Res/Tex/Icon/Cards/ico_head_chiyanfuhuwang.png
+- Assets/Res/Tex/Icon/Cards/ico_head_daobaoguai.png
+- Assets/Res/Tex/Icon/Cards/ico_head_langwang.png
+- Assets/Res/Tex/Icon/Cards/ico_head_qufeiyan.png
+- Assets/Res/Tex/Icon/Cards/ico_head_qingxiong.png
+- Assets/Res/Tex/Icon/Cards/ico_head_jijingjianshizhe.png
+- Assets/Res/Tex/Icon/Cards/ico_head_qingjian.png
+- Assets/Res/Tex/Icon/Cards/ico_head_jiwuzhanyue.png
+- Assets/Res/Tex/Icon/Cards/ico_head_tiebi.png
+- Assets/Res/Tex/Icon/Cards/ico_head_qingzhui.png
+- Assets/Res/Tex/Icon/Cards/ico_head_qinglie.png
+- Assets/Res/Tex/Icon/Cards/ico_head_cangzimopu.png
+- Assets/Res/Tex/Icon/Cards/ico_head_wanliduxing.png
+- Assets/Res/Tex/Icon/Cards/ico_head_fububanzang.png
+- Assets/Res/Tex/Icon/Cards/ico_head_xiedao.png
+- Assets/Res/Tex/Icon/Cards/ico_head_wuxin.png
+- Assets/Res/Tex/Icon/Cards/ico_head_chuanduo.png
+- Assets/Res/Tex/Icon/Cards/ico_head_yidaobujie.png
+- Assets/Res/Tex/Icon/Cards/ico_head_guidiao.png
+- Assets/Res/Tex/Icon/Cards/ico_head_shuangbian.png
+- Assets/Res/Tex/Icon/Cards/ico_head_zhuiying.png
+- Assets/Res/Tex/Icon/Cards/ico_head_chijiaolangya.png
+- Assets/Res/Tex/Icon/Cards/ico_head_hundunshujing.png
+- Assets/Res/Tex/Icon/Cards/ico_head_baoshi.png
+- Assets/Res/Tex/Icon/Cards/ico_head_luocaohengfei.png
+Dependencies: []

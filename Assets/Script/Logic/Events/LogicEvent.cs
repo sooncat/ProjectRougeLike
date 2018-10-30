@@ -9,15 +9,19 @@ public enum LogicEvent : int
 {
     None = 0,
 
-    SceneLoadStart,
+    SceneLoadStart,             //场景加载
     SceneLoadProgressChanged,
     SceneLoadEnd,
 
-    UiLoadStart,
-    UiLoadProgressChanged,
-    UiLoadEnd,
+    PreLoadStart,               //相关资源预加载，可能会陆续添加其他资源
+    PreLoadProgressChanged,
+    PreLoadEnd,
 
-    AllPreLoadEnd,
+    UiInsStart,                //UI实例化,之后可能会陆续添加其他资源实例化？
+    UiInsProgressChanged,
+    UiInsEnd,
+
+    AllLoadEnd,                 //资源加载完成
 
     UiLoadingStart,
     UiLoadingUpdate,

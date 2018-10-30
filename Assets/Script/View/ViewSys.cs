@@ -17,7 +17,7 @@ public class ViewSys : ISystem {
         Instance = this;
         _allUiClass = new Dictionary<string, BaseView>();
 
-        EventSys.Instance.AddHander(LogicEvent.UiLoadStart, OnUiPreLoad);
+        EventSys.Instance.AddHander(LogicEvent.UiInsStart, OnUiPreLoad);
     }
 
     Dictionary<string, BaseView> _allUiClass;
@@ -43,7 +43,7 @@ public class ViewSys : ISystem {
             baseView.InitUI(go.GetComponent<UINode>());
         }
 
-        EventSys.Instance.AddEvent(LogicEvent.UiLoadEnd);
+        EventSys.Instance.AddEvent(LogicEvent.UiInsEnd);
     }
 
     public void ClearWindow()

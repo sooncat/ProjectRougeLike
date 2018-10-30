@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using com.initialworld.framework;
 using UnityEngine;
 
 /// <summary>
@@ -16,7 +17,7 @@ public class ConfigDataMgr {
 
     Dictionary<Type, Dictionary<int, BaseDataInfo>> _dataConfigs;
 
-    string _configPath;
+    string _assetbundlePath;
 
     static ConfigDataMgr _instance;
     public static ConfigDataMgr Instance
@@ -33,7 +34,7 @@ public class ConfigDataMgr {
 
     private ConfigDataMgr()
     {
-        _configPath = "Configs/TableData/";
+        _assetbundlePath = Application.streamingAssetsPath + "AssetBundls/configs/tabledata";
         _dataConfigs = new Dictionary<Type, Dictionary<int, BaseDataInfo>>();
     }
 
@@ -48,13 +49,14 @@ public class ConfigDataMgr {
     {
         //todo 改为异步&加密
         Type t = typeof(T);
+        string path = Application.streamingAssetsPath + "/AssetBundles/configs/tabledata";
+        AssetBundle ab = AssetBundleSys.Instance.LoadAssetBundleInStreaming(path);
+        TextAsset ta = ab.LoadAsset<TextAsset>(t.Name + ".json");
 
-        string resPath = _configPath + t.Name;
-        
         //if (File.Exists("Assets/"+resPath))
         //{
-            string s = Resources.Load<TextAsset>(resPath).text;
-            IDataConfig resDataConfig = LitJson.JsonMapper.ToObject<T>(s);
+            //string s = Resources.Load<TextAsset>(resPath).text;
+            IDataConfig resDataConfig = LitJson.JsonMapper.ToObject<T>(ta.text);
             
             IList dataList = resDataConfig.GetDataInfoList();
             Dictionary<int, BaseDataInfo> tableData = new Dictionary<int, BaseDataInfo>();

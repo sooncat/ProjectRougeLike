@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using com.initialworld.framework;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -90,8 +91,11 @@ public class FightState : BaseGameState {
         {
             TypeNameHandling = TypeNameHandling.All
         };
-        
-        string str = Resources.Load<TextAsset>(GameConstants.StageConfigPath + _stageName).text;
+
+        string path = Application.streamingAssetsPath + "/AssetBundles/configs/stage";
+        AssetBundle stageAssetBundle = AssetBundleSys.Instance.LoadAssetBundleInStreaming(path);
+        string str = stageAssetBundle.LoadAsset<TextAsset>(_stageName + ".json").text;
+        //string str = Resources.Load<TextAsset>(GameConstants.StageConfigPath + _stageName).text;
         _stageConfig = JsonConvert.DeserializeObject<StageConfig>(str, settings);
 
         EventSys.Instance.AddEvent(LogicEvent.CreateFightStageData, _stageConfig);

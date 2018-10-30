@@ -43,7 +43,8 @@ public class BaseGameState {
         CatDebug.LogFuncInStack(1);
 
         EventSys.Instance.AddHander(LogicEvent.SceneLoadEnd, OnSceneLoaded);
-        EventSys.Instance.AddHander(LogicEvent.UiLoadEnd, OnUiLoaded);
+        EventSys.Instance.AddHander(FrameEvent.PreloadEnd, OnPreLoadEnd);
+        EventSys.Instance.AddHander(LogicEvent.UiInsEnd, OnUiLoaded);
 
         EventSys.Instance.AddEvent(LogicEvent.EnterState, GetType());
 
@@ -94,23 +95,40 @@ public class BaseGameState {
         }
     }
 
-    protected void StartLoadUi()
+    protected void StartInsUi()
     {
         CatDebug.LogFunc();
         if (GsDetail.PreLoadUi.Count > 0)
         {
-            EventSys.Instance.AddEvent(LogicEvent.UiLoadStart, GsDetail.PreLoadUi);
+            EventSys.Instance.AddEvent(LogicEvent.UiInsStart, GsDetail.PreLoadUi);
         }
         else
         {
-            EventSys.Instance.AddEvent(LogicEvent.UiLoadEnd);
+            EventSys.Instance.AddEvent(LogicEvent.UiInsEnd);
         }
     }
 
     protected virtual void OnSceneLoaded(object p1, object p2)
     {
         //EventSys.Instance.AddEvent(LogicEvent.UiLoadingUpdate, SceneLoadPercent);
-        StartLoadUi();
+        //StartLoadUi();
+        StartPreLoad();
+    }
+
+    void StartPreLoad()
+    {
+        CatDebug.LogFunc();
+        foreach (GameStateConfig.PreLoadResConfig preLoadResConfig in GsDetail.PreLoadUi)
+        {
+            string path = Application.streamingAssetsPath + "/AssetBundles/" + preLoadResConfig.Prefab;
+            EventSys.Instance.AddEvent(FrameEvent.AddPreLoadRes, path);
+        }
+        EventSys.Instance.AddEvent(FrameEvent.PreLoadStart);
+    }
+
+    protected virtual void OnPreLoadEnd(object p1, object p2)
+    {
+        StartInsUi();
     }
 
     protected virtual void OnUiLoaded(object p1, object p2)
