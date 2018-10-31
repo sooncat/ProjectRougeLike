@@ -121,7 +121,7 @@ public class BaseGameState {
         CatDebug.LogFunc();
         foreach (GameStateConfig.PreLoadResConfig preLoadResConfig in GsDetail.PreLoadUi)
         {
-            string path = Application.streamingAssetsPath + "/AssetBundles/" + preLoadResConfig.AssetBundle;
+            string path = preLoadResConfig.AssetBundle;
             EventSys.Instance.AddEvent(FrameEvent.AddPreLoadRes, path);
         }
         EventSys.Instance.AddEvent(FrameEvent.PreLoadStart);

@@ -71,6 +71,11 @@ namespace com.initialworld.framework
             }
         }
 
+        /// <summary>
+        /// 从缓存中读取资源，若缓存中没有则返回null
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         AssetBundle GetCache(string path)
         {
             AssetBundle result;
@@ -80,11 +85,7 @@ namespace com.initialworld.framework
                 return result;
             }
             _assetCache.TryGetValue(path, out result);
-            if (result != null)
-            {
-                return result;
-            }
-            return null;
+            return result;
         }
 
         /// <summary>

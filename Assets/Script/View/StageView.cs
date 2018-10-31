@@ -315,7 +315,7 @@ public class StageView : BaseView
 
     void CreateLayer(StageLayer stageLayer)
     {
-        CatDebug.LogFunc(GetHashCode().ToString());
+        //CatDebug.LogFunc(GetHashCode().ToString());
         float allNodeWidth = _stageScrollContent.GetComponent<RectTransform>().sizeDelta.x - LayerNameWidth;
         float singleNodeWidth = allNodeWidth / stageLayer.Nodes.Count;
         Vector2 modelNodeSize = _stageNodeModel.GetComponent<RectTransform>().sizeDelta;

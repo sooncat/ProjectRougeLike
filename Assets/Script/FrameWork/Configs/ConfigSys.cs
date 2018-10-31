@@ -25,7 +25,7 @@ public class ConfigSys : ISystem {
 
     public void InitJsonConfig<T>(string abPath, string fileName)
     {
-        string path = Application.streamingAssetsPath + "/AssetBundles/"+abPath;
+        string path = GameConstants.AssetBundlePath + abPath;
         AssetBundle ab = AssetBundleSys.Instance.LoadAssetBundleInStreaming(path);
         TextAsset ta = ab.LoadAsset<TextAsset>(fileName);
         T result = JsonMapper.ToObject<T>(ta.text);

@@ -131,7 +131,6 @@ public class FightDataMgr {
             }
         }
         throw new Exception("Not Found Enemy With InsId = " + insId);
-        return null;
     }
 
     public Reward GetReward(int nodeId)

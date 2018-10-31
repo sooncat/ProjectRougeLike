@@ -11,4 +11,7 @@ public class GameConstants {
 
     public const string CommonDragTail = "linear3";
 
+    public static string AssetBundlePath = Application.streamingAssetsPath + "/AssetBundles/";
+    public const string AssetBundleMainfest = "AssetBundles";
+
 }

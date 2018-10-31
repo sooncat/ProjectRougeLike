@@ -7,8 +7,8 @@ public static class UIUtils {
 
     public static Vector3 GetEulerAngle(Vector3 p1, Vector3 p2)
     {
-        float centerX = (p1.x + p2.x) / 2;
-        float centerY = (p1.y + p2.y) / 2;
+        //float centerX = (p1.x + p2.x) / 2;
+        //float centerY = (p1.y + p2.y) / 2;
 
         float deltaY = p2.y - p1.y;
         float deltaX = p2.x - p1.x;

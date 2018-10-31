@@ -92,7 +92,7 @@ public class FightState : BaseGameState {
             TypeNameHandling = TypeNameHandling.All
         };
 
-        string path = Application.streamingAssetsPath + "/AssetBundles/configs/stage";
+        string path = GameConstants.AssetBundlePath + "configs/stage";
         AssetBundle stageAssetBundle = AssetBundleSys.Instance.LoadAssetBundleInStreaming(path);
         string str = stageAssetBundle.LoadAsset<TextAsset>(_stageName + ".json").text;
         //string str = Resources.Load<TextAsset>(GameConstants.StageConfigPath + _stageName).text;

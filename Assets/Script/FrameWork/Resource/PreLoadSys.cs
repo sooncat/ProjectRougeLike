@@ -28,7 +28,15 @@ namespace com.initialworld.framework
         /// </summary>
         HashSet<string> _resPath;
 
-        const int SimultaneousCount = 5;
+        /// <summary>
+        /// 分级加载，key值越小，代表依赖层级越低。
+        /// </summary>
+        Dictionary<int, HashSet<string>> _hierarchicAsset;
+
+        /// <summary>
+        /// 当前正在加载的资源的级别
+        /// </summary>
+        int _nowLevel;
 
         /// <summary>
         /// 需要加载的所有资源的数量
@@ -45,8 +53,9 @@ namespace com.initialworld.framework
             base.Init();
 
             _resPath = new HashSet<string>();
+            _hierarchicAsset = new Dictionary<int, HashSet<string>>();
 
-            EventSys.Instance.AddHander(FrameEvent.AddPreLoadRes, OnAddPreLoadRes);
+            EventSys.Instance.AddHander(FrameEvent.AddPreLoadRes, (p1, p2) => { OnAddPreLoadRes((string)p1); });
             EventSys.Instance.AddHander(FrameEvent.PreLoadStart, OnStartPreLoad);
             EventSys.Instance.AddHander(FrameEvent.EndLoadAssetBundleAsync, (p1, p2) =>
             {
@@ -70,12 +79,37 @@ namespace com.initialworld.framework
         /// <summary>
         /// 手动指定预加载资源
         /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
-        void OnAddPreLoadRes(object p1, object p2)
+        /// <param name="assetBundlePath">assetbundleLable,是相对路径</param>
+        void OnAddPreLoadRes(string assetBundlePath)
         {
-            string path = (string)p1;
-            _resPath.Add(path);
+            _resPath.Add(assetBundlePath);
+        }
+
+        /// <summary>
+        /// 检查所有资源引用并分级
+        /// </summary>
+        int PrepareResDependencies(string[] res)
+        {
+            //Dictionary<string, int> resLayerCache = new Dictionary<string, int>();
+            int layer = 0;
+            foreach (string resPath in res)
+            {
+                string[] dependencies = _abManifest.GetAllDependencies(resPath);
+                if(dependencies.Length > 0){
+                    layer = PrepareResDependencies(dependencies);   
+                }
+                AddHierarchicAsset(layer, resPath);   
+            }
+            return layer + 1;
+        }
+
+        void AddHierarchicAsset(int index, string resPath)
+        {
+            if (!_hierarchicAsset.ContainsKey(index))
+            {
+                _hierarchicAsset.Add(index,new HashSet<string>());
+            }
+            _hierarchicAsset[index].Add(resPath);
         }
 
         /// <summary>
@@ -84,47 +118,39 @@ namespace com.initialworld.framework
         /// （就是在Inspector最下方的AssetLabels的设定）
         /// （具体表现就是资源的相对路径，不带最前面的"/"，例如“view/loadingui”）
         /// </summary>
-        void PrepareResDependencies()
-        {
-            int index = Application.streamingAssetsPath.Length + "/AssetBundles/".Length;
-            HashSet<string> dependList = new HashSet<string>();
-            foreach (string s in _resPath)
-            {
-                string relativePath = s;
-                //Debug.Log("relativePath = " + relativePath);
-                if(s.StartsWith(Application.streamingAssetsPath))
-                {
-                    relativePath = s.Substring(index);
-                    //Debug.Log("relativePath = " + relativePath);
-                }
-                string[] dependencies = _abManifest.GetAllDependencies(relativePath);
-                foreach (string dependency in dependencies)
-                {
-                    dependList.Add(dependency);    
-                }
-            }
-            AddDependenciesRes(dependList.ToArray());
+        //void PrepareResDependencies()
+        //{
+        //    HashSet<string> dependList = new HashSet<string>();
+        //    foreach (string s in _resPath)
+        //    {
+        //        string[] dependencies = _abManifest.GetAllDependencies(s);
+        //        foreach (string dependency in dependencies)
+        //        {
+        //            dependList.Add(dependency);    
+        //        }
+        //    }
+        //    AddDependenciesRes(dependList.ToArray());
             
-            while (dependList.Count > 0)
-            {
-                HashSet<string> temp = new HashSet<string>();
-                foreach (string s in dependList)
-                {
-                    //Debug.Log("res = " + s);
-                    string[] ds = _abManifest.GetAllDependencies(s);
-                    foreach (string s1 in ds)
-                    {
-                        temp.Add(s1);    
-                    }
-                    AddDependenciesRes(ds);
-                }
-                dependList.Clear();
-                if(temp.Count > 0)
-                {
-                    dependList = new HashSet<string>(temp);
-                }
-            }
-        }
+        //    while (dependList.Count > 0)
+        //    {
+        //        HashSet<string> temp = new HashSet<string>();
+        //        foreach (string s in dependList)
+        //        {
+        //            //Debug.Log("res = " + s);
+        //            string[] ds = _abManifest.GetAllDependencies(s);
+        //            foreach (string s1 in ds)
+        //            {
+        //                temp.Add(s1);    
+        //            }
+        //            AddDependenciesRes(ds);
+        //        }
+        //        dependList.Clear();
+        //        if(temp.Count > 0)
+        //        {
+        //            dependList = new HashSet<string>(temp);
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// 向资源列表中加入依赖资源
@@ -134,8 +160,7 @@ namespace com.initialworld.framework
         {
             foreach (string d in dependencies)
             {
-                string p = Application.streamingAssetsPath+"/AssetBundles/" + d;
-                _resPath.Add(p);
+                _resPath.Add(d);
             }
         }
 
@@ -151,35 +176,42 @@ namespace com.initialworld.framework
             {
                 EventSys.Instance.AddEvent(FrameEvent.PreloadEnd);
             }
-            PrepareResDependencies();
+            PrepareResDependencies(_resPath.ToArray());
 
-            _fullCount = _resPath.Count;
-            _loadedCount = 0;
-            if(_resPath.Count > 0)
-            {
-                string resPath = _resPath.ElementAt(0);
-                _resPath.Remove(resPath);
-                EventSys.Instance.AddEvent(FrameEvent.StartLoadAssetBundleAsyncInStreaming, resPath);
-            }
+            //start load first layer res
+            _nowLevel = 0;
+            StartLoadResInLayer(_nowLevel);
         }
 
         void OnAssetBundleLoaded(string path, AssetBundle ab)
         {
             //CatDebug.LogFunc("Path = " + path + ", ab.type = " + ab.GetType());
             _loadedCount++;
-            EventSys.Instance.AddEvent(FrameEvent.PreLoadUpdatePercent, _loadedCount, _fullCount);
-            if (_resPath.Count > 0)
+            if(_loadedCount == _fullCount)
             {
-                string nextPath = _resPath.ElementAt(0);
-                _resPath.Remove(nextPath);
-                EventSys.Instance.AddEvent(FrameEvent.StartLoadAssetBundleAsyncInStreaming, nextPath);
+                _nowLevel++;
+                StartLoadResInLayer(_nowLevel);
             }
-            else
+        }
+
+        void StartLoadResInLayer(int index)
+        {
+            HashSet<string> resPath;
+            _hierarchicAsset.TryGetValue(index, out resPath);
+            if(resPath == null)
             {
-                if (_loadedCount == _fullCount)
-                {
-                    EventSys.Instance.AddEvent(FrameEvent.PreloadEnd);
-                }
+                EventSys.Instance.AddEvent(FrameEvent.PreloadEnd);
+                _resPath.Clear();
+                _hierarchicAsset.Clear();
+                return;
+            }
+            _fullCount = resPath.Count;
+            _loadedCount = 0;
+            foreach (string s in resPath)
+            {
+                string realPath = GameConstants.AssetBundlePath + s;
+                //Debug.Log("index = " + index + "realPath = " + realPath);
+                EventSys.Instance.AddEvent(FrameEvent.StartLoadAssetBundleAsyncInStreaming, realPath);
             }
         }
          

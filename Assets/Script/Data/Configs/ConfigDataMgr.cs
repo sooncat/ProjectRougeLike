@@ -49,7 +49,7 @@ public class ConfigDataMgr {
     {
         //todo 改为异步&加密
         Type t = typeof(T);
-        string path = Application.streamingAssetsPath + "/AssetBundles/configs/tabledata";
+        string path = GameConstants.AssetBundlePath + "configs/tabledata";
         AssetBundle ab = AssetBundleSys.Instance.LoadAssetBundleInStreaming(path);
         TextAsset ta = ab.LoadAsset<TextAsset>(t.Name + ".json");
 

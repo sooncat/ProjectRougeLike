@@ -34,7 +34,7 @@ public class ResourceSys : ISystem
 
     public GameObject CreateUI(string uiAssetBundle, string uiPrefabName)
     {
-        string assetPath = Application.streamingAssetsPath + "/AssetBundles/" + uiAssetBundle;
+        string assetPath = GameConstants.AssetBundlePath + uiAssetBundle;
         AssetBundle assetBundle = AssetBundleSys.Instance.LoadAssetBundleInStreaming(assetPath);
         string resName = GetName(uiPrefabName);
         GameObject go = assetBundle.LoadAsset<GameObject>(resName);
@@ -54,7 +54,7 @@ public class ResourceSys : ISystem
         //    iconPath += ".png";
         //}
         //Sprite result = Resources.Load<Sprite>(iconPath);
-        abPath = Application.streamingAssetsPath + "/AssetBundles/" + abPath;
+        abPath = GameConstants.AssetBundlePath + abPath;
         AssetBundle ab = AssetBundleSys.Instance.LoadAssetBundleInStreaming(abPath);
         Sprite result = ab.LoadAsset<Sprite>(iconName);
         if(result == null)

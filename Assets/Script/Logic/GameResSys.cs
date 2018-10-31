@@ -18,7 +18,7 @@ public class GameResSys : ISystem {
 
     public Sprite GetNodeSprite(string spriteName)
     {
-        CatDebug.LogFunc("sprite = " + spriteName);
+        //CatDebug.LogFunc("sprite = " + spriteName);
         return ResourceSys.Instance.GetSprite("tex/icon/nodes", spriteName);
     }
 
