@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ namespace com.initialworld.framework
         /// <summary>
         /// 需要预加载的资源
         /// </summary>
-        Stack<string> _resPath;
+        HashSet<string> _resPath;
 
         const int SimultaneousCount = 5;
 
@@ -43,7 +44,7 @@ namespace com.initialworld.framework
         {
             base.Init();
 
-            _resPath = new Stack<string>();
+            _resPath = new HashSet<string>();
 
             EventSys.Instance.AddHander(FrameEvent.AddPreLoadRes, OnAddPreLoadRes);
             EventSys.Instance.AddHander(FrameEvent.PreLoadStart, OnStartPreLoad);
@@ -61,6 +62,7 @@ namespace com.initialworld.framework
         void PrepareAssetBundleManifest()
         {
             string path = Path.Combine(Application.streamingAssetsPath, "AssetBundles/AssetBundles");
+            EventSys.Instance.AddEventNow(FrameEvent.RegistResidentAssetBundle, path);
             AssetBundle ab = AssetBundleSys.Instance.LoadAssetBundleInStreaming(path);
             _abManifest = ab.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
         }
@@ -73,7 +75,7 @@ namespace com.initialworld.framework
         void OnAddPreLoadRes(object p1, object p2)
         {
             string path = (string)p1;
-            _resPath.Push(path);
+            _resPath.Add(path);
         }
 
         /// <summary>
@@ -85,7 +87,7 @@ namespace com.initialworld.framework
         void PrepareResDependencies()
         {
             int index = Application.streamingAssetsPath.Length + "/AssetBundles/".Length;
-            List<string> dependList = new List<string>();
+            HashSet<string> dependList = new HashSet<string>();
             foreach (string s in _resPath)
             {
                 string relativePath = s;
@@ -96,24 +98,30 @@ namespace com.initialworld.framework
                     //Debug.Log("relativePath = " + relativePath);
                 }
                 string[] dependencies = _abManifest.GetAllDependencies(relativePath);
-                dependList.AddRange(dependencies);
+                foreach (string dependency in dependencies)
+                {
+                    dependList.Add(dependency);    
+                }
             }
             AddDependenciesRes(dependList.ToArray());
             
             while (dependList.Count > 0)
             {
-                List<string> temp = new List<string>();
+                HashSet<string> temp = new HashSet<string>();
                 foreach (string s in dependList)
                 {
                     //Debug.Log("res = " + s);
                     string[] ds = _abManifest.GetAllDependencies(s);
-                    temp.AddRange(ds);
+                    foreach (string s1 in ds)
+                    {
+                        temp.Add(s1);    
+                    }
                     AddDependenciesRes(ds);
                 }
                 dependList.Clear();
                 if(temp.Count > 0)
                 {
-                    dependList = new List<string>(temp);
+                    dependList = new HashSet<string>(temp);
                 }
             }
         }
@@ -127,8 +135,7 @@ namespace com.initialworld.framework
             foreach (string d in dependencies)
             {
                 string p = Application.streamingAssetsPath+"/AssetBundles/" + d;
-                CatDebug.LogFunc("p = " + p);
-                _resPath.Push(p);
+                _resPath.Add(p);
             }
         }
 
@@ -150,19 +157,21 @@ namespace com.initialworld.framework
             _loadedCount = 0;
             if(_resPath.Count > 0)
             {
-                string resPath = _resPath.Pop();
+                string resPath = _resPath.ElementAt(0);
+                _resPath.Remove(resPath);
                 EventSys.Instance.AddEvent(FrameEvent.StartLoadAssetBundleAsyncInStreaming, resPath);
             }
         }
 
         void OnAssetBundleLoaded(string path, AssetBundle ab)
         {
-            CatDebug.LogFunc("Path = " + path + ", ab.type = " + ab.GetType());
+            //CatDebug.LogFunc("Path = " + path + ", ab.type = " + ab.GetType());
             _loadedCount++;
             EventSys.Instance.AddEvent(FrameEvent.PreLoadUpdatePercent, _loadedCount, _fullCount);
             if (_resPath.Count > 0)
             {
-                string nextPath = _resPath.Pop();
+                string nextPath = _resPath.ElementAt(0);
+                _resPath.Remove(nextPath);
                 EventSys.Instance.AddEvent(FrameEvent.StartLoadAssetBundleAsyncInStreaming, nextPath);
             }
             else

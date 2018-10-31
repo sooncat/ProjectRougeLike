@@ -12,6 +12,7 @@ public enum FrameEvent : int
     StartLoadAssetBundleAsyncInPersistent,  //开始加载一个AssetBundle
     EndLoadAssetBundleAsync,                //加载一个AssetBundle完毕
     ClearAssetBundleChche,                  //清理加载AssetBundle的缓存
+    RegistResidentAssetBundle,              //注册需要常驻内存的AssetBundle资源，注册后不会被清理掉
 
     AddPreLoadRes,                          //添加需要预加载的资源路径
     PreLoadStart,                           //开始预加载

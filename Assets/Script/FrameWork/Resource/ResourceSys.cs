@@ -32,11 +32,11 @@ public class ResourceSys : ISystem
     }
 
 
-    public GameObject CreateUI(string uiPrefabPath)
+    public GameObject CreateUI(string uiAssetBundle, string uiPrefabName)
     {
-        string rootPath = Application.streamingAssetsPath + "/AssetBundles/" + uiPrefabPath;
-        AssetBundle assetBundle = AssetBundleSys.Instance.LoadAssetBundleInStreaming(rootPath);
-        string resName = GetName(uiPrefabPath);
+        string assetPath = Application.streamingAssetsPath + "/AssetBundles/" + uiAssetBundle;
+        AssetBundle assetBundle = AssetBundleSys.Instance.LoadAssetBundleInStreaming(assetPath);
+        string resName = GetName(uiPrefabName);
         GameObject go = assetBundle.LoadAsset<GameObject>(resName);
         return Instantiate(go);
     }
@@ -47,25 +47,24 @@ public class ResourceSys : ISystem
         return path.Substring(index + 1);
     }
     
-    public Sprite GetSprite(string iconPath)
+    public Sprite GetSprite(string abPath, string iconName)
     {
         //if(!iconPath.EndsWith(".png"))
         //{
         //    iconPath += ".png";
         //}
-        Sprite result = Resources.Load<Sprite>(iconPath);
+        //Sprite result = Resources.Load<Sprite>(iconPath);
+        abPath = Application.streamingAssetsPath + "/AssetBundles/" + abPath;
+        AssetBundle ab = AssetBundleSys.Instance.LoadAssetBundleInStreaming(abPath);
+        Sprite result = ab.LoadAsset<Sprite>(iconName);
         if(result == null)
         {
-            throw new FileNotFoundException(iconPath);
+            throw new FileNotFoundException(iconName);
         }
         return result;
     }
 
-    public Sprite GetFrame(int lv)
-    {
-        string framePath = GameConstants.FramePath + lv;
-        return GetSprite(framePath);
-    }
+    
     
 
     //-----------------pool

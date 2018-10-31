@@ -79,9 +79,9 @@ public class RewardNodeView : BaseView {
 
                 UINode newNode = newNodeObj.GetComponent<UINode>();
                 Image bg = newNode.GetRef("Bg").GetComponent<Image>();
-                bg.sprite = ResourceSys.Instance.GetFrame(item.Lv.Value);
+                bg.sprite = GameResSys.Instance.GetFrame(item.Lv.Value);
                 Image icon = newNode.GetRef("Icon").GetComponent<Image>();
-                icon.sprite = ResourceSys.Instance.GetSprite(item.Icon);
+                icon.sprite = GameResSys.Instance.GetItem(item.Icon);
                 Text itemName = newNode.GetRef("Name").GetComponent<Text>();
                 itemName.text = item.Name;
                 if (item.Count.Value > 1)

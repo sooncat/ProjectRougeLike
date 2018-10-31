@@ -33,7 +33,7 @@ public class FightNodeView : BaseView {
         CreatureData cData = (CreatureData)p1;
         _nodeId = (int)p2;
         Image icon = _fightNode.GetRef("Icon").GetComponent<Image>();
-        icon.sprite = ResourceSys.Instance.GetSprite(cData.Cg);
+        icon.sprite = GameResSys.Instance.GetCG(cData.Cg);
 
         Text detail1 = _fightNode.GetRef("Info1").GetComponent<Text>();
         detail1.text = GetPropertyDescription1(cData);

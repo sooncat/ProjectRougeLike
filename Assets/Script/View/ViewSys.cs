@@ -33,11 +33,12 @@ public class ViewSys : ISystem {
         foreach (GameStateConfig.PreLoadResConfig uiConfig in preLoadUis)
         {
             //CatDebug.LogFunc(uiConfig.Prefab);
-            GameObject go = GameObject.Find(uiConfig.Prefab);
-            if(!go)
-            {
-                go = ResourceSys.Instance.CreateUI(uiConfig.Prefab);
-            }
+            //GameObject go = GameObject.Find(uiConfig.Prefab);
+            //if(!go)
+            //{
+            //  go = ResourceSys.Instance.CreateUI(uiConfig.Prefab);
+            //}
+            GameObject go = ResourceSys.Instance.CreateUI(uiConfig.AssetBundle, uiConfig.Prefab);
             Type t = Type.GetType(uiConfig.ClassName);
             BaseView baseView = (BaseView)go.AddComponent(t);
             baseView.InitUI(go.GetComponent<UINode>());

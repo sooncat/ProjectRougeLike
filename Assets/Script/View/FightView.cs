@@ -37,8 +37,10 @@ public class FightView : BaseView {
         _attBtn.GetComponent<Button>().onClick.AddListener(OnAttackBtnClicked);
         _skillBtn = rootNode.GetRef("SkillBtn");
         _skillBtn.GetComponent<Button>().onClick.AddListener(OnSkillBtnClicked);
+        _skillBtn.gameObject.AddComponent<ImageGray>().Gray = true;
         _petBtn = rootNode.GetRef("PetBtn");
         _petBtn.GetComponent<Button>().onClick.AddListener(OnPetBtnClicked);
+        _petBtn.gameObject.AddComponent<ImageGray>().Gray = true;
 
         _rootNode = rootNode;
         _rootNode.gameObject.SetActive(false);
@@ -228,9 +230,9 @@ public class FightView : BaseView {
 
             UINode newNode = newNodeObj.GetComponent<UINode>();
             Image bg = newNode.GetRef("Bg").GetComponent<Image>();
-            bg.sprite = ResourceSys.Instance.GetFrame(item.Lv.Value);
+            bg.sprite = GameResSys.Instance.GetFrame(item.Lv.Value);
             Image icon = newNode.GetRef("Icon").GetComponent<Image>();
-            icon.sprite = ResourceSys.Instance.GetSprite(item.Icon);
+            icon.sprite = GameResSys.Instance.GetItem(item.Icon);
             Text itemName = newNode.GetRef("Name").GetComponent<Text>();
             itemName.text = item.Name;
             if (item.Count.Value > 1)
@@ -280,7 +282,7 @@ public class FightView : BaseView {
         foreach (Enemy e in enemies)
         {
             Image cg = _enemyNode.GetRef("Cg").GetComponent<Image>();
-            cg.sprite = ResourceSys.Instance.GetSprite(e.CreatureData.Cg);
+            cg.sprite = GameResSys.Instance.GetCG(e.CreatureData.Cg);
             Slider s = _enemyNode.GetRef("HpSlider").GetComponent<Slider>();
             s.value = e.CreatureData.HpPercent;
 
@@ -330,7 +332,7 @@ public class FightView : BaseView {
     void SetHeroData(FightHero fightHero, UINode node)
     {
         Image ico = node.GetRef("Icon").GetComponent<Image>();
-        ico.sprite = ResourceSys.Instance.GetSprite(fightHero.CreatureData.Icon);
+        ico.sprite = GameResSys.Instance.GetCard(fightHero.CreatureData.Icon);
         Slider hs = node.GetRef("HpSlider").GetComponent<Slider>();
         hs.value = fightHero.CreatureData.HpPercent;
         Slider ms = node.GetRef("MpSlider").GetComponent<Slider>();
@@ -363,7 +365,7 @@ public class FightView : BaseView {
 
             UINode itemNode = go.GetComponent<UINode>();
             Image image = itemNode.GetRef("Image").GetComponent<Image>();
-            image.sprite = ResourceSys.Instance.GetSprite(item.Icon);
+            image.sprite = GameResSys.Instance.GetItem(item.Icon);
             Button btn = image.gameObject.AddComponent<Button>();
             btn.onClick.AddListener(() => { EventSys.Instance.AddEvent(InputEvent.FightItemClicked, item.Id); });
             Text num = itemNode.GetRef("Text").GetComponent<Text>();
@@ -378,7 +380,7 @@ public class FightView : BaseView {
 
                 Dragable dragable = image.gameObject.AddComponent<Dragable>();
                 dragable.HasTail = true;
-                dragable.TailSprite = ResourceSys.Instance.GetSprite(GameConstants.CommonDragTail);
+                dragable.TailSprite = GameResSys.Instance.GetMask(GameConstants.CommonDragTail);
                 dragable.TailColor = item.TheColor;
                 dragable.TailWidth = 20;
                 dragable.Canv = _rootNode.GetComponent<Canvas>();

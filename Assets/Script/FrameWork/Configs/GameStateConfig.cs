@@ -6,6 +6,7 @@ public class GameStateConfig {
 
     public class PreLoadResConfig
     {
+        public string AssetBundle;
         public string Prefab;
         public string ClassName;
     }

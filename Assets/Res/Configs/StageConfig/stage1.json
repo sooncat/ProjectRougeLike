@@ -19,7 +19,7 @@
 					"Index": 0,
 					"Name": "P1",
 					"Description": "",
-					"Icon": "Icon/cards/blankplus",
+					"Icon": "blankplus",
 					"NodeType": "StageNodeStart",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
@@ -33,7 +33,7 @@
 					"Index": 1,
 					"Name": "P2",
 					"Description": "",
-					"Icon": "Icon/cards/blankplus",
+					"Icon": "blankplus",
 					"NodeType": "StageNodeStart",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
@@ -60,7 +60,7 @@
 					"Index": 0,
 					"Name": "Fight",
 					"Description": "",
-					"Icon": "Icon/cards/ico_head_anduxie",
+					"Icon": "ico_head_anduxie",
 					"NodeType": "StageNodeFight",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
@@ -102,7 +102,7 @@
 					"Index": 1,
 					"Name": "Reward",
 					"Description": "",
-					"Icon": "Icon/Item/ico_usableitem_baoxiang1",
+					"Icon": "ico_usableitem_baoxiang1",
 					"NodeType": "StageNodeReward",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
@@ -149,7 +149,7 @@
 					"Index": 0,
 					"Name": "Reward",
 					"Description": "",
-					"Icon": "Icon/Item/ico_usableitem_baoxiang1",
+					"Icon": "ico_usableitem_baoxiang1",
 					"NodeType": "StageNodeReward",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
@@ -185,7 +185,7 @@
 					"Index": 2,
 					"Name": "Reward",
 					"Description": "",
-					"Icon": "Icon/cards/ico_head_weizhi",
+					"Icon": "ico_head_weizhi",
 					"NodeType": "StageNodeReward",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
@@ -202,7 +202,7 @@
 					"Index": 1,
 					"Name": "Fight",
 					"Description": "",
-					"Icon": "Icon/cards/ico_head_anduxie",
+					"Icon": "ico_head_anduxie",
 					"NodeType": "StageNodeFight",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
@@ -225,7 +225,7 @@
 					"Index": 0,
 					"Name": "House",
 					"Description": "",
-					"Icon": "Icon/Func/guild_yezhan",
+					"Icon": "guild_yezhan",
 					"NodeType": "StageNodeSafe",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",
@@ -253,7 +253,7 @@
 					"Index": 0,
 					"Name": "FighBoss",
 					"Description": "",
-					"Icon": "Icon/cards/ico_head_feitianshadao",
+					"Icon": "ico_head_feitianshadao",
 					"NodeType": "StageNodeFight",
 					"NextNodes": {
 						"$type": "System.Collections.Generic.List`1[[System.Int32, mscorlib]], mscorlib",

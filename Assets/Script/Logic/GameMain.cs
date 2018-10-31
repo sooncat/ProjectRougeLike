@@ -15,6 +15,7 @@ public class GameMain : BaseMain {
         CatDebug.RegistLogTypeLabel(CatLogType.CatTimer, "Timer");
 
         InitSys<ViewSys>();
+        InitSys<GameResSys>();
         ConfigSys.Instance.InitJsonConfig<GameStateConfig>("configs/gameconfig", "gamestateconfig.json");
 
         ConfigDataMgr.Instance.Load<HeroTableData>();

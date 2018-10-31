@@ -9,8 +9,8 @@
 		"Mp": 500,
 		"Def": 80,
 		"Att": 100,
-		"FightIcon": "Icon/Item/ico_cardeqiupment_11001",
-		"Icon": "Icon/cards/ico_head_moxiang",
+		"FightIcon": "ico_cardeqiupment_11001",
+		"Icon": "ico_head_moxiang",
 		"Cg":"Cg/2d_140",
 		"Color":"#0000ff"
 	},
@@ -24,8 +24,8 @@
 		"Mp": 500,
 		"Def": 50,
 		"Att": 50,
-		"FightIcon": "Icon/Item/ico_cardeqiupment_11005",
-		"Icon": "Icon/cards/ico_head_qufeiyan",
+		"FightIcon": "ico_cardeqiupment_11005",
+		"Icon": "ico_head_qufeiyan",
 		"Cg":"Cg/2d_109",
 		"Color":"#ff0000"
 	},
@@ -39,8 +39,8 @@
 		"Mp": 1000,
 		"Def": 50,
 		"Att": 100,
-		"FightIcon": "Icon/Item/jiguan",
-		"Icon": "Icon/cards/ico_head_tangyoudu",
+		"FightIcon": "jiguan",
+		"Icon": "ico_head_tangyoudu",
 		"Cg":"Cg/2d_134",
 		"Color":"#00ff00"
 	}]

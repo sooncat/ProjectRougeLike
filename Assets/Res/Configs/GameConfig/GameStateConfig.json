@@ -9,7 +9,8 @@
 		"LoginState": {
 			"SceneName": "Login",
 			"PreLoadUi": [{
-				"Prefab": "view/loginui",
+				"AssetBundle": "view/loginui",
+				"Prefab": "loginui",
 				"ClassName": "LoginView"
 			}],
 			"PreLoadEffect": [],
@@ -18,7 +19,8 @@
 		"CityState": {
 			"SceneName": "City",
 			"PreLoadUi": [{
-				"Prefab": "CityUI",
+				"AssetBundle": "view/cityui",
+				"Prefab": "cityui",
 				"ClassName": "CityView"
 			}],
 			"PreLoadEffect": [],
@@ -27,31 +29,38 @@
 		"FightState": {
 			"SceneName": "Fight",
 			"PreLoadUi": [{
-				"Prefab": "StageUI",
+				"AssetBundle": "view/fightui",
+				"Prefab": "stageui",
 				"ClassName": "StageView"
 			},
 			{
-				"Prefab": "FightUI",
+				"AssetBundle": "view/fightui",
+				"Prefab": "fightui",
 				"ClassName": "FightView"
 			},
 			{
-				"Prefab": "RewardNodeUI",
+				"AssetBundle": "view/fightui",
+				"Prefab": "rewardnodeui",
 				"ClassName": "RewardNodeView"
 			},
 			{
-				"Prefab": "FightNodeUI",
+				"AssetBundle": "view/fightui",
+				"Prefab": "fightnodeui",
 				"ClassName": "FightNodeView"
 			},
 			{
-				"Prefab": "SafeNodeUI",
+				"AssetBundle": "view/fightui",
+				"Prefab": "safenodeui",
 				"ClassName": "SafeNodeView"
 			},
 			{
-				"Prefab": "UnKnowNodeUI",
+				"AssetBundle": "view/fightui",
+				"Prefab": "unknownodeui",
 				"ClassName": "UnKnowNodeView"
 			},
 			{
-				"Prefab": "HeroNodeUI",
+				"AssetBundle": "view/fightui",
+				"Prefab": "heronodeui",
 				"ClassName": "HeroNodeView"
 			}],
 			"PreLoadEffect": [],

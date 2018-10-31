@@ -201,7 +201,7 @@ public class StageView : BaseView
         {
             Dragable dragable = pair.Value.GetComponentInChildren<Dragable>();
             HeroData hd = (HeroData)heroes[pair.Key].CreatureData;
-            dragable.DragIcon = ResourceSys.Instance.GetSprite(hd.FightIcon);
+            dragable.DragIcon = GameResSys.Instance.GetItem(hd.FightIcon);
         }
 
         //create hero show list
@@ -234,7 +234,7 @@ public class StageView : BaseView
     /// <param name="node"></param>
     void SetShowNodeData(FightHero fightHero, UINode node)
     {
-        node.GetRef("Icon").GetComponent<Image>().sprite = ResourceSys.Instance.GetSprite(fightHero.CreatureData.Icon);
+        node.GetRef("Icon").GetComponent<Image>().sprite = GameResSys.Instance.GetCard(fightHero.CreatureData.Icon);
         node.GetRef("Name").GetComponent<Text>().text = fightHero.CreatureData.Name;
         node.GetRef("Hp").GetComponent<Text>().text = "血";
         node.GetRef("HpSlider").GetComponent<Slider>().value = fightHero.CreatureData.HpPercent;
@@ -347,8 +347,14 @@ public class StageView : BaseView
         btn.onClick.AddListener(() => { OnNodeClicked(stageNode.Id); });
         
         Image nodeImage = uiNode.GetRef("Button").GetComponent<Image>();
-        Sprite newSprite = ResourceSys.Instance.GetSprite(stageNode.Icon);
-        nodeImage.sprite = newSprite;
+        if(stageNode.NodeType.Equals(typeof(StageNodeFight).Name))
+        {
+            nodeImage.sprite = GameResSys.Instance.GetCard(stageNode.Icon);
+        }
+        else
+        {
+            nodeImage.sprite = GameResSys.Instance.GetNodeSprite(stageNode.Icon);
+        }
 
         Dropable drop = uiNode.GetRef("Button").gameObject.AddComponent<Dropable>();
         drop.ActionId = stageNode.Id;
@@ -514,7 +520,7 @@ public class StageView : BaseView
         GameObject go = Instantiate(_heroNodeModel);
         UINode uiNode = go.GetComponent<UINode>();
         Image nodeImage = uiNode.GetRef("Image").GetComponent<Image>();
-        nodeImage.sprite = ResourceSys.Instance.GetSprite(heroData.Icon);
+        nodeImage.sprite = GameResSys.Instance.GetCard(heroData.Icon);
 
         Button btn = uiNode.GetRef("Image").GetComponent<Button>();
         if(btn == null)
@@ -529,10 +535,10 @@ public class StageView : BaseView
         drag.Canv = _stageCanvas;
         if (setDragIcon)
         {
-            drag.DragIcon = ResourceSys.Instance.GetSprite(heroData.FightIcon);
+            drag.DragIcon = GameResSys.Instance.GetItem(heroData.FightIcon);
         }
         drag.HasTail = true;
-        drag.TailSprite = ResourceSys.Instance.GetSprite(GameConstants.CommonDragTail);
+        drag.TailSprite = GameResSys.Instance.GetMask(GameConstants.CommonDragTail);
         drag.TailColor = heroData.TheColor;
         drag.TailWidth = 20;
         drag.IsDisableGray = true;
@@ -626,9 +632,9 @@ public class StageView : BaseView
 
             UINode newNode = newNodeObj.GetComponent<UINode>();
             Image bg = newNode.GetRef("Bg").GetComponent<Image>();
-            bg.sprite = ResourceSys.Instance.GetFrame(item.Lv.Value);
+            bg.sprite = GameResSys.Instance.GetFrame(item.Lv.Value);
             Image icon = newNode.GetRef("Icon").GetComponent<Image>();
-            icon.sprite = ResourceSys.Instance.GetSprite(item.Icon);
+            icon.sprite = GameResSys.Instance.GetItem(item.Icon);
             Text itemName = newNode.GetRef("Name").GetComponent<Text>();
             itemName.text = item.Name;
             if (item.Count.Value > 1)
@@ -691,7 +697,7 @@ public class StageView : BaseView
             }
             dragable.HasTail = true;
             dragable.TailColor = Color.white;
-            dragable.TailSprite = ResourceSys.Instance.GetSprite(GameConstants.CommonDragTail);
+            dragable.TailSprite = GameResSys.Instance.GetMask(GameConstants.CommonDragTail);
             dragable.TailWidth = 30;
             dragable.ActionId = hero.NowNodeId;
             dragable.Canv = _stageCanvas;

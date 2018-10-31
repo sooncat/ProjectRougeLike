@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 2477150966
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e13193a32a9f65e01396ab35fe746e32
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Tex/Mask/linear2.png
+- Assets/Res/Tex/Mask/linear.png
+- Assets/Res/Tex/Mask/fullCircle.png
+- Assets/Res/Tex/Mask/circle.png
+- Assets/Res/Tex/Mask/linear3.png
+Dependencies: []

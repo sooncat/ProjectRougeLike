@@ -74,6 +74,7 @@ public class BaseGameState {
         //LevelAgainLeave();
         //Time.timeScale = 1;
         EventSys.Instance.AddEvent(LogicEvent.LeaveState, GetType());
+        EventSys.Instance.AddEvent(FrameEvent.ClearAssetBundleChche, true);
     }
 
     protected void StartLoad()
@@ -120,7 +121,7 @@ public class BaseGameState {
         CatDebug.LogFunc();
         foreach (GameStateConfig.PreLoadResConfig preLoadResConfig in GsDetail.PreLoadUi)
         {
-            string path = Application.streamingAssetsPath + "/AssetBundles/" + preLoadResConfig.Prefab;
+            string path = Application.streamingAssetsPath + "/AssetBundles/" + preLoadResConfig.AssetBundle;
             EventSys.Instance.AddEvent(FrameEvent.AddPreLoadRes, path);
         }
         EventSys.Instance.AddEvent(FrameEvent.PreLoadStart);

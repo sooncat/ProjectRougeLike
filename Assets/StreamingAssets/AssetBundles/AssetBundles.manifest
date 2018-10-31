@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 4120808463
+CRC: 2098011727
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -51,4 +51,24 @@ AssetBundleManifest:
       Dependencies: {}
     Info_15:
       Name: configs/gameconfig
+      Dependencies: {}
+    Info_16:
+      Name: view/cityui
+      Dependencies:
+        Dependency_0: tex/button
+        Dependency_1: tex/bg
+        Dependency_2: font/font
+    Info_17:
+      Name: view/fightui
+      Dependencies:
+        Dependency_0: tex/button
+        Dependency_1: tex/icon/cards
+        Dependency_2: tex/icon/item
+        Dependency_3: tex/icon/skill
+        Dependency_4: tex/bg
+        Dependency_5: tex/cg
+        Dependency_6: tex/frame
+        Dependency_7: tex/icon/mask
+    Info_18:
+      Name: tex/icon/mask
       Dependencies: {}
