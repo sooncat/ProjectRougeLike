@@ -13,8 +13,9 @@ public class BaseGameState {
     /// <summary>
     /// 当关卡加载完成时，Loading条显示的进度
     /// </summary>
-    protected float SceneLoadPercent = 0.5f;
-    protected float UiLoadPercent = 1f;
+    protected float SceneLoadPercent = 0.33f;
+    protected float PreLoadPercent = 0.66f;
+    protected float UiLoadPercent = 0.99f;
 
     public BaseGameState()
     {
@@ -55,7 +56,7 @@ public class BaseGameState {
     {
         CatDebug.LogFuncInStack(1);
         EventSys.Instance.RemoveHander(this);
-        EventSys.Instance.AddEvent(LogicEvent.UiLoadingStart);
+        EventSys.Instance.AddEvent(ViewEvent.LoadingShow);
         StartUnLoad();
         
     }
@@ -111,7 +112,7 @@ public class BaseGameState {
 
     protected virtual void OnSceneLoaded(object p1, object p2)
     {
-        //EventSys.Instance.AddEvent(LogicEvent.UiLoadingUpdate, SceneLoadPercent);
+        EventSys.Instance.AddEvent(ViewEvent.LoadingUpdate, SceneLoadPercent);
         //StartLoadUi();
         StartPreLoad();
     }
@@ -129,11 +130,13 @@ public class BaseGameState {
 
     protected virtual void OnPreLoadEnd(object p1, object p2)
     {
+        EventSys.Instance.AddEvent(ViewEvent.LoadingUpdate, PreLoadPercent);
         StartInsUi();
     }
 
     protected virtual void OnUiLoaded(object p1, object p2)
     {
+        EventSys.Instance.AddEvent(ViewEvent.LoadingUpdate, UiLoadPercent);
         CatDebug.LogFuncInStack(1);
         //EventSys.Instance.AddEvent(LogicEvent.UiLoadingUpdate, UiLoadPercent);
         OnAllPreLoaded();
@@ -142,6 +145,6 @@ public class BaseGameState {
     protected virtual void OnAllPreLoaded()
     {
         CatDebug.LogFuncInStack(1);
-        EventSys.Instance.AddEvent(LogicEvent.UiLoadingEnd);
+        EventSys.Instance.AddEvent(ViewEvent.LoadingHide);
     }
 }

@@ -9,7 +9,7 @@ public class BuildABUtils : Editor {
     [MenuItem("FWUtils/BuldAll")]
     public static void BuildAllTest()
     {
-        BuildAllAssetbundle("Assets/StreamingAssets/AssetBundles");
+        BuildAllAssetbundle("Assets/StreamingAssets/AssetBundle");
         //BuildAllAssetbundle("Assets/StreamingAssets/AssetBundles_Uncompressed", BuildAssetBundleOptions.UncompressedAssetBundle);
         //BuildAllAssetbundle("Assets/StreamingAssets/AssetBundles_ChunkBased", BuildAssetBundleOptions.ChunkBasedCompression);
 

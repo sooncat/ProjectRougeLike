@@ -2,7 +2,11 @@
 	"GameStateDetails": {
 		"StartState": {
 			"SceneName": "",
-			"PreLoadUi": [],
+			"PreLoadUi": [{
+				"AssetBundle": "view/loadingui",
+				"Prefab": "LoadingUI",
+				"ClassName": "LoadingView"
+			}],
 			"PreLoadEffect": [],
 			"PreLoadAudio": []
 		},
@@ -10,7 +14,7 @@
 			"SceneName": "Login",
 			"PreLoadUi": [{
 				"AssetBundle": "view/loginui",
-				"Prefab": "loginui",
+				"Prefab": "LoginUI",
 				"ClassName": "LoginView"
 			}],
 			"PreLoadEffect": [],

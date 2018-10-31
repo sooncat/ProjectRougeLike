@@ -23,10 +23,6 @@ public enum LogicEvent : int
 
     AllLoadEnd,                 //资源加载完成
 
-    UiLoadingStart,
-    UiLoadingUpdate,
-    UiLoadingEnd,
-
     ChangeState,
     LeaveState,
     EnterState,

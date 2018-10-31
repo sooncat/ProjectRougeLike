@@ -1,0 +1,63 @@
+ManifestFileVersion: 0
+CRC: 1583972476
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 8c8122996fb0f0b58ba4afb2d079d3bf
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Tex/Cg/2d_141.png
+- Assets/Res/Tex/Cg/2d_112.png
+- Assets/Res/Tex/Cg/2d_121.png
+- Assets/Res/Tex/Cg/2d_109.png
+- Assets/Res/Tex/Cg/2d_146.png
+- Assets/Res/Tex/Cg/2d_131.png
+- Assets/Res/Tex/Cg/2d_122.png
+- Assets/Res/Tex/Cg/2d_107.png
+- Assets/Res/Tex/Cg/2d_137.png
+- Assets/Res/Tex/Cg/2d_144.png
+- Assets/Res/Tex/Cg/2d_130.png
+- Assets/Res/Tex/Cg/2d_147.png
+- Assets/Res/Tex/Cg/2d_145.png
+- Assets/Res/Tex/Cg/2d_105.png
+- Assets/Res/Tex/Cg/2d_140.png
+- Assets/Res/Tex/Cg/2d_136.png
+- Assets/Res/Tex/Cg/2d_134.png
+- Assets/Res/Tex/Cg/2d_116.png
+- Assets/Res/Tex/Cg/2d_125.png
+- Assets/Res/Tex/Cg/2d_111.png
+- Assets/Res/Tex/Cg/2d_104.png
+- Assets/Res/Tex/Cg/2d_117.png
+- Assets/Res/Tex/Cg/2d_115.png
+- Assets/Res/Tex/Cg/2d_128.png
+- Assets/Res/Tex/Cg/2d_135.png
+- Assets/Res/Tex/Cg/2d_102.png
+- Assets/Res/Tex/Cg/2d_143.png
+- Assets/Res/Tex/Cg/2d_118.png
+- Assets/Res/Tex/Cg/2d_151.png
+- Assets/Res/Tex/Cg/2d_148.png
+- Assets/Res/Tex/Cg/2d_127.png
+- Assets/Res/Tex/Cg/2d_103.png
+- Assets/Res/Tex/Cg/2d_110.png
+- Assets/Res/Tex/Cg/2d_139.png
+- Assets/Res/Tex/Cg/2d_138.png
+- Assets/Res/Tex/Cg/2d_108.png
+- Assets/Res/Tex/Cg/2d_123.png
+- Assets/Res/Tex/Cg/2d_113.png
+- Assets/Res/Tex/Cg/2d_124.png
+- Assets/Res/Tex/Cg/2d_106.png
+- Assets/Res/Tex/Cg/2d_114.png
+- Assets/Res/Tex/Cg/2d_126.png
+- Assets/Res/Tex/Cg/2d_129.png
+- Assets/Res/Tex/Cg/2d_133.png
+- Assets/Res/Tex/Cg/2d_119.png
+- Assets/Res/Tex/Cg/2d_101.png
+Dependencies: []

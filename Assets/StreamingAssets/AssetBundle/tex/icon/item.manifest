@@ -1,0 +1,65 @@
+ManifestFileVersion: 0
+CRC: 3215645244
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 1ab191598e90e8ab27a30fca88bddbd4
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_11006.png
+- Assets/Res/Tex/Icon/Item/ico_shujin.png
+- Assets/Res/Tex/Icon/Item/ico_usableitem_shiwu1.png
+- Assets/Res/Tex/Icon/Item/icon_material_upgrade81002.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_11016.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_11003.png
+- Assets/Res/Tex/Icon/Item/ico_usableitem_shiwu5.png
+- Assets/Res/Tex/Icon/Item/ico_usableitem_baoxiang2.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_10203.png
+- Assets/Res/Tex/Icon/Item/ico_title_flower_wushuang1.png
+- Assets/Res/Tex/Icon/Item/jiguan.png
+- Assets/Res/Tex/Icon/Item/ico_title_flower_xianhua1.png
+- Assets/Res/Tex/Icon/Item/ico_petfood_04.png
+- Assets/Res/Tex/Icon/Item/ico_usableitem_baoxiang5.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_10501.png
+- Assets/Res/Tex/Icon/Item/goldqian.png
+- Assets/Res/Tex/Icon/Item/ico_title_flower_wanrenmi1.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_11005.png
+- Assets/Res/Tex/Icon/Item/ico_title_flower_meili1.png
+- Assets/Res/Tex/Icon/Item/ico_usableitem_baoxiang4.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_10615.png
+- Assets/Res/Tex/Icon/Item/ico_usableitem_shiwu2.png
+- Assets/Res/Tex/Icon/Item/ico_usableitem_shiwu3.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_casque10404.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_11001.png
+- Assets/Res/Tex/Icon/Item/icon_material_upgrade81003.png
+- Assets/Res/Tex/Icon/Item/ico_common_yayun.png
+- Assets/Res/Tex/Icon/Item/ico_pvp_money1.png
+- Assets/Res/Tex/Icon/Item/ico_common_skill.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_11002.png
+- Assets/Res/Tex/Icon/Item/ico_usableitem_baoxiang3.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_10204.png
+- Assets/Res/Tex/Icon/Item/ico_pet_shengxing.png
+- Assets/Res/Tex/Icon/Item/ico_pvp_score.png
+- Assets/Res/Tex/Icon/Item/ico_usableitem_shiwu4.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_11015.png
+- Assets/Res/Tex/Icon/Item/icon_material_upgrade81001.png
+- Assets/Res/Tex/Icon/Item/ico_phalanx_book.png
+- Assets/Res/Tex/Icon/Item/ico_common_diamond.png
+- Assets/Res/Tex/Icon/Item/ico_cardeqiupment_11012.png
+- Assets/Res/Tex/Icon/Item/ico_common_gonghuibi.png
+- Assets/Res/Tex/Icon/Item/ico_common_money2.png
+- Assets/Res/Tex/Icon/Item/ico_usableitem_baoxiang1.png
+- Assets/Res/Tex/Icon/Item/ico_title_flower_sishe1.png
+- Assets/Res/Tex/Icon/Item/icon_material_upgrade80903.png
+- Assets/Res/Tex/Icon/Item/ico_common_mianzhan.png
+- Assets/Res/Tex/Icon/Item/ico_sdq_tongbao.png
+- Assets/Res/Tex/Icon/Item/icon_material_upgrade80101.png
+Dependencies: []

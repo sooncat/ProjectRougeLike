@@ -33,6 +33,10 @@ public class GameMain : BaseMain {
 
         AIMgr.Instance.Init();
 
+        EventSys.Instance.AddEvent(FrameEvent.RegistResidentAssetBundle, GameConstants.AssetBundlePath + "view/loadingui");
+        EventSys.Instance.AddEvent(FrameEvent.RegistResidentAssetBundle, GameConstants.AssetBundlePath + "tex/bg/loading");
+
+
         EventSys.Instance.AddEvent(LogicEvent.ChangeState, typeof(StartState));
     }
 

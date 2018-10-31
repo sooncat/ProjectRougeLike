@@ -1,0 +1,76 @@
+ManifestFileVersion: 0
+CRC: 821853784
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: e6134453a2ca88a6b44ebc9cffd13743
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Tex/Icon/Buff/ico_zhongdu_3.png
+- Assets/Res/Tex/Icon/Buff/ico_zhuoshao_3.png
+- Assets/Res/Tex/Icon/Buff/ico_wudi_2.png
+- Assets/Res/Tex/Icon/Buff/ico_cri_down_2.png
+- Assets/Res/Tex/Icon/Buff/ico_zhongdu_2.png
+- Assets/Res/Tex/Icon/Buff/ico_spe_up_2.png
+- Assets/Res/Tex/Icon/Buff/ico_cri_up_3.png
+- Assets/Res/Tex/Icon/Buff/ico_mde_down_2.png
+- Assets/Res/Tex/Icon/Buff/ico_mde_up_2.png
+- Assets/Res/Tex/Icon/Buff/ico_dod_down_2.png
+- Assets/Res/Tex/Icon/Buff/ico_dam_down_2.png
+- Assets/Res/Tex/Icon/Buff/ico_dod_up_3.png
+- Assets/Res/Tex/Icon/Buff/ico_mde_down_3.png
+- Assets/Res/Tex/Icon/Buff/ico_def_down_2.png
+- Assets/Res/Tex/Icon/Buff/ico_mde_up_1.png
+- Assets/Res/Tex/Icon/Buff/ico_zhongdu_1.png
+- Assets/Res/Tex/Icon/Buff/ico_xuanyun_2.png
+- Assets/Res/Tex/Icon/Buff/ico_dam_up_3.png
+- Assets/Res/Tex/Icon/Buff/ico_def_down_3.png
+- Assets/Res/Tex/Icon/Buff/ico_cri_down_3.png
+- Assets/Res/Tex/Icon/Buff/ico_huinuqi_2.png
+- Assets/Res/Tex/Icon/Buff/ico_wudi_1.png
+- Assets/Res/Tex/Icon/Buff/ico_xuanyun_1.png
+- Assets/Res/Tex/Icon/Buff/ico_mde_down_1.png
+- Assets/Res/Tex/Icon/Buff/ico_hp_up_3.png
+- Assets/Res/Tex/Icon/Buff/ico_liuxue_1.png
+- Assets/Res/Tex/Icon/Buff/ico_cri_down_1.png
+- Assets/Res/Tex/Icon/Buff/ico_dod_up_2.png
+- Assets/Res/Tex/Icon/Buff/ico_dod_down_3.png
+- Assets/Res/Tex/Icon/Buff/ico_huixue_1.png
+- Assets/Res/Tex/Icon/Buff/ico_zhuoshao_1.png
+- Assets/Res/Tex/Icon/Buff/ico_mde_up_3.png
+- Assets/Res/Tex/Icon/Buff/ico_cri_up_2.png
+- Assets/Res/Tex/Icon/Buff/ico_wudi_3.png
+- Assets/Res/Tex/Icon/Buff/ico_liuxue_2.png
+- Assets/Res/Tex/Icon/Buff/ico_liuxue_3.png
+- Assets/Res/Tex/Icon/Buff/ico_dam_down_1.png
+- Assets/Res/Tex/Icon/Buff/ico_dod_down_1.png
+- Assets/Res/Tex/Icon/Buff/ico_cri_up_1.png
+- Assets/Res/Tex/Icon/Buff/ico_spe_down_3.png
+- Assets/Res/Tex/Icon/Buff/ico_spe_up_1.png
+- Assets/Res/Tex/Icon/Buff/ico_dam_up_1.png
+- Assets/Res/Tex/Icon/Buff/ico_xuanyun_3.png
+- Assets/Res/Tex/Icon/Buff/ico_def_up_2.png
+- Assets/Res/Tex/Icon/Buff/ico_spe_up_3.png
+- Assets/Res/Tex/Icon/Buff/ico_hp_up_1.png
+- Assets/Res/Tex/Icon/Buff/ico_huinuqi_3.png
+- Assets/Res/Tex/Icon/Buff/ico_dam_down_3.png
+- Assets/Res/Tex/Icon/Buff/ico_def_up_3.png
+- Assets/Res/Tex/Icon/Buff/ico_spe_down_2.png
+- Assets/Res/Tex/Icon/Buff/ico_huixue_3.png
+- Assets/Res/Tex/Icon/Buff/ico_zhuoshao_2.png
+- Assets/Res/Tex/Icon/Buff/ico_hp_up_2.png
+- Assets/Res/Tex/Icon/Buff/ico_dam_up_2.png
+- Assets/Res/Tex/Icon/Buff/ico_dod_up_1.png
+- Assets/Res/Tex/Icon/Buff/ico_huixue_2.png
+- Assets/Res/Tex/Icon/Buff/ico_def_down_1.png
+- Assets/Res/Tex/Icon/Buff/ico_spe_down_1.png
+- Assets/Res/Tex/Icon/Buff/ico_def_up_1.png
+Dependencies: []

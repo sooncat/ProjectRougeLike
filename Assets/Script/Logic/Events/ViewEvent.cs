@@ -56,4 +56,8 @@ public enum ViewEvent : int {
 
     GetRewardReturnToStage,     //地图界面，获取奖励后刷新
     GetSafeReturnToStage,       //从SafeHouse返回地图界面
+
+    LoadingShow,                //显示Loading界面
+    LoadingHide,                //隐藏Loading界面
+    LoadingUpdate,              //更新Loading界面
 }

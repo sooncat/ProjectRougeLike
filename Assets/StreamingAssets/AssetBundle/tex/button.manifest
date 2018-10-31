@@ -1,0 +1,21 @@
+ManifestFileVersion: 0
+CRC: 931192138
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 96f816f38f3d28cd4eefabfc791b9916
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Tex/Button/btn2.png
+- Assets/Res/Tex/Button/back.png
+- Assets/Res/Tex/Button/btn.png
+- Assets/Res/Tex/Button/enter.png
+Dependencies: []

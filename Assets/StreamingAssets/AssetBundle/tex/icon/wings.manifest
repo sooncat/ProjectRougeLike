@@ -1,0 +1,39 @@
+ManifestFileVersion: 0
+CRC: 2935016116
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 32e7caf24cbd6526a44feb2234e75bb2
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 460b4f5d62b6facbccf7c01637df8f00
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+Assets:
+- Assets/Res/Tex/Icon/Wings/ico_wing_tianwubaolun.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_fire.png
+- Assets/Res/Tex/Icon/Wings/ico_wing_fire.png
+- Assets/Res/Tex/Icon/Wings/ico_wing_hudie.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_jinchanzi.png
+- Assets/Res/Tex/Icon/Wings/ico_wing_fengchitianxiang.png
+- Assets/Res/Tex/Icon/Wings/ico_wing_wanrenjie.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_tw1.png
+- Assets/Res/Tex/Icon/Wings/ico_wing_tw1.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_fengchitianxiang.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_cangyi.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_longyi.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_wanrenjie.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_moyu.png
+- Assets/Res/Tex/Icon/Wings/ico_wing_cangyi.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_tianwubaolun.png
+- Assets/Res/Tex/Icon/Wings/ico_wing_jinchanzi.png
+- Assets/Res/Tex/Icon/Wings/ico_wing_fengleikuangwu.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_hudie.png
+- Assets/Res/Tex/Icon/Wings/ico_wing_longyi.png
+- Assets/Res/Tex/Icon/Wings/ico_wing_moyu.png
+- Assets/Res/Tex/Icon/Wings/ico_wings_fengleikuangwu.png
+Dependencies: []

@@ -70,7 +70,7 @@ namespace com.initialworld.framework
         /// </summary>
         void PrepareAssetBundleManifest()
         {
-            string path = Path.Combine(Application.streamingAssetsPath, "AssetBundles/AssetBundles");
+            string path = Path.Combine(GameConstants.AssetBundlePath, GameConstants.AssetBundleMainfest);
             EventSys.Instance.AddEventNow(FrameEvent.RegistResidentAssetBundle, path);
             AssetBundle ab = AssetBundleSys.Instance.LoadAssetBundleInStreaming(path);
             _abManifest = ab.LoadAsset<AssetBundleManifest>("AssetBundleManifest");
